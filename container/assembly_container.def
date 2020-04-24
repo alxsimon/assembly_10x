@@ -1,0 +1,22 @@
+Bootstrap: localimage
+From: base_container.sif
+
+%files
+	# The supernova file needs to be downloaded by yourself in the folder
+	# as it requires a licence agreement
+	# Change the version variable in the %post part as necessary.
+	./supernova-2.1.1.tar.gz /opt/
+
+%post
+	## Install Supernova ##
+	SUPERNOVA_VERSION=2.1.1
+	cd /opt/
+	tar -zxvf supernova-${SUPERNOVA_VERSION}.tar.gz
+	rm supernova-${SUPERNOVA_VERSION}.tar.gz
+	ln -s /opt/supernova-2.1.1/supernova -t /usr/local/bin/
+
+%apprun run
+	exec /bin/bash "$@"
+
+%runscript
+	exec /bin/bash "$@"
