@@ -6,6 +6,7 @@ From: base_container.sif
 	# as it requires a licence agreement
 	# Change the version variable in the %post part as necessary.
 	./supernova-2.1.1.tar.gz /opt/
+	./longranger-2.2.2.tar.gz /opt/
 
 %post
 	## Install Supernova ##
@@ -13,7 +14,14 @@ From: base_container.sif
 	cd /opt/
 	tar -zxvf supernova-${SUPERNOVA_VERSION}.tar.gz
 	rm supernova-${SUPERNOVA_VERSION}.tar.gz
-	ln -s /opt/supernova-2.1.1/supernova -t /usr/local/bin/
+	ln -s /opt/supernova-${SUPERNOVA_VERSION}/supernova -t /usr/local/bin/
+
+	## Install Longranger ##
+	LONGRANGER_VERSION=2.2.2
+	cd /opt/
+	tar -zxvf longranger-${LONGRANGER_VERSION}.tar.gz
+	rm longranger-${LONGRANGER_VERSION}.tar.gz
+	ln -s /opt/longranger-${LONGRANGER_VERSION}/longranger -t /usr/local/bin/
 
 %apprun run
 	exec /bin/bash "$@"
