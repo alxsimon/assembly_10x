@@ -1,5 +1,13 @@
-Bootstrap: localimage
-From: base_container.sif
+BootStrap: docker
+From: ubuntu:20.04
+
+%labels
+	Author Alexis Simon
+	Version v0.0.1
+
+%environment
+    export LC_ALL=C.UTF-8
+	export LANG=C.UTF-8
 
 %files
 	# The supernova file needs to be downloaded by yourself in the folder
@@ -8,7 +16,9 @@ From: base_container.sif
 	./supernova-2.1.1.tar.gz /opt/
 	./longranger-2.2.2.tar.gz /opt/
 
-%post
+%post -c bash
+    apt-get update && apt-get upgrade -y
+
 	## Install Supernova ##
 	SUPERNOVA_VERSION=2.1.1
 	cd /opt/

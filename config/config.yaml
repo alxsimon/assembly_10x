@@ -1,0 +1,4 @@
+# Configuration file of the pipeline
+
+sif_tools: containers/assembly_tools.sif
+sif_supernova: containers/supernova.sif

@@ -1,5 +1,5 @@
 BootStrap: docker
-From: ubuntu:18.04
+From: ubuntu:20.04
 
 %labels
 	Author Alexis Simon
@@ -9,39 +9,23 @@ From: ubuntu:18.04
 	export PATH=/opt/conda/bin:$PATH
     export LC_ALL=C.UTF-8
 	export LANG=C.UTF-8
-	export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig/
 
-%post
+%post -c bash
 	apt-get update && apt-get upgrade -y
 	export DEBIAN_FRONTEND=noninteractive
 	apt-get install -y tzdata
-	TZ=Europe/Paris
-	ln -snf /usr/share/zoneinfo/$TZ /etc/localtime
-	echo $TZ > /etc/timezone
-	dpkg-reconfigure --frontend noninteractive tzdata
 	apt-get install -y \
-		apt-utils \
-		pkg-config \
 		wget \
 		git \
 		build-essential \
 		automake \
 		curl \
 		bzip2 \
-		software-properties-common \
-		ca-certificates \
 		libcurl4-openssl-dev \
 		libssh2-1-dev \
 		libzip-dev \
 		zlib1g-dev \
 		libicu-dev
-
-    ### Install R ###
-	apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
-	add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran35/'
-	apt-get update && apt-get -y install r-base r-base-dev r-recommended
-
-	Rscript -e 'install.packages(c("stringi", "stringr"), clean=TRUE)'
 
     ### Install Conda ###
 	curl -sSL https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -o /tmp/miniconda.sh \
@@ -49,22 +33,28 @@ From: ubuntu:18.04
 	&& export PATH=/opt/conda/bin:$PATH \
 	&& conda update -y conda \
 	&& conda clean --all --yes
+	# If conda envs are needed, just source /conda_init.sh when using exec
 	cp /opt/conda/etc/profile.d/conda.sh /conda_init.sh
-	sed -i 's/\$PS1/\$\{PS1:-\}/g' /conda_init.sh
+	source /conda_init.sh
 
 	conda config --add channels defaults
 	conda config --add channels bioconda
 	conda config --add channels conda-forge
 
-	conda install -y numpy scipy pandas snakemake
+	## Install R and packages ##
+	conda install -y r-base=4.0.0 \
+		r-stringi r-stringr		
+	# for Genomescope and Smudgeplot
+	conda install -y r-minpack.lm r-argparse r-viridis r-devtools
 
-    ## Install Bioinfo tools ##
-	conda install -c bioconda -y \
-		samtools \
-		fastqc \
-		bwa \
-		minimap2 \
-        jellyfish
+	## nubeam-dedup ##
+	git clone https://github.com/daihang16/nubeamdedup.git /opt/nubeamdedup
+	cd /opt/nubeamdedup/Linux
+	make && make clean
+	ln -s nubeam-dedup -t /usr/local/bin/
+
+	## Proc10x ##
+    git clone https://github.com/ucdavis-bioinformatics/proc10xG.git /opt/proc10xG
 
 	## Custom KMC fork ##
 	git clone https://github.com/tbenavi1/KMC.git /opt/KMC
@@ -72,11 +62,8 @@ From: ubuntu:18.04
 	make
 	ln -s /opt/KMC/bin/* -t /usr/local/bin/
 
-    ## Proc10x ##
-    git clone https://github.com/ucdavis-bioinformatics/proc10xG.git /opt/proc10xG
-
     ## Genomescope 2.0 and Smudgeplot ##
-    Rscript -e 'install.packages(c("minpack.lm", "argparse", "viridis", "devtools"), clean=TRUE)'
+    # Rscript -e 'install.packages(c("minpack.lm", "argparse", "viridis", "devtools"), clean=TRUE)'
 	git clone https://github.com/tbenavi1/genomescope2.0.git /opt/genomescope2.0
 	cd /opt/genomescope2.0
 	Rscript -e 'install.packages(".", repos=NULL, type="source")'
@@ -88,10 +75,15 @@ From: ubuntu:18.04
 	install -C exec/smudgeplot_plot.R /usr/local/bin
 
 	## Platanus-allee ##
-	wget http://platanus.bio.titech.ac.jp/?ddownload=431 -O /tmp/platanus_allee.tgz
-	cd /opt/
-	tar -xvzf /tmp/platanus_allee.tgz && rm /tmp/platanus_allee.tgz
-	ln -s /opt/Platanus_allee_*/platanus_allee -t /usr/local/bin/
+	# wget http://platanus.bio.titech.ac.jp/?ddownload=431 -O /tmp/platanus_allee.tgz
+	# cd /opt/
+	# tar -xvzf /tmp/platanus_allee.tgz && rm /tmp/platanus_allee.tgz
+	# ln -s /opt/Platanus_allee_*/platanus_allee -t /usr/local/bin/
+
+	## purge_dups
+	git clone https://github.com/dfguan/purge_dups.git /opt/purge_dups
+	cd /opt/purge_dups/src && make
+	ln -s /opt/purge_dups/bin/* -t /usr/bin/
 
 %apprun run
 	exec /bin/bash "$@"
