@@ -54,6 +54,7 @@ From: ubuntu:20.04
 	ln -s nubeam-dedup -t /usr/local/bin/
 
 	## Proc10x ##
+	# this requires Python 2, handle in snakemake with conda
     git clone https://github.com/ucdavis-bioinformatics/proc10xG.git /opt/proc10xG
 
 	## Custom KMC fork ##

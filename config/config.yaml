@@ -2,3 +2,10 @@
 
 sif_tools: containers/assembly_tools.sif
 sif_supernova: containers/supernova.sif
+
+raw_names:
+  gallo: "Gallo_Med"
+  edu: "EDU"
+  tros: "TROS"
+
+samples: ["gallo", "edu", "tros"]

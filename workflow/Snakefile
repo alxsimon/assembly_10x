@@ -1,0 +1,12 @@
+# Mussel genomes assembly pipeline
+
+import glob
+
+configfile: "config/config.yaml"
+
+container: config['sif_tools']
+
+rule all:
+    "results/..."
+
+include: "workflow/rules/preprocessing.smk"
