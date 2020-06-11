@@ -51,7 +51,7 @@ From: ubuntu:20.04
 	git clone https://github.com/daihang16/nubeamdedup.git /opt/nubeamdedup
 	cd /opt/nubeamdedup/Linux
 	make && make clean
-	ln -s nubeam-dedup -t /usr/local/bin/
+	ln -s /opt/nubeamdedup/Linux/nubeam-dedup -t /usr/local/bin/
 
 	## Proc10x ##
 	# this requires Python 2, handle in snakemake with conda
