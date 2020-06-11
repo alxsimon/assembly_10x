@@ -1,12 +1,20 @@
 # Mussel genomes assembly pipeline
 
 import glob
+from snakemake.utils import min_version
+
+min_version("5.19.2")
 
 configfile: "config/config.yaml"
 
 container: config['sif_tools']
 
-rule all:
-    "results/..."
+include: "rules/common.smk"
 
-include: "workflow/rules/preprocessing.smk"
+rule all:
+    input: 
+        expand("results/preprocessing/{sample}/{sample}_dedup_regen_{R}_001.fastq.gz",
+            sample=config['samples'], R=["R1", "R2"])
+        
+
+include: "rules/preprocessing.smk"
