@@ -12,15 +12,9 @@ rule rm_dup_pcr:
         nubeam-dedup -i1 {input.fq1} -i2 {input.fq2} \
         -o1 {output[0]} -o2 {output[1]} \
         > {log} 2>&1
-        
         exitcode=$?
-	echo $exitcode
-        if [ $exitcode -eq 1 ]
-        then
-            exit 0
-        else
-            exit 0
-        fi
+	    echo "Their was an exitcode $exitcode"
+        exit 0
         """
 
 
