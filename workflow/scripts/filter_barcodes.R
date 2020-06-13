@@ -37,7 +37,7 @@ P <- ggplot(NZ, aes(x = X1, y = X2)) + xlab("Read pairs in bacode") + ylab("Coun
   annotate("text", x = MAX, y = 5e4, label = "Maximum") + 
   annotate("text", x = MAX, y = 3e4, label = MAX) +
   annotate("text", x = MAX, y = 1.7e5, label = "Mean") + 
-  annotate("text", x = MAX, y = 1e5, label = round(mean(X_hi$V2), 1)) +
+  annotate("text", x = MAX, y = 1e5, label = round(mean(X_out$V2), 1)) +
   annotate("text", x = 3, y = 100, label = "Removed low") + 
   annotate("text", x = MAX, y = 100, label = "Retained") + 
   annotate("text", x = 2000,y = 100, label = "Removed high") +
@@ -49,6 +49,6 @@ P <- ggplot(NZ, aes(x = X1, y = X2)) + xlab("Read pairs in bacode") + ylab("Coun
   annotate("text", x = 2000, y = 30, label = round(UP_REM/TOT, 3)) +
   geom_point() + geom_line(color = "blue") + theme_bw() 
 
-ggsave(fig_out, P, width = 8, height = 4)
+ggsave(P, fig_out, width = 8, height = 4)
 writeLines(X_out$V1, barcode_output)
 
