@@ -8,9 +8,18 @@ rule rm_dup_pcr:
         "results/preprocessing/{sample}/nubeam-dedup.{sample}.log"
     shell:
         """
+        set +e
         nubeam-dedup -i1 {input.fq1} -i2 {input.fq2} \
         -o1 {output[0]} -o2 {output[1]} \
         > {log} 2>&1
+        
+        exitcode=$?
+        if [ $exitcode -eq 1 ]
+        then
+            exit 1
+        else
+            exit 0
+        fi
         """
 
 
