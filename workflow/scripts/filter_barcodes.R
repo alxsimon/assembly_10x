@@ -3,6 +3,8 @@
 # removing low coverage ones (before the first minimum of the function)
 # and the high coverage one (after 10*MAX)
 
+options(warn = -1) # to remove some ggplot warnings
+
 library(ggplot2)
 library(stats)
 library(scales)

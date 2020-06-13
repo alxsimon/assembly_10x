@@ -14,9 +14,10 @@ rule rm_dup_pcr:
         > {log} 2>&1
         
         exitcode=$?
+	echo $exitcode
         if [ $exitcode -eq 1 ]
         then
-            exit 1
+            exit 0
         else
             exit 0
         fi
@@ -70,7 +71,7 @@ rule proc10x_filter:
     shell:
         """
         /opt/proc10xG/filter_10xReads.py \
-        -o {output} \
+        -o {params.out_prefix} \
         -L {input.barcodes} \
         -1 {input[0]} -2 {input[1]} \
         > {log} 2>&1
