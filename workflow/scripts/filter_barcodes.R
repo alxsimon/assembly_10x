@@ -7,8 +7,8 @@ library(ggplot2)
 library(stats)
 library(scales)
 
-barcode_input <- snakemake@input[[1]]
-barcode_output <- snakemake@output[["barcodes"]]
+barcode_input <- snakemake@input[["in_barcodes"]]
+barcode_output <- snakemake@output[["out_barcodes"]]
 fig_out <- snakemake@output[["figure"]]
 
 X <- read.table(barcode_input, header = F)
@@ -49,6 +49,6 @@ P <- ggplot(NZ, aes(x = X1, y = X2)) + xlab("Read pairs in bacode") + ylab("Coun
   annotate("text", x = 2000, y = 30, label = round(UP_REM/TOT, 3)) +
   geom_point() + geom_line(color = "blue") + theme_bw() 
 
-ggsave(P, fig_out, width = 8, height = 4)
+ggsave(fig_out, P, width = 8, height = 4)
 writeLines(X_out$V1, barcode_output)
 

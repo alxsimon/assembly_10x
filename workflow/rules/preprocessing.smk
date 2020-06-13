@@ -45,9 +45,10 @@ rule proc10x_process:
 
 rule filter_barcodes:
     input:
-        "results/preprocessing/{sample}/{sample}_dedup_proc_barcodes.txt"
+        in_barcodes = "results/preprocessing/{sample}/{sample}_dedup_proc_barcodes.txt"
     output:
-        barcodes = "results/preprocessing/{sample}/{sample}_filt_barcodes.txt"
+        out_barcodes = "results/preprocessing/{sample}/{sample}_filt_barcodes.txt",
+        figure = "results/preprocessing/{sample}/{sample}_barcode_plot.pdf"
     log:
         "results/preprocessing/{sample}/filter_barcodes.{sample}.log"
     script:
