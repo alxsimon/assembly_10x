@@ -5,7 +5,7 @@ rule rm_dup_pcr:
     output:
         temp(expand("results/preprocessing/{{sample}}/{{sample}}_dedup_{R}.fastq", R=["R1", "R2"]))
     log:
-        "results/preprocessing/{sample}/nubeam-dedup.{sample}.log"
+        "logs/nubeam-dedup.{sample}.log"
     shell:
         """
         set +e
@@ -28,12 +28,12 @@ rule proc10x_process:
     input:
         expand("results/preprocessing/{{sample}}/{{sample}}_dedup_{R}.fastq", R=["R1", "R2"])
     output:
-        "results/preprocessing/{sample}/{sample}_dedup_proc_barcodes.txt",
-        expand("results/preprocessing/{{sample}}/{{sample}}_dedup_proc_{R}_001.fastq.gz", R=["R1", "R2"])
+        protected("results/preprocessing/{sample}/{sample}_dedup_proc_barcodes.txt"),
+        protected(expand("results/preprocessing/{{sample}}/{{sample}}_dedup_proc_{R}_001.fastq.gz", R=["R1", "R2"]))
     params:
         out_prefix = "results/preprocessing/{sample}/{sample}_dedup_proc"
     log:
-        "results/preprocessing/{sample}/process_10xReads.{sample}.log"
+        "logs/process_10xReads.{sample}.log"
     conda:
         "../envs/py2.yaml"
     shell:
@@ -51,7 +51,7 @@ rule filter_barcodes:
         out_barcodes = "results/preprocessing/{sample}/{sample}_filt_barcodes.txt",
         figure = "results/preprocessing/{sample}/{sample}_barcode_plot.pdf"
     log:
-        "results/preprocessing/{sample}/filter_barcodes.{sample}.log"
+        "logs/filter_barcodes.{sample}.log"
     script:
         "../scripts/filter_barcodes.R"
 
@@ -65,7 +65,7 @@ rule proc10x_filter:
     params:
         out_prefix = "results/preprocessing/{sample}/{sample}_dedup_filt"
     log:
-        "results/preprocessing/{sample}/filter_10xReads.{sample}.log"
+        "logs/filter_10xReads.{sample}.log"
     conda:
         "../envs/py2.yaml"
     shell:
@@ -82,11 +82,11 @@ rule proc10x_regen:
     input:
         expand("results/preprocessing/{{sample}}/{{sample}}_dedup_filt_{R}_001.fastq.gz", R=["R1", "R2"])
     output:
-        expand("results/preprocessing/{{sample}}/{{sample}}_dedup_regen_{R}_001.fastq.gz", R=["R1", "R2"])
+        protected(expand("results/preprocessing/{{sample}}/{{sample}}_dedup_regen_{R}_001.fastq.gz", R=["R1", "R2"]))
     params:
         out_prefix = "results/preprocessing/{sample}/{sample}_dedup_regen"
     log:
-        "results/preprocessing/{sample}/regen_10xReads.{sample}.log"
+        "logs/regen_10xReads.{sample}.log"
     conda:
         "../envs/py2.yaml"
     shell:
