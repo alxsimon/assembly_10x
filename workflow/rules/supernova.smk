@@ -2,7 +2,34 @@
 #==================================================
 # Version 1 is with raw input fastq
 
-# rule supernova_v1:
+rule supernova_v1:
+    input:
+        unpack(get_fastq)
+    output:
+        "results/supernova_assemblies/{sample}_v1/outs/summary.txt"
+    params:
+        mem = config['supernova_mem'],
+        input_dir = lambda w, input: os.path.dirname(input[0]),
+        output_dir = "results/supernova_assemblies",
+        run_id = lambda w: f'{w.sample}_v1',
+        sample = lambda w: config['raw_names'][w.sample]
+    threads: 
+        workflow.cores
+    log: 
+        "logs/supernova_v2.{sample}.log"
+    shell:
+        """
+        cd {params.output_dir}
+        supernova run \
+        --id {params.run_id} \
+        --fastqs {params.input_dir} \
+        --sample {params.sample} \
+        --maxreads='all' \
+        --localcores={threads} \
+        --localmem={params.mem} \
+        --allow-extreme-coverage \
+        > {log} 2>&1
+        """
 
 
 #==================================================
@@ -14,8 +41,9 @@ rule supernova_v2:
         "results/supernova_assemblies/{sample}_v2/outs/summary.txt"
     params:
         mem = config['supernova_mem'],
-        input_dir = lambda w: f'results/preprocessing/{w.sample}',
-        output_dir = lambda w: f'results/supernova_assemblies/{w.sample}_v2',
+        input_dir = lambda w, input: os.path.dirname(input[0]),
+        output_dir = "results/supernova_assemblies",
+        run_id = lambda w: f'{w.sample}_v2',
         sample = lambda w: f'{w.sample}_dedup_regen'
     threads: 
         workflow.cores
@@ -23,8 +51,9 @@ rule supernova_v2:
         "logs/supernova_v2.{sample}.log"
     shell:
         """
+        cd {params.output_dir}
         supernova run \
-        --id {params.output_dir} \
+        --id {params.run_id} \
         --fastqs {params.input_dir} \
         --sample {params.sample} \
         --maxreads='all' \
