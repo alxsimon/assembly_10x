@@ -9,3 +9,5 @@ raw_names:
   tros: "TROS"
 
 samples: ["gallo", "edu", "tros"]
+
+supernova_mem: 400
