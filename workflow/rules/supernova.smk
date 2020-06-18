@@ -87,9 +87,9 @@ rule supernova_fasta:
             supernova mkoutput \
             --style = $style \
             --asmdir = {params.assembly_dir} \
-            --outprefix = \"{params.outprefix}.$style\" \
+            --outprefix = "{params.outprefix}.$style" \
             --headers = full \
-            > \"{log}.$style.log\" 2>&1
+            > "{log}.$style.log" 2>&1
         done
         """
 
