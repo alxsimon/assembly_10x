@@ -3,29 +3,25 @@ rule rm_dup_pcr:
     input:
         unpack(get_fastq)
     output:
-        temp(expand("results/preprocessing/{{sample}}/{{sample}}_dedup_{R}.fastq", R=["R1", "R2"]))
+        temp(unpack(rmdup_expand("results/preprocessing/{sample}/{sample}_dedup")))
     log:
         "logs/nubeam-dedup.{sample}.log"
     shell:
         """
-        set +e
         nubeam-dedup -i1 {input.fq1} -i2 {input.fq2} \
-        -o1 {output[0]} -o2 {output[1]} \
+        -o1 {output.fq1} -o2 {output.fq2} \
         > {log} 2>&1
-        exitcode=$?
-	    echo "Their was an exitcode $exitcode"
-        exit 0
         """
 
 
 rule proc10x_process:
     input:
-        expand("results/preprocessing/{{sample}}/{{sample}}_dedup_{R}.fastq", R=["R1", "R2"])
+        unpack(rmdup_expand("results/preprocessing/{sample}/{sample}_dedup"))
     output:
-        protected("results/preprocessing/{sample}/{sample}_dedup_proc_barcodes.txt"),
-        protected(expand("results/preprocessing/{{sample}}/{{sample}}_dedup_proc_{R}_001.fastq.gz", R=["R1", "R2"]))
+        protected(unpack(proc10x_expand("results/preprocessing/{sample}/{sample}_dedup_proc"))),
+        protected("results/preprocessing/{sample}/{sample}_dedup_proc_barcodes.txt")
     params:
-        out_prefix = "results/preprocessing/{sample}/{sample}_dedup_proc"
+        out_prefix = lambda w, output: output[0].strip("_R1_001.fastq.gz")
     log:
         "logs/process_10xReads.{sample}.log"
     conda:
@@ -34,7 +30,7 @@ rule proc10x_process:
         """
         /opt/proc10xG/process_10xReads.py \
         -o {params.out_prefix} \
-        -1 {input[0]} -2 {input[1]} \
+        -1 {input.fq1} -2 {input.fq2} \
         > {log} 2>&1
         """
 
@@ -52,12 +48,12 @@ rule filter_barcodes:
 
 rule proc10x_filter:
     input:
-        expand("results/preprocessing/{{sample}}/{{sample}}_dedup_proc_{R}_001.fastq.gz", R=["R1", "R2"]),
+        unpack(proc10x_expand("results/preprocessing/{sample}/{sample}_dedup_proc")),
         barcodes = "results/preprocessing/{sample}/{sample}_filt_barcodes.txt"
     output:
         expand("results/preprocessing/{{sample}}/{{sample}}_dedup_filt_{R}_001.fastq.gz", R=["R1", "R2"])
     params:
-        out_prefix = "results/preprocessing/{sample}/{sample}_dedup_filt"
+        out_prefix = lambda w, output: output[0].strip("_R1_001.fastq.gz")
     log:
         "logs/filter_10xReads.{sample}.log"
     conda:
@@ -67,18 +63,18 @@ rule proc10x_filter:
         /opt/proc10xG/filter_10xReads.py \
         -o {params.out_prefix} \
         -L {input.barcodes} \
-        -1 {input[0]} -2 {input[1]} \
+        -1 {input.fq1} -2 {input.fq2} \
         > {log} 2>&1
         """
 
 
 rule proc10x_regen:
     input:
-        expand("results/preprocessing/{{sample}}/{{sample}}_dedup_filt_{R}_001.fastq.gz", R=["R1", "R2"])
+        unpack(proc10x_expand("results/preprocessing/{sample}/{sample}_dedup_filt"))
     output:
-        protected(expand("results/preprocessing/{{sample}}/{{sample}}_dedup_regen_{R}_001.fastq.gz", R=["R1", "R2"]))
+        protected(unpack(proc10x_expand("results/preprocessing/{sample}/{sample}_dedup_regen")))
     params:
-        out_prefix = "results/preprocessing/{sample}/{sample}_dedup_regen"
+        out_prefix = lambda w, output: output[0].strip("_R1_001.fastq.gz")
     log:
         "logs/regen_10xReads.{sample}.log"
     conda:
@@ -87,7 +83,7 @@ rule proc10x_regen:
         """
         /opt/proc10xG/regen_10xReads.py \
         -o {params.out_prefix} \
-        -1 {input[0]} -2 {input[1]} \
+        -1 {input.fq1} -2 {input.fq2} \
         > {log} 2>&1
         """
     
