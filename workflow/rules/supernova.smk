@@ -86,7 +86,7 @@ rule supernova_fasta:
         for style in ( 'raw' 'megabubbles' 'pseudohap' pseudohap2 ); do
             supernova mkoutput \
             --style = $style \
-            --asmdir = {params.assembly_dir} \
+            --asmdir = {params.asm_dir} \
             --outprefix = "{params.outprefix}.$style" \
             --headers = full \
             > "{log}.$style.log" 2>&1
