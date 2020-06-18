@@ -1,9 +1,12 @@
 
-# rule supernova_v1
+#==================================================
+# Version 1 is with raw input fastq
 
+# rule supernova_v1:
 
 
 #==================================================
+# Version 2 is with filtered input fastq (preprocessing)
 rule supernova_v2:
     input:
         expand("results/preprocessing/{{sample}}/{{sample}}_dedup_regen_{R}_001.fastq.gz", R=["R1", "R2"])
@@ -12,7 +15,8 @@ rule supernova_v2:
     params:
         mem = config['supernova_mem'],
         input_dir = lambda w: f'results/preprocessing/{w.sample}',
-        output_dir = lambda w: f'results/supernova_assemblies/{w.sample}_v2'
+        output_dir = lambda w: f'results/supernova_assemblies/{w.sample}_v2',
+        sample = lambda w: f'{w.sample}_dedup_regen'
     threads: 
         workflow.cores
     log: 
@@ -22,7 +26,7 @@ rule supernova_v2:
         supernova run \
         --id {params.output_dir} \
         --fastqs {params.input_dir} \
-        --sample {sample}_dedup_regen \
+        --sample {params.sample} \
         --maxreads='all' \
         --localcores={threads} \
         --localmem={params.mem} \
@@ -32,42 +36,40 @@ rule supernova_v2:
 
 
 #==================================================
-def get_output_fasta(wildcards, just_prefix=True):
-    prefix = "results/supernova_assemblies/{sample}_{version}/fasta/{sample}_{version}.{style}"
-    if just_prefix:
-        return(prefix)
-    else:
-        if wildcards.style is "pseudohap2":
-            return([f'{prefix}.1.fasta.gz', f'{prefix}.2.fasta.gz'])
-        else:
-            return(f'{prefix}.1.fasta.gz')
+# common for both versions
 
 rule supernova_fasta:
     input:
         "results/supernova_assemblies/{sample}_{version}/outs/summary.txt"
     output:
-        get_output_fasta(wildcards, just_prefix=False)
+        multiext("results/supernova_assemblies/{sample}_{version}/fasta/{sample}_{version}",
+            ".raw.fasta.gz", ".megabubbles.fasta.gz", ".pseudohap.fasta.gz",
+            ".pseudohap2.1.fasta.gz", ".pseudohap2.2.fasta.gz")
     params:
         fasta_dir = lambda w, output: os.path.dirname(output[0]),
         asm_dir = lambda w, input: os.path.dirname(input) + "/assembly",
-        outprefix = get_output_fasta(wildcards, just_prefix=True)
+        outprefix = lambda w, output: os.path.dirname(output[0]) + f"/{w.sample}_{w.version}"
     log:
-        "logs/supernova_fasta.{sample}_{version}.{style}.log"
+        "logs/supernova_fasta.{sample}_{version}"
     shell:
         """
         [ ! -d {params.fasta_dir} ] && mkdir {params.fasta_dir}
-        supernova mkoutput \
-        --style = {wildcards.style} \
-        --asmdir = {params.assembly_dir} \
-        --outprefix = {params.outprefix} \
-        --headers = full \
-        > {log} 2>&1
+        for style in ( 'raw' 'megabubbles' 'pseudohap' pseudohap2 ); do
+            supernova mkoutput \
+            --style = $style \
+            --asmdir = {params.assembly_dir} \
+            --outprefix = \"{params.outprefix}.$style\" \
+            --headers = full \
+            > \"{log}.$style.log\" 2>&1
+        done
         """
 
 
 rule supernova_compress:
     input:
-        rule.supernova_fasta.output
+        multiext("results/supernova_assemblies/{sample}_{version}/fasta/{sample}_{version}",
+            ".raw.fasta.gz", ".megabubbles.fasta.gz", ".pseudohap.fasta.gz",
+            ".pseudohap2.1.fasta.gz", ".pseudohap2.2.fasta.gz")
     output:
         archive = "results/supernova_assemblies/{sample}_{version}/outs/assembly.tar.zst",
         donefile = "results/supernova_assemblies/{sample}_{version}/DONE"
@@ -75,8 +77,11 @@ rule supernova_compress:
         input_dir = lambda w: f'results/supernova_assemblies/{w.sample}_{w.version}/outs/assembly'
     threads: 
         8
+    log:
+        "logs/supernova_compress.{sample}_{version}.log"
     shell:
         """
         tar -cf - {params.input_dir} | zstdmt -T{threads} > {output.archive} \
-        && touch {output.donefile}
+        && touch {output.donefile} \
+        > {log} 2>&1
         """
