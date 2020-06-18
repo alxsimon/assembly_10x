@@ -76,7 +76,7 @@ rule supernova_fasta:
             ".pseudohap2.1.fasta.gz", ".pseudohap2.2.fasta.gz")
     params:
         fasta_dir = lambda w, output: os.path.dirname(output[0]),
-        asm_dir = lambda w, input: os.path.dirname(input) + "/assembly",
+        asm_dir = lambda w, input: os.path.dirname(input[0]) + "/assembly",
         outprefix = lambda w, output: os.path.dirname(output[0]) + f"/{w.sample}_{w.version}"
     log:
         "logs/supernova_fasta.{sample}_{version}"
