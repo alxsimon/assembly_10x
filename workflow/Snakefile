@@ -1,6 +1,7 @@
 # Mussel genomes assembly pipeline
 
 import glob
+import os.path
 from snakemake.utils import min_version
 
 min_version("5.19.2")
@@ -14,7 +15,9 @@ include: "rules/common.smk"
 rule all:
     input: 
         expand("results/preprocessing/{sample}/{sample}_dedup_regen_{R}_001.fastq.gz",
-            sample=config['samples'], R=["R1", "R2"])
+            sample=config['samples'], R=["R1", "R2"]),
+        expand("results/supernova_assemblies/{sample}_{version}/DONE",
+            sample=config['samples'], version=["v1", "v2"])
         
 
 include: "rules/preprocessing.smk"
