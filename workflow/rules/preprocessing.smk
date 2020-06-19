@@ -46,9 +46,35 @@ rule filter_barcodes:
         "../scripts/filter_barcodes.R"
 
 
+rule fastp:
+    input:
+        unpack(proc10x_expand("results/preprocessing/{sample}/{sample}_dedup_proc"))
+    output:
+        unpack(proc10x_expand("results/preprocessing/{sample}/{sample}_dedup_proc_fastp"))
+    params:
+        report = lambda w, output: os.path.dirname(output[0]) + f'/{w.sample}_fastp'
+    conda:
+        "../envs/fastp.yaml"
+    log:
+        "logs/fastp.{sample}.log"
+    threads:
+        8
+    shell:
+        """
+        fastp -i {input.fq1} -I {input.fq2} \
+        -o {output.fq1} -O {output.fq2} \
+        --disable_length_filtering \
+        --correction \
+        --trim_poly_g \
+        --json {params.report}.json \
+        --html {params.report}.html \
+        -w {threads}
+        """
+
+
 rule proc10x_filter:
     input:
-        unpack(proc10x_expand("results/preprocessing/{sample}/{sample}_dedup_proc")),
+        unpack(proc10x_expand("results/preprocessing/{sample}/{sample}_dedup_proc_fastp")),
         barcodes = "results/preprocessing/{sample}/{sample}_filt_barcodes.txt"
     output:
         expand("results/preprocessing/{{sample}}/{{sample}}_dedup_filt_{R}_001.fastq.gz", R=["R1", "R2"])
