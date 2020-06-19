@@ -77,7 +77,8 @@ rule proc10x_filter_regen:
         unpack(proc10x_expand("results/preprocessing/{sample}/{sample}_dedup_proc_fastp")),
         barcodes = "results/preprocessing/{sample}/{sample}_filt_barcodes.txt"
     output:
-        protected(unpack(proc10x_expand("results/preprocessing/{sample}/{sample}_regen")))
+        protected(expand("results/preprocessing/{{sample}}/{{sample}}_regen_{R}_001.fastq.gz",
+            R=["R1", "R2"]))
     params:
         out_prefix = lambda w, output: output[0].strip("_R1_001.fastq.gz")
     log:
