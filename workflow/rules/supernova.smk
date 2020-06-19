@@ -36,7 +36,7 @@ rule supernova_v1:
 # Version 2 is with filtered input fastq (preprocessing)
 rule supernova_v2:
     input:
-        expand("results/preprocessing/{{sample}}/{{sample}}_dedup_regen_{R}_001.fastq.gz", R=["R1", "R2"])
+        expand("results/preprocessing/{{sample}}/{{sample}}_regen_{R}_001.fastq.gz", R=["R1", "R2"])
     output:
         "results/supernova_assemblies/{sample}_v2/outs/summary.txt"
     params:
