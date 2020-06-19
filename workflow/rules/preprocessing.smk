@@ -72,44 +72,24 @@ rule fastp:
         """
 
 
-rule proc10x_filter:
+rule proc10x_filter_regen:
     input:
         unpack(proc10x_expand("results/preprocessing/{sample}/{sample}_dedup_proc_fastp")),
         barcodes = "results/preprocessing/{sample}/{sample}_filt_barcodes.txt"
     output:
-        expand("results/preprocessing/{{sample}}/{{sample}}_dedup_filt_{R}_001.fastq.gz", R=["R1", "R2"])
+        protected(unpack(proc10x_expand("results/preprocessing/{sample}/{sample}_regen")))
     params:
         out_prefix = lambda w, output: output[0].strip("_R1_001.fastq.gz")
     log:
-        "logs/filter_10xReads.{sample}.log"
+        "logs/filter_regen_10xReads.{sample}.log"
     conda:
         "../envs/py2.yaml"
     shell:
         """
         /opt/proc10xG/filter_10xReads.py \
-        -o {params.out_prefix} \
         -L {input.barcodes} \
-        -1 {input.fq1} -2 {input.fq2} \
-        > {log} 2>&1
-        """
-
-
-rule proc10x_regen:
-    input:
-        unpack(proc10x_expand("results/preprocessing/{sample}/{sample}_dedup_filt"))
-    output:
-        protected(unpack(proc10x_expand("results/preprocessing/{sample}/{sample}_dedup_regen")))
-    params:
-        out_prefix = lambda w, output: output[0].strip("_R1_001.fastq.gz")
-    log:
-        "logs/regen_10xReads.{sample}.log"
-    conda:
-        "../envs/py2.yaml"
-    shell:
-        """
+        -1 {input.fq1} -2 {input.fq2} |
         /opt/proc10xG/regen_10xReads.py \
         -o {params.out_prefix} \
-        -1 {input.fq1} -2 {input.fq2} \
         > {log} 2>&1
-        """
-    
+        """    
