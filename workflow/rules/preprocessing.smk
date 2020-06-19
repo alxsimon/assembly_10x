@@ -4,7 +4,7 @@ rule rm_dup_pcr:
         unpack(get_fastq)
     output:
         temp(multiext("results/preprocessing/{sample}/{sample}_dedup",
-            "_R1.fastq.gz", "_R2.fastq.gz"))
+            "_R1.fastq", "_R2.fastq"))
     log:
         "logs/nubeam-dedup.{sample}.log"
     shell:
@@ -18,7 +18,7 @@ rule rm_dup_pcr:
 rule proc10x_process:
     input:
         multiext("results/preprocessing/{sample}/{sample}_dedup",
-            "_R1.fastq.gz", "_R2.fastq.gz")
+            "_R1.fastq", "_R2.fastq")
     output:
         protected(multiext("results/preprocessing/{sample}/{sample}_dedup_proc",
             "_R1_001.fastq.gz", "_R2_001.fastq.gz")),
@@ -63,7 +63,7 @@ rule fastp:
     log:
         "logs/fastp.{sample}.log"
     threads:
-        8
+        16
     shell:
         """
         fastp -i {input[0]} -I {input[1]} \
@@ -73,8 +73,7 @@ rule fastp:
         --trim_poly_g \
         --json {params.report}.json \
         --html {params.report}.html \
-        -w {threads} \
-        > {log} 2>&1
+        -w {threads} > {log} 2>&1
         """
 
 
