@@ -73,7 +73,8 @@ rule fastp:
         --trim_poly_g \
         --json {params.report}.json \
         --html {params.report}.html \
-        -w {threads}
+        -w {threads} \
+        > {log} 2>&1
         """
 
 
