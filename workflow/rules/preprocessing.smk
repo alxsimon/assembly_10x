@@ -94,10 +94,13 @@ rule proc10x_filter_regen:
         "../envs/py2.yaml"
     shell:
         """
+        [ -e {log} ] && rm {log}
         /opt/proc10xG/filter_10xReads.py \
         -L {input.barcodes} \
-        -1 {input[0]} -2 {input[1]} |
+        -1 {input[0]} -2 {input[1]} \
+        -o stdout 2>> {log} |
         /opt/proc10xG/regen_10xReads.py \
+        --stdin \
         -o {params.out_prefix} \
-        > {log} 2>&1
+        >> {log} 2>&1
         """
