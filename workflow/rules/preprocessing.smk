@@ -3,7 +3,7 @@ rule rm_dup_pcr:
     input:
         unpack(get_fastq)
     output:
-        temp(multiext("results/preprocessing/{sample}/{sample}_dedup"
+        temp(multiext("results/preprocessing/{sample}/{sample}_dedup",
             "_R1.fastq.gz", "_R2.fastq.gz"))
     log:
         "logs/nubeam-dedup.{sample}.log"
@@ -17,10 +17,10 @@ rule rm_dup_pcr:
 
 rule proc10x_process:
     input:
-        multiext("results/preprocessing/{sample}/{sample}_dedup"
+        multiext("results/preprocessing/{sample}/{sample}_dedup",
             "_R1.fastq.gz", "_R2.fastq.gz")
     output:
-        protected(multiext("results/preprocessing/{sample}/{sample}_dedup_proc"
+        protected(multiext("results/preprocessing/{sample}/{sample}_dedup_proc",
             "_R1_001.fastq.gz", "_R2_001.fastq.gz")),
         protected("results/preprocessing/{sample}/{sample}_dedup_proc_barcodes.txt")
     params:
@@ -51,7 +51,7 @@ rule filter_barcodes:
 
 rule fastp:
     input:
-        multiext("results/preprocessing/{sample}/{sample}_dedup_proc"
+        multiext("results/preprocessing/{sample}/{sample}_dedup_proc",
             "_R1_001.fastq.gz", "_R2_001.fastq.gz")
     output:
         multiext("results/preprocessing/{sample}/{sample}_dedup_proc_fastp"
@@ -79,7 +79,7 @@ rule fastp:
 
 rule proc10x_filter_regen:
     input:
-        multiext("results/preprocessing/{sample}/{sample}_dedup_proc_fastp"
+        multiext("results/preprocessing/{sample}/{sample}_dedup_proc_fastp",
             "_R1_001.fastq.gz", "_R2_001.fastq.gz"),
         barcodes = "results/preprocessing/{sample}/{sample}_filt_barcodes.txt"
     output:
