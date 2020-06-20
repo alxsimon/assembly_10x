@@ -69,7 +69,7 @@ rule supernova_v2:
 
 rule supernova_fasta:
     input:
-        "results/supernova_assemblies/{sample}_{version}/outs/summary.txt"
+        "results/supernova_assemblies/{sample}_{version}/outs/report.txt"
     output:
         multiext("results/supernova_assemblies/{sample}_{version}/fasta/{sample}_{version}",
             ".raw.fasta.gz", ".megabubbles.fasta.gz", ".pseudohap.fasta.gz",
