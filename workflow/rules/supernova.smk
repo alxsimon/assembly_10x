@@ -6,7 +6,7 @@ rule supernova_v1:
     input:
         unpack(get_fastq)
     output:
-        "results/supernova_assemblies/{sample}_v1/outs/summary.txt"
+        "results/supernova_assemblies/{sample}_v1/outs/report.txt"
     params:
         mem = config['supernova_mem'],
         input_dir = lambda w, input: os.path.dirname(input[0]),
@@ -38,7 +38,7 @@ rule supernova_v2:
     input:
         expand("results/preprocessing/{{sample}}/{{sample}}_regen_{R}_001.fastq.gz", R=["R1", "R2"])
     output:
-        "results/supernova_assemblies/{sample}_v2/outs/summary.txt"
+        "results/supernova_assemblies/{sample}_v2/outs/report.txt"
     params:
         mem = config['supernova_mem'],
         input_dir = lambda w, input: os.path.dirname(input[0]),
@@ -110,7 +110,6 @@ rule supernova_compress:
         "logs/supernova_compress.{sample}_{version}.log"
     shell:
         """
-        tar -cf - {params.input_dir} | zstdmt -T{threads} > {output.archive} \
-        && touch {output.donefile} \
-        > {log} 2>&1
+        tar -cf - {params.input_dir} | zstdmt -T{threads} > {output.archive} 2> {log} \
+        && touch {output.donefile}
         """
