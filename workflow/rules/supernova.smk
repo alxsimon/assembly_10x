@@ -16,7 +16,7 @@ rule supernova_v1:
     threads: 
         workflow.cores
     log: 
-        "logs/supernova_v2.{sample}.log"
+        "logs/supernova_v1.{sample}.log"
     container:
         "containers/supernova.sif"
     shell:
