@@ -21,7 +21,7 @@ rule supernova_v1:
         "containers/supernova.sif"
     shell:
         """
-        cd {params.output_dir}
+        cd {params.output_dir} &&
         supernova run \
         --id {params.run_id} \
         --fastqs {params.input_dir} \
@@ -30,7 +30,7 @@ rule supernova_v1:
         --localcores={threads} \
         --localmem={params.mem} \
         --allow-extreme-coverage \
-        > {log} 2>&1
+        > ../../{log} 2>&1
         """
 
 
@@ -55,7 +55,7 @@ rule supernova_v2:
         "containers/supernova.sif"
     shell:
         """
-        cd {params.output_dir}
+        cd {params.output_dir} &&
         supernova run \
         --id {params.run_id} \
         --fastqs {params.input_dir} \
@@ -64,7 +64,7 @@ rule supernova_v2:
         --localcores={threads} \
         --localmem={params.mem} \
         --allow-extreme-coverage \
-        > {log} 2>&1
+        > ../../{log} 2>&1
         """
 
 
@@ -88,7 +88,7 @@ rule supernova_fasta:
         "containers/supernova.sif"
     shell:
         """
-        [ ! -d {params.fasta_dir} ] && mkdir {params.fasta_dir}
+        [ ! -d {params.fasta_dir} ] && mkdir {params.fasta_dir};
         for style in ( 'raw' 'megabubbles' 'pseudohap' pseudohap2 ); do
             supernova mkoutput \
             --style = $style \
