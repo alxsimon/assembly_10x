@@ -58,7 +58,7 @@ rule fastp:
             "_R1_001.fastq.gz", "_R2_001.fastq.gz"),
         multiext("results/preprocessing/{sample}/{sample}_fastp", ".html", ".json")
     params:
-        report = lambda w, output: os.path.commonprefix(output[2:3])
+        report = lambda w, output: os.path.splitext(output[2])[0]
     conda:
         "../envs/fastp.yaml"
     log:
