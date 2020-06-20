@@ -17,6 +17,8 @@ rule supernova_v1:
         workflow.cores
     log: 
         "logs/supernova_v2.{sample}.log"
+    container:
+        "../../containers/supernova.sif"
     shell:
         """
         cd {params.output_dir}
@@ -49,6 +51,8 @@ rule supernova_v2:
         workflow.cores
     log: 
         "logs/supernova_v2.{sample}.log"
+    container:
+        "../../containers/supernova.sif"
     shell:
         """
         cd {params.output_dir}
@@ -80,6 +84,8 @@ rule supernova_fasta:
         outprefix = lambda w, output: os.path.dirname(output[0]) + f"/{w.sample}_{w.version}"
     log:
         "logs/supernova_fasta.{sample}_{version}"
+    container:
+        "../../containers/supernova.sif"
     shell:
         """
         [ ! -d {params.fasta_dir} ] && mkdir {params.fasta_dir}
