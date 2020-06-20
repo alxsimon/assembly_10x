@@ -23,9 +23,9 @@ rule supernova_v1:
         """
         cd {params.output_dir} &&
         supernova run \
-        --id {params.run_id} \
-        --fastqs ../../{params.input_dir} \
-        --sample {params.sample} \
+        --id='{params.run_id}' \
+        --fastqs='../../{params.input_dir}' \
+        --sample='{params.sample}' \
         --maxreads='all' \
         --localcores={threads} \
         --localmem={params.mem} \
