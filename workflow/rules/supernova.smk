@@ -20,16 +20,18 @@ rule supernova_v1:
     container:
         "containers/supernova.sif"
     shell:
-        "supernova run "
-        "--id={params.run_id} "
-        "--fastqs={params.input_dir} "
-        "--sample={params.sample} "
-        "--maxreads='all' "
-        "--localcores={threads} "
-        "--localmem={params.mem} "
-        "--allow-extreme-coverage "
-        "> {log} 2>&1; "
-        "mv {params.run_id} {params.output_dir}/"
+        """
+        supernova run \
+        --id={params.run_id} \
+        --fastqs={params.input_dir} \
+        --sample={params.sample} \
+        --maxreads='all' \
+        --localcores={threads} \
+        --localmem={params.mem} \
+        --accept-extreme-coverage \
+        > {log} 2>&1; 
+        mv {params.run_id} {params.output_dir}/
+        """
 
 
 #==================================================
@@ -53,16 +55,16 @@ rule supernova_v2:
         "containers/supernova.sif"
     shell:
         """
-        cd {params.output_dir} &&
         supernova run \
-        --id {params.run_id} \
-        --fastqs ../../{params.input_dir} \
-        --sample {params.sample} \
+        --id={params.run_id} \
+        --fastqs={params.input_dir} \
+        --sample={params.sample} \
         --maxreads='all' \
         --localcores={threads} \
         --localmem={params.mem} \
-        --allow-extreme-coverage \
-        > ../../{log} 2>&1
+        --accept-extreme-coverage \
+        > {log} 2>&1; 
+        mv {params.run_id} {params.output_dir}/
         """
 
 
