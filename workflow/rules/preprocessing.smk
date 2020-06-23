@@ -96,12 +96,12 @@ rule proc10x_filter_regen:
     shell:
         """
         [ -e {log} ] && rm {log}
-        /opt/proc10xG/filter_10xReads.py \
+        (/opt/proc10xG/filter_10xReads.py \
         -L {input.barcodes} \
         -1 {input[0]} -2 {input[1]} \
-        -o stdout 2>> {log} |
+        -o stdout |
         /opt/proc10xG/regen_10xReads.py \
         --stdin \
-        -o {params.out_prefix} \
-        >> {log} 2>&1
+        -o {params.out_prefix}) \
+        > {log} 2>&1
         """
