@@ -21,16 +21,17 @@ rule supernova_v1:
         "containers/supernova.sif"
     shell:
         """
+        cd tmp
         supernova run \
         --id={params.run_id} \
-        --fastqs={params.input_dir} \
+        --fastqs=../{params.input_dir} \
         --sample={params.sample} \
         --maxreads='all' \
         --localcores={threads} \
         --localmem={params.mem} \
         --accept-extreme-coverage \
         > {log} 2>&1;
-        cp -r {params.run_id} {params.output_dir}/ && \
+        cp -r {params.run_id} ../{params.output_dir}/ && \
         rm -r {params.run_id}
         """
 

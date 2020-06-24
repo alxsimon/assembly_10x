@@ -36,6 +36,7 @@ rule proc10x_process:
         -1 {input[0]} -2 {input[1]} \
         > {log} 2>&1
         """
+# add option -t 6 instead of default 7?
 
 rule filter_barcodes:
     input:
