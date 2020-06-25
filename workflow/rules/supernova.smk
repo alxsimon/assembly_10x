@@ -1,7 +1,12 @@
+def get_supernova_input(w):
+    if w.version == "v1":
+        return unpack(get_fastq(w))
+    else:
+        return expand("results/preprocessing/{{sample}}/{{sample}}_regen_{R}_001.fastq.gz", R=["R1", "R2"])
 
-def get_order(w, version):
+def get_order(w):
     supernova_order = config['supernova_order']
-    current_assembly = f'{w.sample}_{version}'
+    current_assembly = f'{w.sample}_{w.version}'
     if current_assembly != supernova_order[0]:
         previous_assembly = supernova_order[supernova_order.index(current_assembly) - 1]
         return f'results/supernova_assemblies/{previous_assembly}/DONE'
@@ -9,25 +14,22 @@ def get_order(w, version):
         # dummy file that already exist
         return 'workflow/rules/supernova.smk'
 
-#==================================================
-# Version 1 is with raw input fastq
-
-rule supernova_v1:
+rule supernova_assembly:
     input:
-        unpack(get_fastq),
-        get_order(wildcards, "v1")
+        get_supernova_input,
+	get_order
     output:
-        "results/supernova_assemblies/{sample}_v1/outs/report.txt"
+        "results/supernova_assemblies/{sample}_{version}/outs/report.txt"
     params:
         mem = config['supernova_mem'],
         input_dir = lambda w, input: os.path.dirname(input[0]),
         output_dir = "results/supernova_assemblies",
-        run_id = lambda w: f'{w.sample}_v1',
+        run_id = lambda w: f'{w.sample}_{w.version}',
         sample = lambda w: config['raw_names'][w.sample]
     threads: 
         workflow.cores
     log: 
-        "logs/supernova_v1.{sample}.log"
+        "logs/supernova_{version}.{sample}.log"
     container:
         "containers/supernova.sif"
     shell:
@@ -45,47 +47,6 @@ rule supernova_v1:
         cp -r {params.run_id} ../{params.output_dir}/ && \
         rm -r {params.run_id}
         """
-
-
-#==================================================
-# Version 2 is with filtered input fastq (preprocessing)
-rule supernova_v2:
-    input:
-        expand("results/preprocessing/{{sample}}/{{sample}}_regen_{R}_001.fastq.gz", R=["R1", "R2"]),
-        get_order(wildcards, "v2")
-    output:
-        "results/supernova_assemblies/{sample}_v2/outs/report.txt"
-    params:
-        mem = config['supernova_mem'],
-        input_dir = lambda w, input: os.path.dirname(input[0]),
-        output_dir = "results/supernova_assemblies",
-        run_id = lambda w: f'{w.sample}_v2',
-        sample = lambda w: f'{w.sample}_dedup_regen'
-    threads: 
-        workflow.cores
-    log: 
-        "logs/supernova_v2.{sample}.log"
-    container:
-        "containers/supernova.sif"
-    shell:
-        """
-        cd tmp
-        supernova run \
-        --id={params.run_id} \
-        --fastqs=../{params.input_dir} \
-        --sample={params.sample} \
-        --maxreads='all' \
-        --localcores={threads} \
-        --localmem={params.mem} \
-        --accept-extreme-coverage \
-        > {log} 2>&1;
-        cp -r {params.run_id} ../{params.output_dir}/ && \
-        rm -r {params.run_id}
-        """
-
-
-#==================================================
-# common for both versions
 
 rule supernova_fasta:
     input:
