@@ -9,6 +9,16 @@ raw_names:
   tros: "TROS"
 #  cancer_R8: "R8_repaired"
 
-samples: ["gallo", "edu", "tros"]
+samples:
+  - gallo
+  - edu
+  - tros
 
 supernova_mem: 400
+supernova_order:
+  - gallo_v1
+  - edu_v1
+  - tros_v1
+  - gallo_v2
+  - edu_v2
+  - tros_v2

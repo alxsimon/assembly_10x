@@ -103,19 +103,26 @@ rule supernova_fasta:
         done
         """
 
+def get_order(w):
+    supernova_order = config['supernova_order']
+    current_assembly = f'{w.sample}_{w.version}'
+    if current_assembly != supernova_order[0]:
+        previous_assembly = supernova_order[supernova_order.index(current_assembly) - 1]
+        return f'results/supernova_assemblies/{previous_assembly}/DONE'
 
 rule supernova_compress:
     input:
         multiext("results/supernova_assemblies/{sample}_{version}/fasta/{sample}_{version}",
             ".raw.fasta.gz", ".megabubbles.fasta.gz", ".pseudohap.fasta.gz",
-            ".pseudohap2.1.fasta.gz", ".pseudohap2.2.fasta.gz")
+            ".pseudohap2.1.fasta.gz", ".pseudohap2.2.fasta.gz"),
+        get_order
     output:
         archive = "results/supernova_assemblies/{sample}_{version}/outs/assembly.tar.zst",
         donefile = "results/supernova_assemblies/{sample}_{version}/DONE"
     params:
         input_dir = lambda w: f'results/supernova_assemblies/{w.sample}_{w.version}/outs/assembly'
     threads: 
-        8
+        workflow.cores
     log:
         "logs/supernova_compress.{sample}_{version}.log"
     shell:
