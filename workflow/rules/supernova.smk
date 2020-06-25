@@ -1,10 +1,21 @@
 
+def get_order(w):
+    supernova_order = config['supernova_order']
+    current_assembly = f'{w.sample}_{w.version}'
+    if current_assembly != supernova_order[0]:
+        previous_assembly = supernova_order[supernova_order.index(current_assembly) - 1]
+        return f'results/supernova_assemblies/{previous_assembly}/DONE'
+    else:
+        # dummy file that already exist
+        return 'workflow/rules/supernova.smk'
+
 #==================================================
 # Version 1 is with raw input fastq
 
 rule supernova_v1:
     input:
-        unpack(get_fastq)
+        unpack(get_fastq),
+        get_order
     output:
         "results/supernova_assemblies/{sample}_v1/outs/report.txt"
     params:
@@ -40,7 +51,8 @@ rule supernova_v1:
 # Version 2 is with filtered input fastq (preprocessing)
 rule supernova_v2:
     input:
-        expand("results/preprocessing/{{sample}}/{{sample}}_regen_{R}_001.fastq.gz", R=["R1", "R2"])
+        expand("results/preprocessing/{{sample}}/{{sample}}_regen_{R}_001.fastq.gz", R=["R1", "R2"]),
+        get_order
     output:
         "results/supernova_assemblies/{sample}_v2/outs/report.txt"
     params:
@@ -103,21 +115,11 @@ rule supernova_fasta:
         done
         """
 
-def get_order(w):
-    supernova_order = config['supernova_order']
-    current_assembly = f'{w.sample}_{w.version}'
-    if current_assembly != supernova_order[0]:
-        previous_assembly = supernova_order[supernova_order.index(current_assembly) - 1]
-        return f'results/supernova_assemblies/{previous_assembly}/DONE'
-    else:
-        return ''
-
 rule supernova_compress:
     input:
         multiext("results/supernova_assemblies/{sample}_{version}/fasta/{sample}_{version}",
             ".raw.fasta.gz", ".megabubbles.fasta.gz", ".pseudohap.fasta.gz",
-            ".pseudohap2.1.fasta.gz", ".pseudohap2.2.fasta.gz"),
-        get_order
+            ".pseudohap2.1.fasta.gz", ".pseudohap2.2.fasta.gz")
     output:
         archive = "results/supernova_assemblies/{sample}_{version}/outs/assembly.tar.zst",
         donefile = "results/supernova_assemblies/{sample}_{version}/DONE"
