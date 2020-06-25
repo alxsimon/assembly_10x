@@ -43,7 +43,7 @@ rule supernova_assembly:
         --localcores={threads} \
         --localmem={params.mem} \
         --accept-extreme-coverage \
-        > {log} 2>&1;
+        > ../{log} 2>&1;
         cp -r {params.run_id} ../{params.output_dir}/ && \
         rm -r {params.run_id}
         """
