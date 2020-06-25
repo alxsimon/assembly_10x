@@ -25,7 +25,7 @@ rule supernova_assembly:
         input_dir = lambda w, input: os.path.dirname(input[0]),
         output_dir = "results/supernova_assemblies",
         run_id = lambda w: f'{w.sample}_{w.version}',
-        sample = lambda w: config['raw_names'][w.sample]
+        sample = lambda w: config['raw_names'][w.sample] if w.version == "v1" else f'{w.sample}_regen'
     threads: 
         workflow.cores
     log: 
