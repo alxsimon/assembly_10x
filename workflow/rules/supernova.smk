@@ -2,7 +2,7 @@ def get_supernova_input(w):
     if w.version == "v1":
         return unpack(get_fastq(w))
     else:
-        return expand("results/preprocessing/{{sample}}/{{sample}}_regen_{R}_001.fastq.gz", R=["R1", "R2"])
+        return expand("results/preprocessing/{{sample}}/{{sample}}_S1_L001_{R}_001.fastq.gz", R=["R1", "R2"])
 
 def get_order(w):
     supernova_order = config['supernova_order']

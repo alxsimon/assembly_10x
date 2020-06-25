@@ -87,7 +87,7 @@ rule proc10x_filter_regen:
             "_R1_001.fastq.gz", "_R2_001.fastq.gz"),
         barcodes = "results/preprocessing/{sample}/{sample}_filt_barcodes.txt"
     output:
-        protected(multiext("results/preprocessing/{sample}/{sample}_regen",
+        protected(multiext("results/preprocessing/{sample}/{sample}_S1_L001",
             "_R1_001.fastq.gz", "_R2_001.fastq.gz"))
     params:
         out_prefix = lambda w, output: output[0].strip("_R1_001.fastq.gz")
