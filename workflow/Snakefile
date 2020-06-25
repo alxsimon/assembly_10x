@@ -2,6 +2,7 @@
 
 import glob
 import os.path
+import re
 from snakemake.utils import min_version
 
 min_version("5.19.2")

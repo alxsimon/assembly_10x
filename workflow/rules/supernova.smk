@@ -17,7 +17,7 @@ def get_order(w):
 rule supernova_assembly:
     input:
         get_supernova_input,
-	get_order
+	    get_order
     output:
         "results/supernova_assemblies/{sample}_{version}/outs/report.txt"
     params:
@@ -25,7 +25,7 @@ rule supernova_assembly:
         input_dir = lambda w, input: os.path.dirname(input[0]),
         output_dir = "results/supernova_assemblies",
         run_id = lambda w: f'{w.sample}_{w.version}',
-        sample = lambda w: config['raw_names'][w.sample] if w.version == "v1" else f'{w.sample}_regen'
+        sample = lambda w, input: re.sub("_S.+_L.+_R1_001.fastq.gz", "", input[0])
     threads: 
         workflow.cores
     log: 

@@ -24,7 +24,7 @@ rule proc10x_process:
             "_R1_001.fastq.gz", "_R2_001.fastq.gz")),
         protected("results/preprocessing/{sample}/{sample}_dedup_proc_barcodes.txt")
     params:
-        out_prefix = lambda w, output: output[0].strip("_R1_001.fastq.gz")
+        out_prefix = lambda w, output: output[0].replace("_R1_001.fastq.gz", "")
     log:
         "logs/process_10xReads.{sample}.log"
     conda:
@@ -90,7 +90,7 @@ rule proc10x_filter_regen:
         protected(multiext("results/preprocessing/{sample}/{sample}_S1_L001",
             "_R1_001.fastq.gz", "_R2_001.fastq.gz"))
     params:
-        out_prefix = lambda w, output: output[0].strip("_R1_001.fastq.gz")
+        out_prefix = lambda w, output: output[0].replace("_R1_001.fastq.gz", "")
     log:
         "logs/filter_regen_10xReads.{sample}.log"
     conda:
