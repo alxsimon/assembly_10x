@@ -109,6 +109,8 @@ def get_order(w):
     if current_assembly != supernova_order[0]:
         previous_assembly = supernova_order[supernova_order.index(current_assembly) - 1]
         return f'results/supernova_assemblies/{previous_assembly}/DONE'
+    else:
+        return = None
 
 rule supernova_compress:
     input:
