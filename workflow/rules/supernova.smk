@@ -25,7 +25,7 @@ rule supernova_assembly:
         input_dir = lambda w, input: os.path.dirname(input[0]),
         output_dir = "results/supernova_assemblies",
         run_id = lambda w: f'{w.sample}_{w.version}',
-        sample = lambda w, input: re.sub("_S.+_L.+_R1_001.fastq.gz", "", input[0])
+        sample = lambda w, input: re.sub("_S.+_L.+_R1_001.fastq.gz", "", os.path.basename(input[0]))
     threads: 
         workflow.cores
     log: 
