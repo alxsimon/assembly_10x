@@ -1,7 +1,7 @@
 
-def get_order(w):
+def get_order(w, version):
     supernova_order = config['supernova_order']
-    current_assembly = f'{w.sample}_{w.version}'
+    current_assembly = f'{w.sample}_{version}'
     if current_assembly != supernova_order[0]:
         previous_assembly = supernova_order[supernova_order.index(current_assembly) - 1]
         return f'results/supernova_assemblies/{previous_assembly}/DONE'
@@ -15,7 +15,7 @@ def get_order(w):
 rule supernova_v1:
     input:
         unpack(get_fastq),
-        get_order
+        get_order(wildcards, "v1")
     output:
         "results/supernova_assemblies/{sample}_v1/outs/report.txt"
     params:
@@ -52,7 +52,7 @@ rule supernova_v1:
 rule supernova_v2:
     input:
         expand("results/preprocessing/{{sample}}/{{sample}}_regen_{R}_001.fastq.gz", R=["R1", "R2"]),
-        get_order
+        get_order(wildcards, "v2")
     output:
         "results/supernova_assemblies/{sample}_v2/outs/report.txt"
     params:
