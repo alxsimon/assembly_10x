@@ -65,10 +65,10 @@ rule supernova_fasta:
         """
         [ ! -d {params.fasta_dir} ] && mkdir {params.fasta_dir};
         supernova mkoutput \
-        --style = {params.style} \
-        --asmdir = {params.asm_dir} \
-        --outprefix = {params.outprefix} \
-        --headers = full \
+        --style={params.style} \
+        --asmdir={params.asm_dir} \
+        --outprefix={params.outprefix} \
+        --headers=full \
         > {log} 2>&1
         """
 
