@@ -49,35 +49,57 @@ rule supernova_fasta:
     input:
         "tmp/{sample}_{version}/outs/report.txt"
     output:
-        multiext("tmp/{sample}_{version}/fasta/{sample}_{version}",
-            ".raw.fasta.gz", ".megabubbles.fasta.gz", ".pseudohap.fasta.gz",
-            ".pseudohap2.1.fasta.gz", ".pseudohap2.2.fasta.gz")
+        "tmp/{sample}_{version}/fasta/{sample}_{version}.{style}.fasta.gz"
     params:
         fasta_dir = lambda w, output: os.path.dirname(output[0]),
         asm_dir = lambda w, input: os.path.dirname(input[0]) + "/assembly",
-        outprefix = lambda w, output: os.path.dirname(output[0]) + f"/{w.sample}_{w.version}"
+        outprefix = lambda w, output: os.path.dirname(output[0]) + f"/{w.sample}_{w.version}.{w.style}",
     log:
-        "logs/supernova_fasta.{sample}_{version}"
+        "logs/supernova_fasta.{sample}_{version}.{style}.log"
     container:
         "containers/supernova.sif"
     shell:
         """
         [ ! -d {params.fasta_dir} ] && mkdir {params.fasta_dir};
-        for style in ( 'raw' 'megabubbles' 'pseudohap' pseudohap2 ); do
-            supernova mkoutput \
-            --style = $style \
-            --asmdir = {params.asm_dir} \
-            --outprefix = "{params.outprefix}.$style" \
-            --headers = full \
-            > "{log}.$style.log" 2>&1
-        done
+        supernova mkoutput \
+        --style = {wildcards.style} \
+        --asmdir = {params.asm_dir} \
+        --outprefix = {params.outprefix} \
+        --headers = full \
+        > {log} 2>&1
+        """
+
+rule supernova_fasta_pseudohap2:
+    input:
+        "tmp/{sample}_{version}/outs/report.txt"
+    output:
+        multiext("tmp/{sample}_{version}/fasta/{sample}_{version}",
+            ".pseudohap2.1.fasta.gz", ".pseudohap2.2.fasta.gz")
+    params:
+        fasta_dir = lambda w, output: os.path.dirname(output[0]),
+        asm_dir = lambda w, input: os.path.dirname(input[0]) + "/assembly",
+        outprefix = lambda w, output: os.path.dirname(output[0]) + f"/{w.sample}_{w.version}.pseudohap2",
+        style = "pseudohap2"
+    log:
+        "logs/supernova_fasta.{sample}_{version}.pseudohap2.log"
+    container:
+        "containers/supernova.sif"
+    shell:
+        """
+        [ ! -d {params.fasta_dir} ] && mkdir {params.fasta_dir};
+        supernova mkoutput \
+        --style = {params.style} \
+        --asmdir = {params.asm_dir} \
+        --outprefix = {params.outprefix} \
+        --headers = full \
+        > {log} 2>&1
         """
 
 rule supernova_compress_move:
     input:
         multiext("tmp/{sample}_{version}/fasta/{sample}_{version}",
             ".raw.fasta.gz", ".megabubbles.fasta.gz", ".pseudohap.fasta.gz",
-            ".pseudohap2.1.fasta.gz", ".pseudohap2.2.fasta.gz")
+            ".pseudohap2.1.fasta.gz")
     output:
         archive = "results/supernova_assemblies/{sample}_{version}/outs/assembly.tar.zst",
         donefile = "results/supernova_assemblies/{sample}_{version}/DONE"
