@@ -19,11 +19,10 @@ rule supernova_assembly:
         get_supernova_input,
 	    get_order
     output:
-        "results/supernova_assemblies/{sample}_{version}/outs/report.txt"
+        "tmp/{sample}_{version}/outs/report.txt"
     params:
         mem = config['supernova_mem'],
         input_dir = lambda w, input: os.path.dirname(input[0]),
-        output_dir = "results/supernova_assemblies",
         run_id = lambda w: f'{w.sample}_{w.version}',
         sample = lambda w, input: re.sub("_S.+_L.+_R1_001.fastq.gz", "", os.path.basename(input[0]))
     threads: 
@@ -44,15 +43,13 @@ rule supernova_assembly:
         --localmem={params.mem} \
         --accept-extreme-coverage \
         > ../{log} 2>&1;
-        cp -r {params.run_id} ../{params.output_dir}/ && \
-        rm -r {params.run_id}
         """
 
 rule supernova_fasta:
     input:
-        "results/supernova_assemblies/{sample}_{version}/outs/report.txt"
+        "tmp/{sample}_{version}/outs/report.txt"
     output:
-        multiext("results/supernova_assemblies/{sample}_{version}/fasta/{sample}_{version}",
+        multiext("tmp/{sample}_{version}/fasta/{sample}_{version}",
             ".raw.fasta.gz", ".megabubbles.fasta.gz", ".pseudohap.fasta.gz",
             ".pseudohap2.1.fasta.gz", ".pseudohap2.2.fasta.gz")
     params:
@@ -76,22 +73,25 @@ rule supernova_fasta:
         done
         """
 
-rule supernova_compress:
+rule supernova_compress_move:
     input:
-        multiext("results/supernova_assemblies/{sample}_{version}/fasta/{sample}_{version}",
+        multiext("tmp/{sample}_{version}/fasta/{sample}_{version}",
             ".raw.fasta.gz", ".megabubbles.fasta.gz", ".pseudohap.fasta.gz",
             ".pseudohap2.1.fasta.gz", ".pseudohap2.2.fasta.gz")
     output:
         archive = "results/supernova_assemblies/{sample}_{version}/outs/assembly.tar.zst",
         donefile = "results/supernova_assemblies/{sample}_{version}/DONE"
     params:
-        input_dir = lambda w: f'results/supernova_assemblies/{w.sample}_{w.version}/outs/assembly'
+        input_dir = lambda w: f'tmp/{w.sample}_{w.version}',
+        tmp_archive = lambda w: f'tmp/{w.sample}_{w.version}/outs/assembly.tar.zst',
+        output_dir = 'results/supernova_assemblies/'
     threads: 
         workflow.cores
     log:
         "logs/supernova_compress.{sample}_{version}.log"
     shell:
         """
-        tar -cf - {params.input_dir} | zstdmt -T{threads} > {output.archive} 2> {log} \
-        && touch {output.donefile}
+        tar -cf - {params.input_dir}/outs/assembly | zstdmt -T{threads} > {params.tmp_archive} 2> {log}
+        cp -r {params.input_dir} {params.output_dir} && rm -r {params.input_id}
+        touch {output.donefile}
         """
