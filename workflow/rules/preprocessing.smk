@@ -80,30 +80,46 @@ rule fastp:
         > {log} 2>&1
         """
 
-
-rule proc10x_filter_regen:
+rule proc10x_filter:
     input:
         multiext("results/preprocessing/{sample}/{sample}_dedup_proc_fastp",
             "_R1_001.fastq.gz", "_R2_001.fastq.gz"),
         barcodes = "results/preprocessing/{sample}/{sample}_filt_barcodes.txt"
+    output:
+        protected(multiext("results/preprocessing/{sample}/{sample}_dedup_proc_fastp_filt",
+            "_R1_001.fastq.gz", "_R2_001.fastq.gz"))
+    params:
+        out_prefix = lambda w, output: output[0].replace("_R1_001.fastq.gz", "")
+    log:
+        "logs/filter_10xReads.{sample}.log"
+    conda:
+        "../envs/py2.yaml"
+    shell:
+        """
+        /opt/proc10xG/filter_10xReads.py \
+        -L {input.barcodes} \
+        -1 {input[0]} -2 {input[1]} \
+        -o {params.out_prefix} \
+        > {log} 2>&1
+        """
+
+rule proc10x_filter_regen:
+    input:
+        multiext("results/preprocessing/{sample}/{sample}_dedup_proc_fastp_filt",
+            "_R1_001.fastq.gz", "_R2_001.fastq.gz")
     output:
         protected(multiext("results/preprocessing/{sample}/{sample}_S1_L001",
             "_R1_001.fastq.gz", "_R2_001.fastq.gz"))
     params:
         out_prefix = lambda w, output: output[0].replace("_R1_001.fastq.gz", "")
     log:
-        "logs/filter_regen_10xReads.{sample}.log"
+        "logs/regen_10xReads.{sample}.log"
     conda:
         "../envs/py2.yaml"
     shell:
         """
-        [ -e {log} ] && rm {log}
-        (/opt/proc10xG/filter_10xReads.py \
-        -L {input.barcodes} \
-        -1 {input[0]} -2 {input[1]} \
-        -o stdout |
         /opt/proc10xG/regen_10xReads.py \
-        --stdin \
+        -1 {input[0]} -2 {input[1]} \
         -o {params.out_prefix}) \
         > {log} 2>&1
         """
