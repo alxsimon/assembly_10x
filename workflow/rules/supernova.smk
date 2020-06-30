@@ -34,6 +34,7 @@ rule supernova_assembly:
     shell:
         """
         cd tmp
+        [ ! -e {params.run_id}/{params.run_id}.mri.tgz ] && rm -r {params.run_id}
         supernova run \
         --id={params.run_id} \
         --fastqs=../{params.input_dir} \
