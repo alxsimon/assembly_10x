@@ -20,7 +20,7 @@ rule proc10x_process:
         multiext("results/preprocessing/{sample}/{sample}_dedup",
             "_R1.fastq", "_R2.fastq")
     output:
-        protected(multiext("results/preprocessing/{sample}/{sample}_dedup_proc",
+        temp(multiext("results/preprocessing/{sample}/{sample}_dedup_proc",
             "_R1_001.fastq.gz", "_R2_001.fastq.gz")),
         protected("results/preprocessing/{sample}/{sample}_dedup_proc_barcodes.txt")
     params:
@@ -55,8 +55,8 @@ rule fastp:
         multiext("results/preprocessing/{sample}/{sample}_dedup_proc",
             "_R1_001.fastq.gz", "_R2_001.fastq.gz")
     output:
-        multiext("results/preprocessing/{sample}/{sample}_dedup_proc_fastp",
-            "_R1_001.fastq.gz", "_R2_001.fastq.gz"),
+        temp(multiext("results/preprocessing/{sample}/{sample}_dedup_proc_fastp",
+            "_R1_001.fastq.gz", "_R2_001.fastq.gz")),
         multiext("results/preprocessing/{sample}/{sample}_fastp", ".html", ".json")
     params:
         report = lambda w, output: os.path.splitext(output[2])[0]
