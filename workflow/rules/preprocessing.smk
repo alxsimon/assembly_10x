@@ -103,7 +103,7 @@ rule proc10x_filter:
         > {log} 2>&1
         """
 
-rule proc10x_filter_regen:
+rule proc10x_regen:
     input:
         multiext("results/preprocessing/{sample}/{sample}_dedup_proc_fastp_filt",
             "_R1_001.fastq.gz", "_R2_001.fastq.gz")
