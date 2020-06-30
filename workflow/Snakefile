@@ -24,3 +24,5 @@ rule all:
 include: "rules/preprocessing.smk"
 
 include: "rules/supernova.smk"
+
+include: "rules/purge_dups.smk"
