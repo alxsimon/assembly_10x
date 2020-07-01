@@ -1,8 +1,8 @@
 rule map_reads:
     input:
-        fa = "results/supernova_assemblies/{sample}_{version}/fasta/{sample}_v2.pseudohap.fasta.gz",
         multiext("results/preprocessing/{sample}/{sample}_dedup_proc_fastp_filt",
-            "_R1_001.fastq.gz", "_R2_001.fastq.gz")
+            "_R1_001.fastq.gz", "_R2_001.fastq.gz"),
+        fa = "results/supernova_assemblies/{sample}_{version}/fasta/{sample}_v2.pseudohap.fasta.gz"
     output:
         "results/purge_dups/{sample}/{sample}.bam"
     log:
@@ -14,7 +14,7 @@ rule map_reads:
     shell:
         """
         bwa index {input.fa}
-        bwa mem -t {threads} {input.fa} {input[1]} {input[2]} | \
+        bwa mem -t {threads} {input.fa} {input[0]} {input[1]} | \
         samtools view -b -@ {threads} - > {output[1]} \
         2> {log}
         """
