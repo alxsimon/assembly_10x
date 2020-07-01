@@ -85,7 +85,7 @@ rule get_sequences:
         fa = "results/purge_dups/{sample}/{sample}_v2.pseudohap.fasta"
     output:
         #"results/purge_dups/{sample}/{sample}_v2.pdups.fasta.gz"
-        "TEST_purge_dups"
+        "TEST_purge_dups_{sample}"
     shell:
         #"get_seqs {input.bed} {input.fa};"
         "touch TEST_purge_dups"

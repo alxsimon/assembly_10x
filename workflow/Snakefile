@@ -19,7 +19,7 @@ rule all:
             sample=config['samples']),
         expand("results/supernova_assemblies/{sample}_{version}/DONE",
             sample=config['samples'], version=["v1", "v2"]),
-        "TEST_purge_dups"
+        "TEST_purge_dups_gallo"
         
 
 include: "rules/preprocessing.smk"
