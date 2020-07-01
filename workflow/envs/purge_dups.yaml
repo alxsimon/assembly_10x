@@ -2,6 +2,5 @@ channels:
   - bioconda
 dependencies:
   - bwa=0.7.17
-  - busco=4.0.6
   - samtools=1.10
   - minimap2=2.17

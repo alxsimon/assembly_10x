@@ -32,8 +32,6 @@ rule purge_stats:
         "logs/purge_stats.{sample}.log"
     conda:
         "../envs/purge_dups.yaml"
-    threads:
-        16
     shell:
         """
         cd {params.workdir}
