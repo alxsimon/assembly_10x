@@ -79,12 +79,14 @@ rule purge_dups:
         "-c {input.basecov} {input.selfmap} > {output} "
         "2> {log}"
 
-#rule get_sequences:
-#    input:
-#        bed = "results/purge_dups/{sample}/{sample}.dups.bed",
-#        fa = "results/purge_dups/{sample}/{sample}_v2.pseudohap.fasta"
-#    output:
-#        "results/purge_dups/{sample}/{sample}_v2.pdups.fasta.gz"
-#    shell:
-#        "get_seqs {input.bed} {input.fa};"
+rule get_sequences:
+    input:
+        bed = "results/purge_dups/{sample}/{sample}.dups.bed",
+        fa = "results/purge_dups/{sample}/{sample}_v2.pseudohap.fasta"
+    output:
+        #"results/purge_dups/{sample}/{sample}_v2.pdups.fasta.gz"
+        "TEST_purge_dups"
+    shell:
+        #"get_seqs {input.bed} {input.fa};"
+        "touch TEST_purge_dups"
 
