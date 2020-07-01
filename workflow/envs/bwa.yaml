@@ -1,4 +1,6 @@
 channels:
+  - default
+  - conda-forge
   - bioconda
 dependencies:
   - bwa=0.7.17

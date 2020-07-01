@@ -1,4 +1,6 @@
 channels:
+  - default
+  - conda-forge
   - bioconda
 dependencies:
   - minimap2=2.17
