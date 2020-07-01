@@ -8,7 +8,7 @@ rule map_reads:
     log:
         "logs/mapping_purge.{sample}.log"
     conda:
-        "../envs/bwa.yaml"
+        "../envs/mapping.yaml"
     threads:
         16
     shell:
@@ -55,7 +55,7 @@ rule self_map:
     log:
         "logs/self_map.{sample}/log"
     conda:
-        "../envs/minimap2.yaml"
+        "../envs/mapping.yaml"
     threads:
         16
     shell:
