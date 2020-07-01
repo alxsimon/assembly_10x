@@ -45,12 +45,13 @@ rule purge_stats:
         workdir = lambda w, input: os.path.dirname(input[0]),
         input = lambda w, input: os.path.basename(input[0])
     log:
-        "logs/purge_stats.{sample}.log"
+        "logs/purge_stats_ngsstat.{sample}.log",
+        "logs/purge_stats_calcuts.{sample}.log"
     shell:
         """
         cd {params.workdir}
-        (ngscstat {params.input} && \
-        calcuts TX.stats > cutoffs) 2> {log}
+        ngscstat {params.input} 2> {log[0]}
+        calcuts TX.stats > cutoffs 2> {log[1]}
         """
 
 rule split_fa:
