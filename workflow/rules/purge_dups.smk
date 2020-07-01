@@ -1,3 +1,18 @@
+rule bwa_index:
+    input:
+        fa = "results/supernova_assemblies/{sample}_v2/fasta/{sample}_v2.pseudohap.fasta.gz"
+    output:
+        multiext("results/supernova_assemblies/{sample}_v2/fasta/{sample}_v2.pseudohap.fasta.gz",
+            ".amb", ".ann", ".bwt", ".pac", ".sa")
+    log:
+        "logs/bwa_indexing.{sample}.log",
+    conda:
+        "../envs/mapping.yaml"
+    shell:
+        """
+        bwa index {input.fa} > {log}
+        """
+
 rule map_reads:
     input:
         multiext("results/preprocessing/{sample}/{sample}_dedup_proc_fastp_filt",
@@ -14,10 +29,9 @@ rule map_reads:
         16
     shell:
         """
-        bwa index {input.fa} > {log[0]}
         (bwa mem -t {threads} {input.fa} {input[0]} {input[1]} | \
         samtools view -b -@ {threads} - > {output}) \
-        2> {log[1]}
+        2> {log}
         """
 
 rule purge_stats:
