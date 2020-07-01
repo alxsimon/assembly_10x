@@ -4,7 +4,7 @@ rule map_reads:
             "_R1_001.fastq.gz", "_R2_001.fastq.gz"),
         fa = "results/supernova_assemblies/{sample}_v2/fasta/{sample}_v2.pseudohap.fasta.gz"
     output:
-        "results/purge_dups/{sample}/{sample}.bam"
+        "results/purge_dups/{sample}/{sample}_v2.bam"
     log:
         "logs/mapping_purge.{sample}.log"
     conda:
@@ -15,13 +15,13 @@ rule map_reads:
         """
         bwa index {input.fa}
         bwa mem -t {threads} {input.fa} {input[0]} {input[1]} | \
-        samtools view -b -@ {threads} - > {output[1]} \
+        samtools view -b -@ {threads} - > {output} \
         2> {log}
         """
 
 rule purge_stats:
     input:
-        "results/purge_dups/{sample}/{sample}.bam"
+        "results/purge_dups/{sample}/{sample}_v2.bam"
     output:
         multiext("results/purge_dups/{sample}/TX", ".stat", ".base.cov"),
         "results/purge_dups/{sample}/cutoffs"
