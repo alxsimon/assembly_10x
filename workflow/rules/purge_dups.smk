@@ -88,5 +88,5 @@ rule get_sequences:
         "TEST_purge_dups_{sample}"
     shell:
         #"get_seqs {input.bed} {input.fa};"
-        "touch TEST_purge_dups"
+        "touch {output}"
 
