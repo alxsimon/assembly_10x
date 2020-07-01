@@ -8,7 +8,7 @@ rule map_reads:
     log:
         "logs/mapping_purge.{sample}.log"
     conda:
-        "../envs/purge_dups.yaml"
+        "../envs/bwa.yaml"
     threads:
         16
     shell:
@@ -30,8 +30,6 @@ rule purge_stats:
         input = lambda w, input: os.path.basename(input[0])
     log:
         "logs/purge_stats.{sample}.log"
-    conda:
-        "../envs/purge_dups.yaml"
     shell:
         """
         cd {params.workdir}
@@ -56,6 +54,8 @@ rule self_map:
         "results/purge_dups/{sample}/{sample}_v2.pseudohap.split.self.paf.gz"
     log:
         "logs/self_map.{sample}/log"
+    conda:
+        "../envs/minimap2.yaml"
     threads:
         16
     shell:
