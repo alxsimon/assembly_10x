@@ -82,7 +82,7 @@ rule purge_dups:
 rule get_sequences:
     input:
         bed = "results/purge_dups/{sample}/{sample}.dups.bed",
-        fa = "results/purge_dups/{sample}/{sample}_v2.pseudohap.fasta"
+        fa = "results/supernova_assemblies/{sample}_v2/fasta/{sample}_v2.pseudohap.fasta.gz"
     output:
         #"results/purge_dups/{sample}/{sample}_v2.pdups.fasta.gz"
         "TEST_purge_dups_{sample}"
