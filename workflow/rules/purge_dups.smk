@@ -2,7 +2,7 @@ rule map_reads:
     input:
         multiext("results/preprocessing/{sample}/{sample}_dedup_proc_fastp_filt",
             "_R1_001.fastq.gz", "_R2_001.fastq.gz"),
-        fa = "results/supernova_assemblies/{sample}_{version}/fasta/{sample}_v2.pseudohap.fasta.gz"
+        fa = "results/supernova_assemblies/{sample}_v2/fasta/{sample}_v2.pseudohap.fasta.gz"
     output:
         "results/purge_dups/{sample}/{sample}.bam"
     log:
@@ -43,7 +43,7 @@ rule purge_stats:
 
 rule split_fa:
     input: 
-        "results/supernova_assemblies/{sample}_{version}/fasta/{sample}_v2.pseudohap.fasta.gz"
+        "results/supernova_assemblies/{sample}_v2/fasta/{sample}_v2.pseudohap.fasta.gz"
     output:
         temp("results/purge_dups/{sample}/{sample}_v2.pseudohap.split.fasta")
     log:
