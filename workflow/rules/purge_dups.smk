@@ -6,17 +6,18 @@ rule map_reads:
     output:
         "results/purge_dups/{sample}/{sample}_v2.bam"
     log:
-        "logs/mapping_purge.{sample}.log"
+        "logs/bwa_indexing.{sample}.log",
+        "logs/bwa_mapping_purge.{sample}.log"
     conda:
         "../envs/mapping.yaml"
     threads:
         16
     shell:
         """
-        bwa index {input.fa}
-        bwa mem -t {threads} {input.fa} {input[0]} {input[1]} | \
-        samtools view -b -@ {threads} - > {output} \
-        2> {log}
+        bwa index {input.fa} > {log[0]}
+        (bwa mem -t {threads} {input.fa} {input[0]} {input[1]} | \
+        samtools view -b -@ {threads} - > {output}) \
+        2> {log[1]}
         """
 
 rule purge_stats:
@@ -53,15 +54,15 @@ rule self_map:
     output:
         "results/purge_dups/{sample}/{sample}_v2.pseudohap.split.self.paf.gz"
     log:
-        "logs/self_map.{sample}/log"
+        "logs/self_map.{sample}.log"
     conda:
         "../envs/mapping.yaml"
     threads:
         16
     shell:
-        "minimap2 -t {threads} "
+        "(minimap2 -t {threads} "
         "-xasm5 -DP {input} {input} "
-        "| gzip -c - > {output} 2> {log}"
+        "| gzip -c - > {output}) 2> {log}"
 
 rule purge_dups:
     input:
