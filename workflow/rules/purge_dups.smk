@@ -108,9 +108,12 @@ rule get_sequences:
         bed = "results/purge_dups/{sample}/{sample}.dups.bed",
         fa = "results/supernova_assemblies/{sample}_v2/fasta/{sample}_v2.pseudohap.fasta.gz"
     output:
-        purged = "results/purge_dups/{sample}/{sample}_v2.purged.fasta.gz",
-        haps = "results/purge_dups/{sample}/{sample}_v2.haps.fasta.gz"
+        purged = "results/purge_dups/{sample}/{sample}_v2.pseudohap.purged.fa.gz",
+        haps = "results/purge_dups/{sample}/{sample}_v2.pseudohap.haps.fa.gz"
+    params:
+        prefix = lambda w, output: output[0].replace(".purged.fa.gz")
     shell:
-        "{{ get_seqs {input.bed} {input.fa} 2>&3 | gzip -c - > {output.purged}; }} "
-        "3>&1 1>&2 | gzip -c - > {output.haps}"
+        "get_seqs {input.bed} {input.fa} "
+        "-p {params.prefix}; "
+        "gzip {params.prefix}.*.fa"
 
