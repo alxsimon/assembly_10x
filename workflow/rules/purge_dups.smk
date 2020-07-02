@@ -108,9 +108,9 @@ rule get_sequences:
         bed = "results/purge_dups/{sample}/{sample}.dups.bed",
         fa = "results/supernova_assemblies/{sample}_v2/fasta/{sample}_v2.pseudohap.fasta.gz"
     output:
-        #"results/purge_dups/{sample}/{sample}_v2.pdups.fasta.gz"
-        "TEST_purge_dups_{sample}"
+        purged = "results/purge_dups/{sample}/{sample}_v2.purged.fasta.gz",
+        haps = "results/purge_dups/{sample}/{sample}_v2.haps.fasta.gz"
     shell:
-        #"get_seqs {input.bed} {input.fa};"
-        "touch {output}"
+        "\{ get_seqs {input.bed} {input.fa} 2>&3 | gzip -c - > {output.purged}; \} "
+        "3>&1 1>&2 | gzip -c - > {output.haps}"
 
