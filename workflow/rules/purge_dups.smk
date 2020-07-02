@@ -111,7 +111,7 @@ rule get_sequences:
         purged = "results/purge_dups/{sample}/{sample}_v2.pseudohap.purged.fa.gz",
         haps = "results/purge_dups/{sample}/{sample}_v2.pseudohap.haps.fa.gz"
     params:
-        prefix = lambda w, output: output[0].replace(".purged.fa.gz")
+        prefix = lambda w, output: output[0].replace(".purged.fa.gz", "")
     shell:
         "get_seqs {input.bed} {input.fa} "
         "-p {params.prefix}; "
