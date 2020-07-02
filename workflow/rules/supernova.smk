@@ -81,7 +81,10 @@ rule supernova_compress_move:
             ".pseudohap2.1.fasta.gz")
     output:
         archive = "results/supernova_assemblies/{sample}_{version}/outs/assembly.tar.zst",
-        donefile = "results/supernova_assemblies/{sample}_{version}/DONE"
+        donefile = "results/supernova_assemblies/{sample}_{version}/DONE",
+        multiext("results/supernova_assemblies/{sample}_{version}/fasta/{sample}_{version}",
+            ".raw.fasta.gz", ".megabubbles.fasta.gz", ".pseudohap.fasta.gz",
+            ".pseudohap2.1.fasta.gz")
     params:
         input_dir = lambda w: f'tmp/{w.sample}_{w.version}',
         tmp_archive = lambda w: f'tmp/{w.sample}_{w.version}/outs/assembly.tar.zst',
@@ -94,6 +97,6 @@ rule supernova_compress_move:
         """
         tar -cf - {params.input_dir}/outs/assembly | zstdmt -T{threads} > {params.tmp_archive} 2> {log} && \
         rm -r {params.input_dir}/outs/assembly
-        cp -r {params.input_dir} {params.output_dir} && rm -r {params.input_dir}
+        mv {params.input_dir} {params.output_dir}
         touch {output.donefile}
         """
