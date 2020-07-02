@@ -35,23 +35,32 @@ rule map_reads:
         2> {log}
         """
 
-rule purge_stats:
+rule ngscstat:
     input:
         "results/purge_dups/{sample}/{sample}_v2.bam"
     output:
-        multiext("results/purge_dups/{sample}/TX", ".stat", ".base.cov"),
-        "results/purge_dups/{sample}/cutoffs"
+        multiext("results/purge_dups/{sample}/TX", ".stat", ".base.cov")
     params:
         workdir = lambda w, input: os.path.dirname(input[0]),
         input = lambda w, input: os.path.basename(input[0])
     log:
-        "logs/purge_stats_ngsstat.{sample}.log",
-        "logs/purge_stats_calcuts.{sample}.log"
+        "logs/purge_stats_ngsstat.{sample}.log"
     shell:
         """
         cd {params.workdir}
-        ngscstat {params.input} 2> ../../../{log[0]}
-        calcuts TX.stats > cutoffs 2> ../../../{log[1]}
+        ngscstat {params.input} 2> ../../../{log}
+        """
+
+rule calcuts:
+    input:
+        multiext("results/purge_dups/{sample}/TX", ".stat", ".base.cov")
+    output:
+        "results/purge_dups/{sample}/cutoffs"
+    log:
+        "logs/purge_stats_calcuts.{sample}.log"
+    shell:
+        """
+        calcuts {input[0]} > {output} 2> {log}
         """
 
 rule split_fa:

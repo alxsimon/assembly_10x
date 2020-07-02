@@ -10,7 +10,7 @@ sshfs nas4:/share/sea/sea/projects/ref_genomes/supernova_assemblies results/supe
 ```
 
 I also use a 4T disk as a temporary local storage for supernova computation
-`sudo mount /dev/sdf1 /data/ref_genomes/assembly_10x/tmp`
+`sudo mount /dev/sd[x]1 /data/ref_genomes/assembly_10x/tmp`
 
 To run use:
 ```
