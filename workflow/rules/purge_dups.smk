@@ -50,8 +50,8 @@ rule purge_stats:
     shell:
         """
         cd {params.workdir}
-        ngscstat {params.input} 2> {log[0]}
-        calcuts TX.stats > cutoffs 2> {log[1]}
+        ngscstat {params.input} 2> ../../../{log[0]}
+        calcuts TX.stats > cutoffs 2> ../../../{log[1]}
         """
 
 rule split_fa:
