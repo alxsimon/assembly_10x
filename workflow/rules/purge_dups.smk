@@ -109,7 +109,7 @@ rule get_sequences:
         fa = "results/supernova_assemblies/{sample}_v2/fasta/{sample}_v2.pseudohap.fasta.gz"
     output:
         purged = "results/purge_dups/{sample}/{sample}_v2.pseudohap.purged.fa.gz",
-        haps = "results/purge_dups/{sample}/{sample}_v2.pseudohap.haps.fa.gz"
+        haps = "results/purge_dups/{sample}/{sample}_v2.pseudohap.hap.fa.gz"
     params:
         prefix = lambda w, output: output[0].replace(".purged.fa.gz", "")
     shell:
