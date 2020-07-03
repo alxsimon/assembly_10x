@@ -3,8 +3,8 @@ rule rm_dup_pcr:
     input:
         unpack(get_fastq)
     output:
-        temp(multiext("results/preprocessing/{sample}/{sample}_dedup",
-            "_R1.fastq", "_R2.fastq"))
+        multiext("results/preprocessing/{sample}/{sample}_dedup",
+            "_R1.fastq", "_R2.fastq")
     log:
         "logs/nubeam-dedup.{sample}.log"
     shell:
@@ -20,8 +20,8 @@ rule proc10x_process:
         multiext("results/preprocessing/{sample}/{sample}_dedup",
             "_R1.fastq", "_R2.fastq")
     output:
-        temp(multiext("results/preprocessing/{sample}/{sample}_dedup_proc",
-            "_R1_001.fastq.gz", "_R2_001.fastq.gz")),
+        multiext("results/preprocessing/{sample}/{sample}_dedup_proc",
+            "_R1_001.fastq.gz", "_R2_001.fastq.gz"),
         protected("results/preprocessing/{sample}/{sample}_dedup_proc_barcodes.txt")
     params:
         out_prefix = lambda w, output: output[0].replace("_R1_001.fastq.gz", "")
@@ -54,8 +54,8 @@ rule fastp:
         multiext("results/preprocessing/{sample}/{sample}_dedup_proc",
             "_R1_001.fastq.gz", "_R2_001.fastq.gz")
     output:
-        temp(multiext("results/preprocessing/{sample}/{sample}_dedup_proc_fastp",
-            "_R1_001.fastq.gz", "_R2_001.fastq.gz")),
+        multiext("results/preprocessing/{sample}/{sample}_dedup_proc_fastp",
+            "_R1_001.fastq.gz", "_R2_001.fastq.gz"),
         multiext("results/preprocessing/{sample}/{sample}_fastp", ".html", ".json")
     params:
         report = lambda w, output: os.path.splitext(output[2])[0]
