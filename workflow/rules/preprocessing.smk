@@ -32,7 +32,6 @@ rule proc10x_process:
     shell:
         """
         /opt/proc10xG/process_10xReads.py \
-        -t 6 \
         -o {params.out_prefix} \
         -1 {input[0]} -2 {input[1]} \
         > {log} 2>&1
