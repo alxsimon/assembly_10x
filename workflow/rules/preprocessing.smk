@@ -4,12 +4,12 @@ rule rm_dup_pcr:
         unpack(get_fastq)
     output:
         multiext("results/preprocessing/{sample}/{sample}_dedup",
-            "_R1.fastq", "_R2.fastq")
+            "_R1.fastq.gz", "_R2.fastq.gz")
     log:
         "logs/nubeam-dedup.{sample}.log"
     shell:
         """
-        nubeam-dedup -i1 {input.fq1} -i2 {input.fq2} \
+        nubeam-dedup -z 6 -i1 {input.fq1} -i2 {input.fq2} \
         -o1 {output[0]} -o2 {output[1]} \
         > {log} 2>&1
         """
@@ -18,7 +18,7 @@ rule rm_dup_pcr:
 rule proc10x_process:
     input:
         multiext("results/preprocessing/{sample}/{sample}_dedup",
-            "_R1.fastq", "_R2.fastq")
+            "_R1.fastq.gz", "_R2.fastq.gz")
     output:
         multiext("results/preprocessing/{sample}/{sample}_dedup_proc",
             "_R1_001.fastq.gz", "_R2_001.fastq.gz"),
