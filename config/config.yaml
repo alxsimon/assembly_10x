@@ -17,11 +17,11 @@ samples:
 supernova_mem: 400
 supernova_order:
   - gallo_v1
-  - edu_v1
   - tros_v1
+  - edu_v1
   - gallo_v2
-  - edu_v2
   - tros_v2
+  - edu_v2
 
 busco:
   metazoa: https://busco-data.ezlab.org/v4/data/lineages/metazoa_odb10.2019-11-20.tar.gz
