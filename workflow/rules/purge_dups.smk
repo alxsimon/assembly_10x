@@ -17,9 +17,9 @@ rule map_reads:
     input:
         multiext("results/preprocessing/{sample}/{sample}_dedup_proc_fastp_filt",
             "_R1_001.fastq.gz", "_R2_001.fastq.gz"),
-        multiext("results/supernova_assemblies/{sample}_v2/fasta/{sample}_v2.pseudohap.fasta.gz",
+        multiext("results/fasta/{sample}_v2.pseudohap.fasta.gz",
             ".amb", ".ann", ".bwt", ".pac", ".sa"),
-        fa = "results/supernova_assemblies/{sample}_v2/fasta/{sample}_v2.pseudohap.fasta.gz"
+        fa = "results/fasta/{sample}_v2.pseudohap.fasta.gz"
     output:
         "results/purge_dups/{sample}/{sample}_v2.bam"
     log:
