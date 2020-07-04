@@ -1,8 +1,8 @@
 rule bwa_index:
     input:
-        fa = "results/supernova_assemblies/{sample}_v2/fasta/{sample}_v2.pseudohap.fasta.gz"
+        fa = "results/fasta/{sample}_v2.pseudohap.fasta.gz"
     output:
-        multiext("results/supernova_assemblies/{sample}_v2/fasta/{sample}_v2.pseudohap.fasta.gz",
+        multiext("results/fasta/{sample}_v2.pseudohap.fasta.gz",
             ".amb", ".ann", ".bwt", ".pac", ".sa")
     log:
         "logs/bwa_indexing.{sample}.log",
@@ -65,7 +65,7 @@ rule calcuts:
 
 rule split_fa:
     input: 
-        "results/supernova_assemblies/{sample}_v2/fasta/{sample}_v2.pseudohap.fasta.gz"
+        "results/fasta/{sample}_v2.pseudohap.fasta.gz"
     output:
         temp("results/purge_dups/{sample}/{sample}_v2.pseudohap.split.fasta")
     log:
@@ -106,7 +106,7 @@ rule purge_dups:
 rule get_sequences:
     input:
         bed = "results/purge_dups/{sample}/{sample}.dups.bed",
-        fa = "results/supernova_assemblies/{sample}_v2/fasta/{sample}_v2.pseudohap.fasta.gz"
+        fa = "results/fasta/{sample}_v2.pseudohap.fasta.gz"
     output:
         purged = "results/purge_dups/{sample}/{sample}_v2.pseudohap.purged.fa.gz",
         haps = "results/purge_dups/{sample}/{sample}_v2.pseudohap.hap.fa.gz"

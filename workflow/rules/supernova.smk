@@ -57,7 +57,8 @@ rule supernova_fasta:
         asm_dir = lambda w, input: os.path.dirname(input[0]) + "/assembly",
         outprefix = lambda w, output: os.path.dirname(output[0]) + f"/{w.sample}_{w.version}.{w.style.strip('.1')}"
     wildcard_constraints:
-        style = '\w+|\w+.1'
+        style = '\w+|\w+.1',
+        version = 'v[0-9]+'
     log:
         "logs/supernova_fasta.{sample}_{version}.{style}.log"
     container:
