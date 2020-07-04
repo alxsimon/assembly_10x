@@ -119,6 +119,6 @@ rule proc10x_regen:
         """
         /opt/proc10xG/regen_10xReads.py \
         -1 {input[0]} -2 {input[1]} \
-        -o {params.out_prefix}) \
+        -o {params.out_prefix} \
         > {log} 2>&1
         """

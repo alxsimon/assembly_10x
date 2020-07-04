@@ -50,7 +50,7 @@ rule supernova_fasta:
     input:
         "tmp/{sample}_{version}/outs/report.txt"
     output:
-        "tmp/{sample}_{version}/fasta/{sample}_{version}.{style}.fasta.gz"
+        "results/fasta/{sample}_{version}.{style}.fasta.gz"
     params:
         style = lambda w: w.style.strip('.1'),
         fasta_dir = lambda w, output: os.path.dirname(output[0]),
@@ -64,7 +64,6 @@ rule supernova_fasta:
         "containers/supernova.sif"
     shell:
         """
-        [ ! -d {params.fasta_dir} ] && mkdir {params.fasta_dir};
         supernova mkoutput \
         --style={params.style} \
         --asmdir={params.asm_dir} \
@@ -76,11 +75,11 @@ rule supernova_fasta:
 
 rule supernova_compress_move:
     input:
-        multiext("tmp/{sample}_{version}/fasta/{sample}_{version}",
+        multiext("results/fasta/{sample}_{version}",
             ".raw.fasta.gz", ".megabubbles.fasta.gz", ".pseudohap.fasta.gz",
             ".pseudohap2.1.fasta.gz")
     output:
-        multiext("results/supernova_assemblies/{sample}_{version}/fasta/{sample}_{version}",
+        multiext("results/fasta/{sample}_{version}",
             ".raw.fasta.gz", ".megabubbles.fasta.gz", ".pseudohap.fasta.gz",
             ".pseudohap2.1.fasta.gz"),
         archive = "results/supernova_assemblies/{sample}_{version}/outs/assembly.tar.zst",
