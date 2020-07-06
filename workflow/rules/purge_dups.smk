@@ -23,7 +23,10 @@ rule lr_align:
     params:
         input_dir = lambda w, input: os.path.dirname(input[0]),
         run_id = lambda w: f'{w.sample}_v2',
-        sample = lambda w, input: re.sub("_S.+_L.+_R1_001.fastq.gz", "", os.path.basename(input[0]))
+        sample = lambda w, input: re.sub("_S.+_L.+_R1_001.fastq.gz", "", os.path.basename(input[0])),
+        mem = config['supernova_mem']
+    threads: 
+        workflow.cores
     log:
         "logs/lr_align.{sample}.log"
     container:
@@ -34,6 +37,9 @@ rule lr_align:
         --id={params.run_id} \
         --fastqs={params.input_dir} \
         --sample={params.sample} \
+        --reference={input[2]} \
+        --localcores={threads} \
+        --localmem={params.mem} \
         > {log} 2>&1
         mv {params.run_id} {output}
         """
