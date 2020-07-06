@@ -2,7 +2,7 @@ rule lr_mkref:
     input:
         fa = "results/fasta/{sample}_v2.pseudohap.fasta.gz"
     output:
-        directory(results/fasta/refdata-{sample}_v2.pseudohap)
+        directory("results/fasta/refdata-{sample}_v2.pseudohap")
     log:
         "logs/lr_mkref.{sample}.log",
     container:
@@ -16,9 +16,9 @@ rule lr_mkref:
 rule lr_align:
     input:
         unpack(get_fastq),
-        directory(results/fasta/refdata-{sample}_v2.pseudohap)
+        directory("results/fasta/refdata-{sample}_v2.pseudohap")
     output:
-        directory(results/purge_dups/lr_align_{sample}_v2),
+        directory("results/purge_dups/lr_align_{sample}_v2"),
         "results/purge_dups/lr_align_{sample}_v2/outs/possorted_bam.bam"
     params:
         input_dir = lambda w, input: os.path.dirname(input[0]),
