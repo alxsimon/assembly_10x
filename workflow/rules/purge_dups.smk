@@ -1,43 +1,46 @@
-rule bwa_index:
+rule lr_mkref:
     input:
         fa = "results/fasta/{sample}_v2.pseudohap.fasta.gz"
     output:
-        multiext("results/fasta/{sample}_v2.pseudohap.fasta.gz",
-            ".amb", ".ann", ".bwt", ".pac", ".sa")
+        directory(results/fasta/refdata-{sample}_v2.pseudohap)
     log:
-        "logs/bwa_indexing.{sample}.log",
-    conda:
-        "../envs/mapping.yaml"
+        "logs/lr_mkref.{sample}.log",
+    container:
+        "containers/supernova.sif"
     shell:
         """
-        bwa index {input.fa} > {log}
+        longranger mkref {input.fa} > {log} 2>&1
+        mv refdata-{wildcards.sample}_v2.pseudohap {output}
         """
 
-rule map_reads:
+rule lr_align:
     input:
-        multiext("results/preprocessing/{sample}/{sample}_dedup_proc_fastp_filt",
-            "_R1_001.fastq.gz", "_R2_001.fastq.gz"),
-        multiext("results/fasta/{sample}_v2.pseudohap.fasta.gz",
-            ".amb", ".ann", ".bwt", ".pac", ".sa"),
-        fa = "results/fasta/{sample}_v2.pseudohap.fasta.gz"
+        unpack(get_fastq),
+        directory(results/fasta/refdata-{sample}_v2.pseudohap)
     output:
-        "results/purge_dups/{sample}/{sample}_v2.bam"
+        directory(results/purge_dups/lr_align_{sample}_v2),
+        "results/purge_dups/lr_align_{sample}_v2/outs/possorted_bam.bam"
+    params:
+        input_dir = lambda w, input: os.path.dirname(input[0]),
+        run_id = lambda w: f'{w.sample}_v2',
+        sample = lambda w, input: re.sub("_S.+_L.+_R1_001.fastq.gz", "", os.path.basename(input[0]))
     log:
-        "logs/bwa_mapping_purge.{sample}.log"
-    conda:
-        "../envs/mapping.yaml"
-    threads:
-        16
+        "logs/lr_align.{sample}.log"
+    container:
+        "containers/supernova.sif"
     shell:
         """
-        (bwa mem -t {threads} {input.fa} {input[0]} {input[1]} | \
-        samtools view -b -@ {threads} - > {output}) \
-        2> {log}
+        longranger align \
+        --id={params.run_id} \
+        --fastqs={params.input_dir} \
+        --sample={params.sample} \
+        > {log} 2>&1
+        mv {params.run_id} {output}
         """
 
 rule ngscstat:
     input:
-        "results/purge_dups/{sample}/{sample}_v2.bam"
+        "results/purge_dups/lr_align_{sample}_v2/outs/possorted_bam.bam"
     output:
         multiext("results/purge_dups/{sample}/TX", ".stat", ".base.cov")
     params:
