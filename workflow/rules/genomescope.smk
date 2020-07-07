@@ -55,7 +55,6 @@ rule gs_fit:
     params:
         k = config['genomescope_kmer_size'],
         name_prefix = lambda w: f'{w.sample}_preproc',
-        max_kcov = 1000000,
         outdir = lambda w, output: os.path.dirname(output[0])
     threads:
         16
@@ -67,6 +66,6 @@ rule gs_fit:
         """
         /opt/genomescope2.0/genomescope.R -i {input} \
         -o {params.outdir} -n {params.name_prefix} \
-        -k {params.k} -p 2 -m {params.max_kcov} \
+        -k {params.k} -p 2 \
         > {log} 2>&1
         """

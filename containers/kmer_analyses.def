@@ -49,7 +49,7 @@ From: ubuntu:20.04
 
 	## Install R and packages ##
 	conda install -y r-base=4.0.0 \
-		r-stringi r-stringr		
+		mscorefonts r-stringi r-stringr
 	# for Genomescope and Smudgeplot
 	conda install -y r-minpack.lm r-argparse r-viridis r-devtools
 
