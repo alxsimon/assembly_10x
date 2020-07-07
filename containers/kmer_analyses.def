@@ -1,0 +1,75 @@
+BootStrap: docker
+From: ubuntu:20.04
+
+%labels
+	Author Alexis Simon
+	Version v0.0.1
+
+%environment
+	export PATH=/opt/conda/bin:$PATH
+    export LC_ALL=C.UTF-8
+	export LANG=C.UTF-8
+
+%post -c bash
+	apt-get update && apt-get upgrade -y
+	export DEBIAN_FRONTEND=noninteractive
+	apt-get install -y tzdata
+	apt-get install -y \
+		wget \
+		git \
+		build-essential \
+		automake \
+		curl \
+		bzip2 \
+		libcurl4-openssl-dev \
+		libssh2-1-dev \
+		libzip-dev \
+		zlib1g-dev \
+		libicu-dev \
+		zstd
+
+    ### Install Conda ###
+	curl -sSL https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -o /tmp/miniconda.sh \
+	&& bash /tmp/miniconda.sh -bp /opt/conda \
+	&& export PATH=/opt/conda/bin:$PATH \
+	&& conda update -y conda \
+	&& conda clean --all --yes
+	# If conda envs are needed, just source /conda_init.sh when using exec
+	cp /opt/conda/etc/profile.d/conda.sh /conda_init.sh
+	source /conda_init.sh
+
+	conda config --add channels defaults
+	conda config --add channels bioconda
+	conda config --add channels conda-forge
+
+    conda install numpy scipy
+
+	## Install R and packages ##
+	conda install -y r-base=4.0.0 \
+		r-stringi r-stringr		
+	# for Genomescope and Smudgeplot
+	conda install -y r-minpack.lm r-argparse r-viridis r-devtools
+
+	## Custom KMC fork ##
+	git clone https://github.com/tbenavi1/KMC.git /opt/KMC
+	cd /opt/KMC
+	make
+	ln -s /opt/KMC/bin/* -t /usr/local/bin/
+
+    ## Genomescope 2.0 and Smudgeplot ##
+    # Rscript -e 'install.packages(c("minpack.lm", "argparse", "viridis", "devtools"), clean=TRUE)'
+	git clone https://github.com/tbenavi1/genomescope2.0.git /opt/genomescope2.0
+	cd /opt/genomescope2.0
+	Rscript -e 'install.packages(".", repos=NULL, type="source")'
+
+	git clone https://github.com/KamilSJaron/smudgeplot /opt/smudgeplot
+	cd /opt/smudgeplot
+	Rscript install.R
+	install -C exec/smudgeplot.py /usr/local/bin
+	install -C exec/smudgeplot_plot.R /usr/local/bin
+
+%apprun run
+	exec /bin/bash "$@"
+
+%runscript
+	exec /bin/bash "$@"
