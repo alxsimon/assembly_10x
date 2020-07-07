@@ -16,7 +16,7 @@ rule lr_mkref:
 rule lr_align:
     input:
         unpack(get_fastq),
-        rule.lr_mkref.output
+        rules.lr_mkref.output
     output:
         directory("results/purge_dups/lr_align_{sample}_v2"),
         "results/purge_dups/lr_align_{sample}_v2/outs/possorted_bam.bam"
