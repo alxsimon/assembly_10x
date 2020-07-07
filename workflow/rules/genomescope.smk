@@ -9,7 +9,7 @@ rule gs_kmer_count:
         mem = config['kmc_mem'],
         k = config['genomescope_kmer_size'],
         db = lambda w, output: output[0].replace('.kmc_pre', ''),
-        files = lambda w: f'results/genomescope/{sample}/FILES'
+        files = lambda w: f'results/genomescope/{w.sample}/FILES'
     threads:
         16
     log:
