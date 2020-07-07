@@ -47,7 +47,7 @@ rule gs_kmer_hist:
         > {log} 2>&1
         """
 
-rule gs_plot:
+rule gs_fit:
     input:
         "results/genomescope/{sample}/{sample}.kmc_hist"
     output:
