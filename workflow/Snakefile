@@ -17,7 +17,8 @@ rule all:
     input: 
         expand("results/preprocessing/{sample}/{sample}_S1_L001_R1_001.fastq.gz",
             sample=config['samples']),
-        directory("results/genomescope/{sample}/genomescope_res_{sample}"),
+        expand("results/genomescope/{sample}/genomescope_res_{sample}/{sample}_preproc_summary.txt",
+            sample=config['samples']),
         expand("results/supernova_assemblies/{sample}_{version}/DONE",
             sample=config['samples'], version=["v1", "v2"]),
         expand("results/purge_dups/{sample}/{sample}_v2.pseudohap.purged.fa.gz",

@@ -51,7 +51,7 @@ rule gs_fit:
     input:
         "results/genomescope/{sample}/{sample}.kmc_hist"
     output:
-        directory("results/genomescope/{sample}/genomescope_res_{sample}")
+        "results/genomescope/{sample}/genomescope_res_{sample}/{sample}_preproc_summary.txt"
     params:
         k = config['genomescope_kmer_size'],
         name_prefix = lambda w: f'{w.sample}.preproc',
