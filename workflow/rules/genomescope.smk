@@ -20,7 +20,7 @@ rule gs_kmer_count:
         """
         ls {input} > {params.files}
         kmc -k{params.k} -t{threads} -m{params.mem} \
-        -ci1 -cs10000 {params.files} \
+        -ci1 -cs10000 @{params.files} \
         {params.db} /tmp/ \
         > {log} 2>&1
         """
