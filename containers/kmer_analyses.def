@@ -7,7 +7,7 @@ From: ubuntu:20.04
 
 %environment
 	export PATH=/opt/conda/bin:$PATH
-    export LC_ALL=C.UTF-8
+	export LC_ALL=C.UTF-8
 	export LANG=C.UTF-8
 
 %post -c bash
@@ -28,7 +28,7 @@ From: ubuntu:20.04
 		libicu-dev \
 		zstd
 
-    ### Install Conda ###
+	### Install Conda ###
 	curl -sSL https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -o /tmp/miniconda.sh \
 	&& bash /tmp/miniconda.sh -bp /opt/conda \
 	&& export PATH=/opt/conda/bin:$PATH \
@@ -42,7 +42,10 @@ From: ubuntu:20.04
 	conda config --add channels bioconda
 	conda config --add channels conda-forge
 
-    conda install numpy scipy
+	conda install numpy scipy
+
+	## KAT tools ##
+	conda install -c bioconda kat=2.4.2
 
 	## Install R and packages ##
 	conda install -y r-base=4.0.0 \
@@ -56,8 +59,8 @@ From: ubuntu:20.04
 	make
 	ln -s /opt/KMC/bin/* -t /usr/local/bin/
 
-    ## Genomescope 2.0 and Smudgeplot ##
-    # Rscript -e 'install.packages(c("minpack.lm", "argparse", "viridis", "devtools"), clean=TRUE)'
+	## Genomescope 2.0 and Smudgeplot ##
+	# Rscript -e 'install.packages(c("minpack.lm", "argparse", "viridis", "devtools"), clean=TRUE)'
 	git clone https://github.com/tbenavi1/genomescope2.0.git /opt/genomescope2.0
 	cd /opt/genomescope2.0
 	Rscript -e 'install.packages(".", repos=NULL, type="source")'
