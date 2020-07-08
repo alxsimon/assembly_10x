@@ -15,7 +15,7 @@ samples:
   - tros
 
 kmc_mem: 100
-genomescope_kmer_size: 21
+genomescope_kmer_size: 19
 
 supernova_mem: 400
 supernova_order:
