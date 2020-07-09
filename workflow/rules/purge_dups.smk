@@ -2,14 +2,17 @@ rule lr_mkref:
     input:
         fa = "results/fasta/{sample}_v2.pseudohap.fasta.gz"
     output:
-        directory("results/fasta/refdata-{sample}_v2.pseudohap")
+        directory("results/purge_dups/{sample}/refdata-{sample}_v2.pseudohap")
+    params:
+        tmp_fa = lambda w: f'results/purge_dups/{w.sample}/{w.sample}_v2.pseudohap.fa'
     log:
         "logs/lr_mkref.{sample}.log",
     container:
         "containers/supernova.sif"
     shell:
         """
-        longranger mkref {input.fa} > {log} 2>&1
+        zcat {input.fa} > {params.tmp_fa}
+        longranger mkref {params.tmp_fa} > {log} 2>&1
         mv refdata-{wildcards.sample}_v2.pseudohap {output}
         """
 
@@ -18,8 +21,8 @@ rule lr_align:
         unpack(get_fastq),
         rules.lr_mkref.output
     output:
-        directory("results/purge_dups/lr_align_{sample}_v2"),
-        "results/purge_dups/lr_align_{sample}_v2/outs/possorted_bam.bam"
+        directory("results/purge_dups/{sample}/lr_align_{sample}_v2"),
+        "results/purge_dups/{sample}/lr_align_{sample}_v2/outs/possorted_bam.bam"
     params:
         input_dir = lambda w, input: os.path.dirname(input[0]),
         run_id = lambda w: f'{w.sample}_v2',
@@ -46,7 +49,7 @@ rule lr_align:
 
 rule ngscstat:
     input:
-        "results/purge_dups/lr_align_{sample}_v2/outs/possorted_bam.bam"
+        "results/purge_dups/{sample}/lr_align_{sample}_v2/outs/possorted_bam.bam"
     output:
         multiext("results/purge_dups/{sample}/TX", ".stat", ".base.cov")
     params:
@@ -74,9 +77,9 @@ rule calcuts:
 
 rule split_fa:
     input: 
-        "results/fasta/{sample}_v2.pseudohap.fasta.gz"
+        "results/purge_dups/{sample}/{sample}_v2.pseudohap.fa"
     output:
-        temp("results/purge_dups/{sample}/{sample}_v2.pseudohap.split.fasta")
+        temp("results/purge_dups/{sample}/{sample}_v2.pseudohap.split.fa")
     log:
         "logs/split_fa.{sample}.log"
     shell:
@@ -84,7 +87,7 @@ rule split_fa:
 
 rule self_map:
     input:
-        "results/purge_dups/{sample}/{sample}_v2.pseudohap.split.fasta"
+        "results/purge_dups/{sample}/{sample}_v2.pseudohap.split.fa"
     output:
         "results/purge_dups/{sample}/{sample}_v2.pseudohap.split.self.paf.gz"
     log:
@@ -115,7 +118,7 @@ rule purge_dups:
 rule get_sequences:
     input:
         bed = "results/purge_dups/{sample}/{sample}.dups.bed",
-        fa = "results/fasta/{sample}_v2.pseudohap.fasta.gz"
+        fa = "results/purge_dups/{sample}/{sample}_v2.pseudohap.fa"
     output:
         purged = "results/purge_dups/{sample}/{sample}_v2.pseudohap.purged.fa.gz",
         haps = "results/purge_dups/{sample}/{sample}_v2.pseudohap.hap.fa.gz"
