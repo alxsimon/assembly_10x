@@ -2,7 +2,8 @@ rule lr_mkref:
     input:
         fa = "results/fasta/{sample}_v2.pseudohap.fasta.gz"
     output:
-        directory("results/purge_dups/{sample}/refdata-{sample}_v2.pseudohap")
+        directory("results/purge_dups/{sample}/refdata-{sample}_v2.pseudohap"),
+        "results/purge_dups/{sample}/{sample}_v2.pseudohap.fa"
     params:
         tmp_fa = lambda w: f'results/purge_dups/{w.sample}/{w.sample}_v2.pseudohap.fa'
     log:
