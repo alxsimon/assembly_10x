@@ -19,7 +19,7 @@ rule lr_mkref:
 
 rule lr_align:
     input:
-        unpack(get_fastq),
+        expand("results/preprocessing/{{sample}}/{{sample}}_S1_L001_{R}_001.fastq.gz", R=["R1", "R2"]),
         rules.lr_mkref.output
     output:
         directory("results/purge_dups/{sample}/lr_align_{sample}_v2"),
