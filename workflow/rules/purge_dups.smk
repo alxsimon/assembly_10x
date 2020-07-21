@@ -45,7 +45,10 @@ rule lr_align:
         --localcores={threads} \
         --localmem={params.mem} \
         > {log} 2>&1
-        mv {params.run_id} {output[0]}
+        
+        rm -r {output[0]} \
+        && cp -al {params.run_id} {output[0]} \
+        && rm -r {params.run_id}
         """
 
 rule ngscstat:
