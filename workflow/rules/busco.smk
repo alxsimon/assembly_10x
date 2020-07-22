@@ -12,7 +12,7 @@ rule dwld_busco_databases:
 
 rule busco:
     input:
-        glob.glob("results/fasta/{sample}_{version}*"),
+        "results/fasta/{sample}_{version}.pseudohap.fasta.gz",
         rules.dwld_busco_databases.output
     output:
         "results/busco/{sample}_{version}_{db}/short_summary.txt"
@@ -20,7 +20,7 @@ rule busco:
         db = lambda w: f'resources/busco_databases/{w.db}_odb10',
         fa = lambda w, input: input[0].replace(".fasta.gz", ".fa")
     wildcard_constraints:
-        db = '\w_\w',
+        db = '\w+_\w+',
         version = 'v[0-9]+'
     log:
         "logs/busco.{sample}_{version}_{db}.log"
