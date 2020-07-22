@@ -37,6 +37,6 @@ rule busco:
         -q -c {threads} \
         -l {params.db} > {log} 2>&1
 
-        cp -al {params.outdir} results/busco/ && rm -r {params.outdir}
+        cp -r {params.outdir} results/busco/ && rm -r {params.outdir}
         rm {params.fa}
         """
