@@ -17,7 +17,7 @@ rule busco:
     output:
         "results/busco/{sample}_{version}_{db}/run_{db}/short_summary.txt"
     params:
-        db = lambda w: f'resources/busco_databases/{w.db}_odb10',
+        db = lambda w: f'resources/busco_databases/{w.db}',
         fa = lambda w, input: input[0].replace(".fasta.gz", ".fa"),
         outdir = lambda w: f'{w.sample}_{w.version}_{w.db}'
     wildcard_constraints:
