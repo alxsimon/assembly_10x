@@ -15,7 +15,7 @@ rule busco:
         glob.glob("results/fasta/{sample}_{version}*"),
         rules.dwld_busco_databases.output
     output:
-        directory("results/busco/{sample}_{version}_{db}")
+        "results/busco/{sample}_{version}_{db}/short_summary.txt"
     params:
         db = lambda w: f'resources/busco_databases/{w.db}_odb10',
         fa = lambda w, input: input[0].replace(".fasta.gz", ".fa")
