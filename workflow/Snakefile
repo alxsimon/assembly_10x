@@ -22,7 +22,8 @@ rule all:
         expand("results/supernova_assemblies/{sample}_{version}/DONE",
             sample=config['samples'], version=["v1", "v2"]),
         expand("results/purge_dups/{sample}/{sample}_v2.pseudohap.purged.fa.gz",
-            sample=config['samples'])
+            sample=config['samples']),
+        "results/busco/gallo_v2_metazoa_odb10"
         
 
 include: "rules/preprocessing.smk"
@@ -32,3 +33,5 @@ include: "rules/genomescope.smk"
 include: "rules/supernova.smk"
 
 include: "rules/purge_dups.smk"
+
+include: "rules/busco.smk"
