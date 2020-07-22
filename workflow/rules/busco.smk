@@ -15,7 +15,7 @@ rule busco:
         "results/fasta/{sample}_{version}.pseudohap.fasta.gz",
         rules.dwld_busco_databases.output
     output:
-        "results/busco/{sample}_{version}/run_{db}/short_summary..txt"
+        "results/busco/{sample}_{version}/run_{db}/short_summary.txt"
     params:
         db = lambda w: f'resources/busco_databases/{w.db}_odb10',
         fa = lambda w, input: input[0].replace(".fasta.gz", ".fa"),
