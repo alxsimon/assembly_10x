@@ -19,7 +19,7 @@ rule busco:
     params:
         db = lambda w: f'resources/busco_databases/{w.db}_odb10',
         fa = lambda w, input: input[0].replace(".fasta.gz", ".fa"),
-        outdir = lambda w: f'results/busco/{w.sample}_{w.version}_{w.db}'
+        outdir = lambda w: f'{w.sample}_{w.version}_{w.db}'
     wildcard_constraints:
         db = '\w+_\w+',
         version = 'v[0-9]+'
@@ -37,5 +37,6 @@ rule busco:
         -q -c {threads} \
         -l {params.db} > {log} 2>&1
 
+        cp -al {params.outdir} results/busco/ && rm -r {params.outdir}
         rm {params.fa}
         """
