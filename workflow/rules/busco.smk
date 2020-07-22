@@ -15,10 +15,11 @@ rule busco:
         "results/fasta/{sample}_{version}.pseudohap.fasta.gz",
         rules.dwld_busco_databases.output
     output:
-        "results/busco/{sample}_{version}_{db}/short_summary.txt"
+        "results/busco/{sample}_{version}/run_{db}/short_summary..txt"
     params:
         db = lambda w: f'resources/busco_databases/{w.db}_odb10',
-        fa = lambda w, input: input[0].replace(".fasta.gz", ".fa")
+        fa = lambda w, input: input[0].replace(".fasta.gz", ".fa"),
+        outdir = lambda w: f'results/busco/{w.sample}_{w.version}'
     wildcard_constraints:
         db = '\w+_\w+',
         version = 'v[0-9]+'
@@ -32,7 +33,7 @@ rule busco:
         """
         zcat {input[0]} > {params.fa}
         
-        busco -m genome -i {params.fa} -o {output} \
+        busco -m genome -i {params.fa} -o {params.outdir} \
         -q -c {threads} \
         -l {params.db} > {log} 2>&1
 
