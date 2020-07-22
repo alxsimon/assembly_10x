@@ -33,7 +33,7 @@ rule busco:
         """
         zcat {input[0]} > {params.fa}
         
-        busco -m genome -i {params.fa} -o {params.outdir} \
+        busco -f -m genome -i {params.fa} -o {params.outdir} \
         -q -c {threads} \
         -l {params.db} > {log} 2>&1
 
