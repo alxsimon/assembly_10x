@@ -10,9 +10,17 @@ rule dwld_busco_databases:
         "tar -xf resources/busco_databases/*.tar.gz && "
         "rm resources/busco_databases/*.tar.gz"
 
+rule prepare_fasta:
+    input:
+        "results/fasta/{sample}_{version}.pseudohap.fasta.gz"
+    output:
+        "results/fasta/{sample}_{version}.pseudohap.fa"
+    shell:
+        "zcat {input} > {output}"
+
 rule busco:
     input:
-        "results/fasta/{sample}_{version}.pseudohap.fasta.gz",
+        "results/fasta/{sample}_{version}.pseudohap.fa",
         rules.dwld_busco_databases.output
     output:
         "results/busco/{sample}_{version}_{db}/run_{db}/short_summary.txt"
@@ -31,12 +39,8 @@ rule busco:
         "../envs/busco.yaml" 
     shell:
         """
-        zcat {input[0]} > {params.fa}
-        
         busco -f -m genome -i {params.fa} -o {params.outdir} \
         -q -c {threads} \
         -l {params.db} > {log} 2>&1
-
         cp -r {params.outdir} results/busco/ && rm -r {params.outdir}
-        rm {params.fa}
         """
