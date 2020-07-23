@@ -23,7 +23,9 @@ rule all:
             sample=config['samples'], version=["v1", "v2"]),
         expand("results/purge_dups/{sample}/{sample}_v2.pseudohap.purged.fa.gz",
             sample=config['samples']),
-        "results/busco/gallo_v1_metazoa_odb10/run_metazoa_odb10/short_summary.txt"
+        expand("results/busco/{sample}_{version}_{db}/run_{db}/short_summary.txt",
+            sample=config['samples'], version=["v1", "v2"],
+            db=["metazoa_odb10", "mollusca_odb10"])
         
 
 include: "rules/preprocessing.smk"
