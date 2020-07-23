@@ -39,5 +39,4 @@ rule busco:
 
         cp -r {params.outdir} results/busco/ && rm -r {params.outdir}
         rm {params.fa}
-        rm busco_*.log
         """
