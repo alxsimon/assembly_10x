@@ -64,7 +64,7 @@ rule ngscstat:
     shell:
         """
         cd {params.workdir}
-        ngscstat {params.input} 2> ../../../{log}
+        ngscstat {params.input} 2> ../../../../{log}
         """
 
 rule calcuts:
