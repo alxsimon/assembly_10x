@@ -57,14 +57,14 @@ rule ngscstat:
     output:
         multiext("results/purge_dups/{sample}/TX", ".stat", ".base.cov")
     params:
-        workdir = lambda w, input: os.path.dirname(input[0]),
-        input = lambda w, input: os.path.basename(input[0])
+        workdir = lambda w, output: os.path.dirname(output[0]),
+        input = lambda w: f'lr_align_{w.sample}_v2/outs/possorted_bam.bam'
     log:
-        "logs/purge_stats_ngsstat.{sample}.log"
+        "logs/purge_stats_ngscstat.{sample}.log"
     shell:
         """
         cd {params.workdir}
-        ngscstat {params.input} 2> ../../../../{log}
+        ngscstat {params.input} 2> ../../../{log}
         """
 
 rule calcuts:
