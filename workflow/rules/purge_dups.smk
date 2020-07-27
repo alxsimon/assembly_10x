@@ -112,10 +112,13 @@ rule purge_dups:
         cutoffs = "results/purge_dups/{sample}/cutoffs"
     output:
         "results/purge_dups/{sample}/{sample}.dups.bed"
+    params:
+        M = config['purge_dups']['M'],
+        E = config['purge_dups']['E']
     log:
         "logs/purge_dups.{sample}.log"
     shell:
-        "purge_dups -2 -T {input.cutoffs} "
+        "purge_dups -2 -M{params.M} -E{params.E} -T {input.cutoffs} "
         "-c {input.basecov} {input.selfmap} > {output} "
         "2> {log}"
 
