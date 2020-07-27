@@ -42,7 +42,7 @@ From: ubuntu:20.04
 	conda config --add channels bioconda
 	conda config --add channels conda-forge
 
-	conda install numpy scipy
+	conda install numpy scipy matplotlib
 
 	## Install R and packages ##
 	conda install -y r-base=4.0.0 \
