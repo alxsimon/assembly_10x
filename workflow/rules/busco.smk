@@ -14,9 +14,7 @@ rule unzip_fasta:
     input:
         "results/fasta/{sample}_{version}.pseudohap.fasta.gz"
     output:
-        temp("results/fasta/{sample}_{version}.fa")
-    wildcard_constraints:
-        version = 'v[0-9]+'
+        temp("results/fasta/{sample}_{version}.pseudohap.fa")
     shell:
         "zcat {input} > {output}"
 
