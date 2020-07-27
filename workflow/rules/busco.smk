@@ -10,11 +10,13 @@ rule dwld_busco_databases:
         "tar -xf resources/busco_databases/*.tar.gz && "
         "rm resources/busco_databases/*.tar.gz"
 
-rule prepare_fasta:
+rule unzip_fasta:
     input:
         "results/fasta/{sample}_{version}.pseudohap.fasta.gz"
     output:
         temp("results/fasta/{sample}_{version}.fa")
+    wildcard_constraints:
+        version = 'v[0-9]+'
     shell:
         "zcat {input} > {output}"
 
