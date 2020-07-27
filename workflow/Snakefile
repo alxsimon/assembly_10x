@@ -37,5 +37,3 @@ include: "rules/supernova.smk"
 include: "rules/purge_dups.smk"
 
 include: "rules/busco.smk"
-
-ruleorder: get_sequences > supernova_fasta

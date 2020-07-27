@@ -10,17 +10,23 @@ rule dwld_busco_databases:
         "tar -xf resources/busco_databases/*.tar.gz && "
         "rm resources/busco_databases/*.tar.gz"
 
+def get_busco_input(w):
+    if w.version == "v3":
+        return f"results/purge_dups/{w.sample}/{w.sample}_v2.pseudohap.purged.fa.gz"
+    else:
+        return f"results/fasta/{w.sample}_{w.version}.pseudohap.fasta.gz"
+
 rule unzip_fasta:
     input:
-        "results/fasta/{sample}_{version}.pseudohap.fasta.gz"
+        get_busco_input
     output:
-        temp("results/fasta/{sample}_{version}.pseudohap.fa")
+        temp("results/fasta/{sample}_{version}.fa")
     shell:
         "zcat {input} > {output}"
 
 rule busco:
     input:
-        "results/fasta/{sample}_{version}.pseudohap.fa",
+        "results/fasta/{sample}_{version}.fa",
         rules.dwld_busco_databases.output
     output:
         "results/busco/{sample}_{version}_{db}/run_{db}/short_summary.txt"
