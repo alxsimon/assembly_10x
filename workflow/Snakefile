@@ -24,7 +24,7 @@ rule all:
         expand("results/purge_dups/{sample}/{sample}_v2.pseudohap.purged.fa.gz",
             sample=config['samples']),
         expand("results/busco/{sample}_{version}_{db}/run_{db}/short_summary.txt",
-            sample=config['samples'], version=["v1", "v2"],
+            sample=config['samples'], version=["v1", "v2", "v3"],
             db=["metazoa_odb10", "mollusca_odb10"])
         
 
