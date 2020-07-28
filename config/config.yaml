@@ -26,6 +26,10 @@ supernova_order:
   - tros_v2
   - edu_v2
 
+purge_dups:
+  M: 1000
+  E: 1000
+
 busco:
   metazoa: https://busco-data.ezlab.org/v4/data/lineages/metazoa_odb10.2019-11-20.tar.gz
   mollusca: https://busco-data.ezlab.org/v4/data/lineages/mollusca_odb10.2019-11-20.tar.gz

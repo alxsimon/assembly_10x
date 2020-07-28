@@ -53,6 +53,8 @@ From: ubuntu:20.04
 	## nubeam-dedup ##
 	git clone https://github.com/daihang16/nubeamdedup.git /opt/nubeamdedup
 	cd /opt/nubeamdedup/Linux
+	# tmp fix before upstream correction
+	sed -i 's;/usr/local/lib/libz.a;/usr/lib/x86_64-linux-gnu/libz.a;' Makefile
 	make && make clean
 	ln -s /opt/nubeamdedup/Linux/nubeam-dedup -t /usr/local/bin/
 

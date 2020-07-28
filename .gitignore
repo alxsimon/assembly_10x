@@ -1,6 +1,4 @@
 *.sif
 .snakemake/
-results/
-resources/10x_reads/
 *.tar.gz
 .vscode
