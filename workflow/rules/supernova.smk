@@ -78,7 +78,8 @@ rule supernova_compress_move:
     input:
         multiext("results/fasta/{sample}_{version}",
             ".raw.fasta.gz", ".megabubbles.fasta.gz", ".pseudohap.fasta.gz",
-            ".pseudohap2.1.fasta.gz")
+            ".pseudohap2.1.fasta.gz"),
+        "tmp/{sample}_{version}/outs/report.txt"
     output:
         archive = "results/supernova_assemblies/{sample}_{version}/outs/assembly.tar.zst",
         donefile = "results/supernova_assemblies/{sample}_{version}/DONE"
