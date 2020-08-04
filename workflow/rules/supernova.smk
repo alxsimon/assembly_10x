@@ -1,6 +1,6 @@
 def get_supernova_input(w):
     if w.version == "v1":
-        return unpack(get_fastq(w))
+        return get_fastq(w)
     else:
         return expand("results/preprocessing/{{sample}}/{{sample}}_S1_L001_{R}_001.fastq.gz", R=["R1", "R2"])
 
@@ -16,7 +16,7 @@ def get_order(w):
 
 rule supernova_assembly:
     input:
-        get_supernova_input,
+        unpack(get_supernova_input),
 	    get_order
     output:
         "tmp/{sample}_{version}/outs/report.txt"
