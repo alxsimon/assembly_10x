@@ -17,7 +17,7 @@ def get_order(w):
 rule supernova_assembly:
     input:
         unpack(get_supernova_input),
-	    get_order
+#	    get_order
     output:
         "tmp/{sample}_{version}/outs/report.txt"
     params:
