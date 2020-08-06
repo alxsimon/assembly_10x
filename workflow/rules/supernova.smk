@@ -94,7 +94,7 @@ rule supernova_compress_move:
     shell:
         """
         tar -cf - -C {params.input_dir}/outs assembly | zstdmt -T{threads} > {params.tmp_archive} 2> {log} && \
-        rm -r {params.input_dir}/outs/assembly
+        rm -r {params.input_dir}/outs/assembly && \
         cp -r {params.input_dir} {params.output_dir} && rm -r {params.input_dir} && \
         touch {output.donefile}
         """
