@@ -25,7 +25,9 @@ rule all:
             sample=config['samples']),
         expand("results/busco/{sample}_{version}_{db}/run_{db}/short_summary.txt",
             sample=config['samples'], version=["v1", "v2", "v3"],
-            db=["metazoa_odb10", "mollusca_odb10"])
+            db=["metazoa_odb10", "mollusca_odb10"]),
+        # expand("results/kat/{sample}_{version}_spectra.pdf",
+        #     sample=config['samples'], version=["v2", "v3"]),
         
 
 include: "rules/preprocessing.smk"
@@ -37,3 +39,5 @@ include: "rules/supernova.smk"
 include: "rules/purge_dups.smk"
 
 include: "rules/busco.smk"
+
+include: "rules/kat.smk"
