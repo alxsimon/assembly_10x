@@ -1,5 +1,7 @@
 def get_supernova_input(w):
-    if w.version == "v1":
+     if os.path.exists(f'results/supernova_assemblies/{w.sample}_{w.version}/outs/report.txt'):
+        return ''
+    else if w.version == "v1":
         return get_fastq(w)
     else:
         return expand("results/preprocessing/{{sample}}/{{sample}}_S1_L001_{R}_001.fastq.gz", R=["R1", "R2"])
@@ -19,7 +21,7 @@ rule supernova_assembly:
         unpack(get_supernova_input),
 #	    get_order
     output:
-        "tmp/{sample}_{version}/outs/report.txt"
+        temp("tmp/{sample}_{version}/outs/report.txt")
     params:
         mem = config['supernova_mem'],
         input_dir = lambda w, input: os.path.dirname(input[0]),
