@@ -4,12 +4,14 @@ rule dwld_busco_databases:
         directory('resources/busco_databases/mollusca_odb10')
     params:
         metazoa = config['busco']['metazoa'],
-        mollusca = config['busco']['mollusca']
+        mollusca = config['busco']['mollusca'], 
+        outdir = 'resources/busco_databases'
     shell:
-        "wget -P resources/busco_databases/ {params.metazoa} {params.mollusca} && "
-        "tar -xf resources/busco_databases/metazoa*.tar.gz && "
-        "tar -xf resources/busco_databases/mollusca*.tar.gz &&"
-        "rm resources/busco_databases/*.tar.gz"
+        """
+        cd {params.outdir}
+        wget -c {params.metazoa} -O - | tar -xz
+        wget -c {params.mollusca} -O - | tar -xz
+        """
 
 def get_busco_input(w):
     if w.version == "v3":
