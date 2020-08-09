@@ -1,6 +1,6 @@
 def get_supernova_input(w):
     if os.path.exists(f'results/supernova_assemblies/{w.sample}_{w.version}/outs/report.txt'):
-        return ''
+        return ['']
     elif w.version == "v1":
         return get_fastq(w)
     else:
