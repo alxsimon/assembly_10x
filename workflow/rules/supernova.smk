@@ -1,7 +1,7 @@
 def get_supernova_input(w):
     if os.path.exists(f'results/supernova_assemblies/{w.sample}_{w.version}/outs/report.txt'):
         return ''
-    else if w.version == "v1":
+    elif w.version == "v1":
         return get_fastq(w)
     else:
         return expand("results/preprocessing/{{sample}}/{{sample}}_S1_L001_{R}_001.fastq.gz", R=["R1", "R2"])
