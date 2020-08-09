@@ -7,7 +7,8 @@ rule dwld_busco_databases:
         mollusca = config['busco']['mollusca']
     shell:
         "wget -P resources/busco_databases/ {params.metazoa} {params.mollusca} && "
-        "tar -xf resources/busco_databases/*.tar.gz && "
+        "tar -xf resources/busco_databases/metazoa*.tar.gz && "
+        "tar -xf resources/busco_databases/mollusca*.tar.gz &&"
         "rm resources/busco_databases/*.tar.gz"
 
 def get_busco_input(w):
