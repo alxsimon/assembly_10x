@@ -51,14 +51,28 @@ rule lr_align:
         && rm -r {params.run_id}
         """
 
-rule ngscstat:
+rule sort_by_name:
     input:
         "results/purge_dups/{sample}/lr_align_{sample}_v2/outs/possorted_bam.bam"
+    output:
+        temp("results/purge_dups/{sample}/namesorted_bam.bam")
+    threads:
+        16
+    conda:
+        "../envs/mapping.yaml"
+    log:
+        "logs/purge_dups_samtools_namesort.{sample}.log"
+    shell:
+        "samtools sort -n -O BAM -o {output} {input} > {log} 2>&1"
+
+rule ngscstat:
+    input:
+        "results/purge_dups/{sample}/namesorted_bam.bam"
     output:
         multiext("results/purge_dups/{sample}/TX", ".stat", ".base.cov")
     params:
         workdir = lambda w, output: os.path.dirname(output[0]),
-        input = lambda w: f'lr_align_{w.sample}_v2/outs/possorted_bam.bam'
+        input = "namesorted_bam.bam"
     log:
         "logs/purge_stats_ngscstat.{sample}.log"
     shell:
