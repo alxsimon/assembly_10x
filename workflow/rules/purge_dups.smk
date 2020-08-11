@@ -152,7 +152,7 @@ rule get_sequences:
     input:
         bed = "results/purge_dups/{sample}/{sample}.dups.bed",
         fa = "results/purge_dups/{sample}/{sample}_v2.pseudohap.fa",
-        "results/purge_dups/{sample}/hist_cutoffs.png"
+        hist = "results/purge_dups/{sample}/hist_cutoffs.png"
     output:
         purged = "results/purge_dups/{sample}/{sample}_v2.pseudohap.purged.fa.gz",
         haps = "results/purge_dups/{sample}/{sample}_v2.pseudohap.hap.fa.gz"
