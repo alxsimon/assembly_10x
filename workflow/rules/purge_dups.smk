@@ -93,6 +93,18 @@ rule calcuts:
         calcuts {input[0]} > {output} 2> {log}
         """
 
+rule make_hist:
+    input:
+        "results/purge_dups/{sample}/cutoffs",
+        "results/purge_dups/{sample}/TX.stat"
+    output:
+        "results/purge_dups/{sample}/hist_cutoffs.png"
+    shell:
+        "/opt/purge_dups/scripts/hist_plot.py "
+        "-c {input[0]} "
+        "{input[1]} "
+        "{output}"
+
 rule split_fa:
     input: 
         "results/purge_dups/{sample}/{sample}_v2.pseudohap.fa"
@@ -139,7 +151,8 @@ rule purge_dups:
 rule get_sequences:
     input:
         bed = "results/purge_dups/{sample}/{sample}.dups.bed",
-        fa = "results/purge_dups/{sample}/{sample}_v2.pseudohap.fa"
+        fa = "results/purge_dups/{sample}/{sample}_v2.pseudohap.fa",
+        "results/purge_dups/{sample}/hist_cutoffs.png"
     output:
         purged = "results/purge_dups/{sample}/{sample}_v2.pseudohap.purged.fa.gz",
         haps = "results/purge_dups/{sample}/{sample}_v2.pseudohap.hap.fa.gz"
