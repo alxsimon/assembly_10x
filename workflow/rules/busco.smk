@@ -45,7 +45,7 @@ rule busco:
     log:
         "logs/busco.{sample}_{version}_{db}.log"
     threads:
-        16
+        config['busco']['threads']
     conda:
         "../envs/busco.yaml" 
     shell:

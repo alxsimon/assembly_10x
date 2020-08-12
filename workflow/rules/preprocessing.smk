@@ -64,7 +64,7 @@ rule fastp:
     log:
         "logs/fastp.{sample}.log"
     threads:
-        16
+        config['fastp_threads']
     shell:
         """
         fastp -i {input[0]} -I {input[1]} \

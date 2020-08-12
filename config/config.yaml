@@ -14,8 +14,12 @@ samples:
   - edu
   - tros
 
-kmc_mem: 100
-genomescope_kmer_size: 21
+genomescope:
+  kmc_mem: 100
+  kmer_size: 21
+  threads: 16
+
+fastp_threads: 16
 
 supernova_mem: 400
 supernova_order:
@@ -27,9 +31,11 @@ supernova_order:
   - edu_v2
 
 purge_dups:
-  M: 1000
-  E: 1000
+  threads: 16
+  M: 20000
+  E: 15000
 
 busco:
   metazoa: https://busco-data.ezlab.org/v4/data/lineages/metazoa_odb10.2019-11-20.tar.gz
   mollusca: https://busco-data.ezlab.org/v4/data/lineages/mollusca_odb10.2019-11-20.tar.gz
+  threads: 8

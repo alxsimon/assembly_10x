@@ -62,8 +62,10 @@ rule sort_by_name:
         "../envs/mapping.yaml"
     log:
         "logs/purge_dups_samtools_namesort.{sample}.log"
+    threads:
+        config['purge_dups']['threads']
     shell:
-        "samtools sort -n -O BAM -o {output} {input} > {log} 2>&1"
+        "samtools sort -@ {threads} -n -O BAM -o {output} {input} > {log} 2>&1"
 
 rule ngscstat:
     input:
@@ -125,7 +127,7 @@ rule self_map:
     conda:
         "../envs/mapping.yaml"
     threads:
-        16
+        config['purge_dups']['threads']
     shell:
         "(minimap2 -t {threads} "
         "-xasm5 -DP {input} {input} "

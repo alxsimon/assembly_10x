@@ -6,12 +6,12 @@ rule gs_kmer_count:
         temp(multiext("results/genomescope/{sample}/{sample}.kmcdb",
             ".kmc_pre", ".kmc_suf"))
     params:
-        mem = config['kmc_mem'],
-        k = config['genomescope_kmer_size'],
+        mem = config['genomescope']['kmc_mem'],
+        k = config['genomescope']['kmer_size'],
         db = lambda w, output: output[0].replace('.kmc_pre', ''),
         files = lambda w: f'results/genomescope/{w.sample}/FILES'
     threads:
-        16
+        config['genomescope']['threads']
     log:
         "logs/gs_kmc_count.{sample}.log"
     container:
@@ -34,7 +34,7 @@ rule gs_kmer_hist:
     params:
         db = lambda w, input: input[0].replace('.kmc_pre', '')
     threads:
-        16
+        config['genomescope']['threads']
     log:
         "logs/gs_kmc_hist.{sample}.log"
     container:
@@ -53,11 +53,11 @@ rule gs_fit:
     output:
         "results/genomescope/{sample}/genomescope_res_{sample}/{sample}_preproc_summary.txt"
     params:
-        k = config['genomescope_kmer_size'],
+        k = config['genomescope']['kmer_size'],
         name_prefix = lambda w: f'{w.sample}_preproc',
         outdir = lambda w, output: os.path.dirname(output[0])
     threads:
-        16
+        config['genomescope']['threads']
     log:
         "logs/gs_fit.{sample}.log"
     container:
