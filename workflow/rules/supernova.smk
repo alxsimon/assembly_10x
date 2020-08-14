@@ -60,7 +60,7 @@ rule supernova_fasta:
         outprefix = lambda w, output: os.path.dirname(output[0]) + f"/{w.sample}_{w.version}.{w.style.strip('.1')}"
     wildcard_constraints:
         style = '\w+|\w+.1',
-        version = 'v[0-9]+'
+        version = 'v1|v2'
     log:
         "logs/supernova_fasta.{sample}_{version}.{style}.log"
     container:
