@@ -14,9 +14,7 @@ rule dwld_busco_databases:
         """
 
 def get_busco_input(w):
-    if w.version == "v3":
-        return f"results/purge_dups/{w.sample}/{w.sample}_v2.pseudohap.purged.fa.gz"
-    elif w.version == "v0" and w.sample == "gallo":
+    if w.version == "v0" and w.sample == "gallo":
         return "resources/GCA_001676915.1_ASM167691v1/GCA_001676915.1_ASM167691v1_genomic.fna.gz"
     else:
         return f"results/fasta/{w.sample}_{w.version}.pseudohap.fasta.gz"

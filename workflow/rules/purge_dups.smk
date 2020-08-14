@@ -167,3 +167,10 @@ rule get_sequences:
         gzip {params.prefix}.*.fa
         """
 
+rule copy_output:
+    input:
+        "results/purge_dups/{sample}/{sample}_v2.pseudohap.purged.fa.gz"
+    output:
+        "results/fasta/{sample}_v3.pseudohap.fasta.gz"
+    shell:
+        "cp {input} {output}"
