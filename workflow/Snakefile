@@ -21,7 +21,7 @@ rule all:
             sample=config['samples']),
         expand("results/supernova_assemblies/{sample}_{version}/DONE",
             sample=config['samples'], version=["v1", "v2"]),
-        expand("results/fasta/{sample}/{sample}_v3.pseudohap.fasta.gz",
+        expand("results/fasta/{sample}_v3.pseudohap.fasta.gz",
             sample=config['samples']),
         expand("results/busco/{sample}_{version}_{db}/run_{db}/short_summary.txt",
             sample=config['samples'], version=["v1", "v2"],
