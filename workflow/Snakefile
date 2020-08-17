@@ -31,7 +31,7 @@ rule all:
         #     db=["metazoa_odb10", "mollusca_odb10"]),
         expand("results/busco/gallo_v0_{db}/run_{db}/short_summary.txt",
             db=["metazoa_odb10", "mollusca_odb10"]),
-        expand("results/kat/{sample}_{version}_spectra.pdf",
+        expand("results/kat/{sample}_{version}/{sample}_{version}_spectra.pdf",
             sample=config['samples'], version=["v2"]),
         "results/stats/assembly_stats.csv",
         
