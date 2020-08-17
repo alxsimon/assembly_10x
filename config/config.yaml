@@ -7,15 +7,15 @@ raw_names:
   gallo: "Gallo_Med"
   edu: "EDU"
   tros: "TROS"
-#  bv: "BV"
-#  R8: "R8_repaired"
+  bv: "BV"
+  R8: "R8_repaired"
 
 samples:
   - gallo
   - edu
   - tros
-  - bv
-  - R8
+#  - bv
+#  - R8
 
 genomescope:
   kmc_mem: 100
