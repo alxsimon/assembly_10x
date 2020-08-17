@@ -4,9 +4,9 @@ rule kat_comp:
             R=["R1", "R2"]),
         "results/fasta/{sample}_{version}.pseudohap.fasta.gz"
     output:
-        "results/kat/{sample}_{version}_comp....[matrix file]"
+        "results/kat/{sample}_{version}_comp-main.mx"
     params:
-        outprefix = lambda w: f'results/kat/{w.sample}_{w.version}_comp'
+        outprefix = lambda w: f'results/kat/{w.sample}_{w.version}/{w.sample}_{w.version}_comp'
     conda:
         "../envs/kat.yaml"
     threads:
@@ -21,9 +21,9 @@ rule kat_comp:
 
 rule kat_plot_spectra:
     input:
-        "results/kat/{sample}_{version}_comp[matrix file]"
+        "results/kat/{sample}_{version}/{sample}_{version}_comp-main.mx"
     output:
-        "results/kat/{sample}_{version}_spectra.pdf"
+        "results/kat/{sample}_{version}/{sample}_{version}_spectra.pdf"
     params:
         title = lambda w: f'{w.sample}_{w.version}'
     conda:
