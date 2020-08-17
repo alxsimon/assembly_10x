@@ -7,6 +7,8 @@ rule kat_comp:
         "results/kat/{sample}_{version}/{sample}_{version}_comp-main.mx"
     params:
         outprefix = lambda w: f'results/kat/{w.sample}_{w.version}/{w.sample}_{w.version}_comp'
+    log:
+        "logs/kat_comp.{sample}_{version}.log"
     conda:
         "../envs/kat.yaml"
     threads:
@@ -16,7 +18,8 @@ rule kat_comp:
         kat comp -t {threads} \
         -o {params.outprefix} \
         '{input[0]} {input[1]}' \
-        {input[2]}
+        {input[2]} \
+        > {log} 2>&1
         """
 
 rule kat_plot_spectra:
@@ -26,6 +29,8 @@ rule kat_plot_spectra:
         "results/kat/{sample}_{version}/{sample}_{version}_spectra.pdf"
     params:
         title = lambda w: f'{w.sample}_{w.version}'
+    log:
+        "logs/kat_plot.{sample}_{version}.log"
     conda:
         "../envs/kat.yaml"
     shell:
@@ -33,5 +38,6 @@ rule kat_plot_spectra:
         kat plot spectra-cn \
         -o {output} \
         -t {params.title} \
-        {input}
+        {input} \
+        > {log} 2>&1
         """
