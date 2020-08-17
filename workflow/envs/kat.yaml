@@ -1,4 +1,6 @@
 channels:
+  - default
+  - conda-forge
   - bioconda
 dependencies:
   - kat=2.4.2
