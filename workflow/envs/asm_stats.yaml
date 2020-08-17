@@ -4,4 +4,3 @@ channels:
 dependencies:
   - assembly_stats=0.1.4
   - pandas
-  - re
