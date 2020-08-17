@@ -4,7 +4,7 @@ rule kat_comp:
             R=["R1", "R2"]),
         "results/fasta/{sample}_{version}.pseudohap.fasta.gz"
     output:
-        "results/kat/{sample}_{version}_comp-main.mx"
+        "results/kat/{sample}_{version}/{sample}_{version}_comp-main.mx"
     params:
         outprefix = lambda w: f'results/kat/{w.sample}_{w.version}/{w.sample}_{w.version}_comp'
     conda:
