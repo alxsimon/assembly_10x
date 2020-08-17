@@ -2,3 +2,6 @@ channels:
   - conda-forge
 dependencies:
   - assembly_stats=0.1.4
+  - json
+  - pathlib
+  - pandas

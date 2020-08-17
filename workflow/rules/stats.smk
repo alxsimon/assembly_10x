@@ -21,10 +21,12 @@ rule assembly_stats:
 rule merge_stats:
     input:
         expand("results/stats/{sample}_{version}.stats.json",
-            sample=config['samples'], version=["v1", "v2", "v3"]),
+            sample=config['samples'], version=["v1", "v2"]), # , "v3"]),
         "results/stats/gallo_v0.stats.json"
     output:
         "results/stats/assembly_stats.csv"
+    conda:
+        "../envs/asm_stats.yaml"
     run:
         import pandas as pd
         from pathlib import Path
