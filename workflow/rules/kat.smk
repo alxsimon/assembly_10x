@@ -1,7 +1,6 @@
 rule kat_comp:
     input:
-        expand("results/preprocessing/{{sample}}/{{sample}}_S1_L001_{R}_001.fastq.gz", 
-            R=["R1", "R2"]),
+        unpack(get_supernova_input),
         "results/fasta/{sample}_{version}.pseudohap.fasta.gz"
     output:
         "results/kat/{sample}_{version}/{sample}_{version}_comp-main.mx"

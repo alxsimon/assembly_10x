@@ -1,21 +1,3 @@
-def get_supernova_input(w):
-    if os.path.exists(f'results/supernova_assemblies/{w.sample}_{w.version}/outs/report.txt'):
-        return ['']
-    elif w.version == "v1":
-        return get_fastq(w)
-    else:
-        return expand("results/preprocessing/{{sample}}/{{sample}}_S1_L001_{R}_001.fastq.gz", R=["R1", "R2"])
-
-def get_order(w):
-    supernova_order = config['supernova_order']
-    current_assembly = f'{w.sample}_{w.version}'
-    if current_assembly != supernova_order[0]:
-        previous_assembly = supernova_order[supernova_order.index(current_assembly) - 1]
-        return f'results/supernova_assemblies/{previous_assembly}/DONE'
-    else:
-        # dummy file that already exist
-        return 'workflow/rules/supernova.smk'
-
 rule supernova_assembly:
     input:
         unpack(get_supernova_input),
