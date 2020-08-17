@@ -27,18 +27,6 @@ rule merge_stats:
         "results/stats/assembly_stats.csv"
     conda:
         "../envs/asm_stats.yaml"
-    run:
-        import pandas as pd
-        from pathlib import Path
-        import json
-        out_df = pd.DataFrame()
-        for stat_file in input:
-            with open(stat_file, 'r') as f:
-                data = json.loads(f.read())
-            data['C'] = data.pop('Contig Stats')
-            data['S'] = data.pop('Scaffold Stats')
-            tmpdf = pd.json_normalize(data)
-            df.insert(0, "asm", [f"{wildcards.sample}_{wildcards.version}"])
-            out_df = out_df.append(df)
-        out_df.to_csv(output[0], sep=',', index=False)
+    script:
+        "../scripts/merge_stats.py"
 
