@@ -22,3 +22,9 @@ def get_order(w):
     else:
         # dummy file that already exist
         return 'workflow/rules/supernova.smk'
+
+def get_kat_input(w):
+    if w.version == "v1":
+        return get_fastq(w)
+    elif w.version == "v2":
+        return expand("results/preprocessing/{{sample}}/{{sample}}_S1_L001_{R}_001.fastq.gz", R=["R1", "R2"])

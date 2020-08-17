@@ -1,6 +1,6 @@
 rule kat_comp:
     input:
-        unpack(get_supernova_input),
+        unpack(get_kat_input),
         "results/fasta/{sample}_{version}.pseudohap.fasta.gz"
     output:
         "results/kat/{sample}_{version}/{sample}_{version}_comp-main.mx"
