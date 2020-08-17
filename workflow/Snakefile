@@ -46,3 +46,5 @@ include: "rules/purge_dups.smk"
 include: "rules/busco.smk"
 
 include: "rules/kat.smk"
+
+include: "rules/stats.smk"
