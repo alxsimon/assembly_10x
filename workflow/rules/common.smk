@@ -26,5 +26,5 @@ def get_order(w):
 def get_kat_input(w):
     if w.version == "v1":
         return get_fastq(w)
-    elif w.version == "v2":
+    elif w.version in ["v2", "v3"]:
         return expand("results/preprocessing/{{sample}}/{{sample}}_S1_L001_{R}_001.fastq.gz", R=["R1", "R2"])
