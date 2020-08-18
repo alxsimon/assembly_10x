@@ -26,13 +26,13 @@ rule all:
         expand("results/busco/{sample}_{version}_{db}/run_{db}/short_summary.txt",
             sample=config['samples'], version=["v1", "v2"],
             db=["metazoa_odb10", "mollusca_odb10"]),
-        # expand("results/busco/{sample}_v3_{db}/run_{db}/short_summary.txt",
-        #     sample=config['samples'],
-        #     db=["metazoa_odb10", "mollusca_odb10"]),
+        expand("results/busco/{sample}_v3_{db}/run_{db}/short_summary.txt",
+            sample=config['samples'],
+            db=["metazoa_odb10", "mollusca_odb10"]),
         expand("results/busco/gallo_v0_{db}/run_{db}/short_summary.txt",
             db=["metazoa_odb10", "mollusca_odb10"]),
         expand("results/kat/{sample}_{version}/{sample}_{version}_spectra.pdf",
-            sample=config['samples'], version=["v1", "v2"]),
+            sample=config['samples'], version=["v1", "v2", "v3"]),
         "results/stats/assembly_stats.csv",
         
 
