@@ -33,6 +33,7 @@ rule all:
             db=["metazoa_odb10", "mollusca_odb10"]),
         expand("results/kat/{sample}_{version}/{sample}_{version}_spectra.pdf",
             sample=config['samples'], version=["v1", "v2", "v3"]),
+        "results/supernova_assemblies/supernova_assemblies_stats.csv",
         "results/stats/assembly_stats.csv",
         
 

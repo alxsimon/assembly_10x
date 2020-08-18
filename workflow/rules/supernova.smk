@@ -82,3 +82,12 @@ rule supernova_compress_move:
         cp -r {params.input_dir} {params.output_dir} && rm -r {params.input_dir} && \
         touch {output.donefile}
         """
+
+rule collect_stats:
+    input:
+        expand("results/supernova_assemblies/{sample}_{version}/outs/summary.csv",
+            sample=config['samples'], version=["v1", "v2"])
+    output:
+        "results/supernova_assemblies/supernova_assemblies_stats.csv"
+    shell:
+        "bash workflow/scripts/collect_assembly_stats.sh"
