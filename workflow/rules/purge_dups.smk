@@ -1,11 +1,11 @@
 rule lr_mkref:
     input:
-        fa = "results/fasta/{sample}_v2.pseudohap.fasta.gz"
+        fa = "results/fasta/{sample}_v1.pseudohap.fasta.gz"
     output:
-        directory("results/purge_dups/{sample}/refdata-{sample}_v2.pseudohap"),
-        "results/purge_dups/{sample}/{sample}_v2.pseudohap.fa"
+        directory("results/purge_dups/{sample}/refdata-{sample}_v1.pseudohap"),
+        "results/purge_dups/{sample}/{sample}_v1.pseudohap.fa"
     params:
-        tmp_fa = lambda w: f'results/purge_dups/{w.sample}/{w.sample}_v2.pseudohap.fa'
+        tmp_fa = lambda w: f'results/purge_dups/{w.sample}/{w.sample}_v1.pseudohap.fa'
     log:
         "logs/lr_mkref.{sample}.log",
     container:
@@ -22,11 +22,11 @@ rule lr_align:
         expand("results/preprocessing/{{sample}}/{{sample}}_S1_L001_{R}_001.fastq.gz", R=["R1", "R2"]),
         rules.lr_mkref.output
     output:
-        directory("results/purge_dups/{sample}/lr_align_{sample}_v2"),
-        "results/purge_dups/{sample}/lr_align_{sample}_v2/outs/possorted_bam.bam"
+        directory("results/purge_dups/{sample}/lr_align_{sample}_v1"),
+        "results/purge_dups/{sample}/lr_align_{sample}_v1/outs/possorted_bam.bam"
     params:
         input_dir = lambda w, input: os.path.dirname(input[0]),
-        run_id = lambda w: f'{w.sample}_v2',
+        run_id = lambda w: f'{w.sample}_v1',
         sample = lambda w, input: re.sub("_S.+_L.+_R1_001.fastq.gz", "", os.path.basename(input[0])),
         mem = config['supernova_mem']
     threads: 
@@ -53,7 +53,7 @@ rule lr_align:
 
 rule sort_by_name:
     input:
-        "results/purge_dups/{sample}/lr_align_{sample}_v2/outs/possorted_bam.bam"
+        "results/purge_dups/{sample}/lr_align_{sample}_v1/outs/possorted_bam.bam"
     output:
         temp("results/purge_dups/{sample}/namesorted_bam.bam")
     threads:
@@ -109,9 +109,9 @@ rule make_hist:
 
 rule split_fa:
     input: 
-        "results/purge_dups/{sample}/{sample}_v2.pseudohap.fa"
+        "results/purge_dups/{sample}/{sample}_v1.pseudohap.fa"
     output:
-        temp("results/purge_dups/{sample}/{sample}_v2.pseudohap.split.fa")
+        temp("results/purge_dups/{sample}/{sample}_v1.pseudohap.split.fa")
     log:
         "logs/split_fa.{sample}.log"
     shell:
@@ -119,9 +119,9 @@ rule split_fa:
 
 rule self_map:
     input:
-        "results/purge_dups/{sample}/{sample}_v2.pseudohap.split.fa"
+        "results/purge_dups/{sample}/{sample}_v1.pseudohap.split.fa"
     output:
-        "results/purge_dups/{sample}/{sample}_v2.pseudohap.split.self.paf.gz"
+        "results/purge_dups/{sample}/{sample}_v1.pseudohap.split.self.paf.gz"
     log:
         "logs/self_map.{sample}.log"
     conda:
@@ -135,7 +135,7 @@ rule self_map:
 
 rule purge_dups:
     input:
-        selfmap = "results/purge_dups/{sample}/{sample}_v2.pseudohap.split.self.paf.gz",
+        selfmap = "results/purge_dups/{sample}/{sample}_v1.pseudohap.split.self.paf.gz",
         basecov = "results/purge_dups/{sample}/TX.base.cov",
         cutoffs = "results/purge_dups/{sample}/cutoffs"
     output:
@@ -153,11 +153,11 @@ rule purge_dups:
 rule get_sequences:
     input:
         bed = "results/purge_dups/{sample}/{sample}.dups.bed",
-        fa = "results/purge_dups/{sample}/{sample}_v2.pseudohap.fa",
+        fa = "results/purge_dups/{sample}/{sample}_v1.pseudohap.fa",
         hist = "results/purge_dups/{sample}/hist_cutoffs.png"
     output:
-        purged = "results/purge_dups/{sample}/{sample}_v2.pseudohap.purged.fa.gz",
-        haps = "results/purge_dups/{sample}/{sample}_v2.pseudohap.hap.fa.gz"
+        purged = "results/purge_dups/{sample}/{sample}_v1.pseudohap.purged.fa.gz",
+        haps = "results/purge_dups/{sample}/{sample}_v1.pseudohap.hap.fa.gz"
     params:
         prefix = lambda w, output: output[0].replace(".purged.fa.gz", "")
     shell:
@@ -169,8 +169,8 @@ rule get_sequences:
 
 rule copy_output:
     input:
-        "results/purge_dups/{sample}/{sample}_v2.pseudohap.purged.fa.gz"
+        "results/purge_dups/{sample}/{sample}_v1.pseudohap.purged.fa.gz"
     output:
-        "results/fasta/{sample}_v3.pseudohap.fasta.gz"
+        "results/fasta/{sample}_v4.pseudohap.fasta.gz"
     shell:
         "cp {input} {output}"
