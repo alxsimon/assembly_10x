@@ -22,7 +22,7 @@ rule merge_stats:
     input:
         "results/stats/gallo_v0.stats.json",
         expand("results/stats/{sample}_{version}.stats.json",
-            sample=config['samples'], version=["v1", "v2"]), # , "v3"])
+            sample=config['samples'], version=["v1", "v2", "v3"])
     output:
         "results/stats/assembly_stats.csv"
     conda:
