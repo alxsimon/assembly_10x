@@ -14,7 +14,7 @@ rule lr_mkref:
         """
         zcat {input.fa} > {params.tmp_fa}
         longranger mkref {params.tmp_fa} > {log} 2>&1
-        mv refdata-{wildcards.sample}_v2.pseudohap {output[0]}
+        mv refdata-{wildcards.sample}_v1.pseudohap {output[0]}
         """
 
 rule lr_align:
