@@ -29,7 +29,7 @@ rule augustus:
         """
 
 def aggregate_input_gff3(wildcards):
-    checkpoint_output = checkpoints.split_fa_augustus.get(**wildcards).output[0]
+    checkpoint_output = checkpoints.split_fa_augustus.get(**wildcards).output[1]
     return expand("results/agouti/{sample}/split/{i}.gff3",
            sample=wildcards.sample,
            i=glob_wildcards(os.path.join(checkpoint_output, "{i}.gff3")).i)
