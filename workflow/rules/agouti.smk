@@ -1,4 +1,4 @@
-checkpoint split_fa:
+checkpoint split_fa_augustus:
     input:
         "results/fasta/{sample}_v4.pseudohap.fasta.gz"
     output:

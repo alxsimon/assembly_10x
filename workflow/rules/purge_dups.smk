@@ -107,7 +107,7 @@ rule make_hist:
         "{input[1]} "
         "{output}"
 
-rule split_fa:
+rule split_fa_purge_dups:
     input: 
         "results/purge_dups/{sample}/{sample}_v1.pseudohap.fa"
     output:
