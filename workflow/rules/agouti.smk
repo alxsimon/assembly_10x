@@ -20,7 +20,7 @@ rule augustus:
     input:
         "results/agouti/{sample}/split/{sample}_v4.pseudohap.split.{i}.fa"
     output:
-        "results/agouti/{sample}/split/{i}.gff3"
+        "results/agouti/{sample}/split/pred_{i}.gff3"
     conda:
         "../envs/augustus.yaml"
     shell:
@@ -30,9 +30,9 @@ rule augustus:
 
 def aggregate_input_gff3(wildcards):
     checkpoint_output = checkpoints.split_fa_augustus.get(**wildcards).output[1]
-    return expand("results/agouti/{sample}/split/{i}.gff3",
+    return expand("results/agouti/{sample}/split/pred_{i}.gff3",
            sample=wildcards.sample,
-           i=glob_wildcards(os.path.join(checkpoint_output, "{i}.gff3")).i)
+           i=glob_wildcards(os.path.join(checkpoint_output, f"{wildcards.sample}_v4.pseudohap.split." + "{i}.fa")).i)
 
 rule aggregate_gff3:
     input:
