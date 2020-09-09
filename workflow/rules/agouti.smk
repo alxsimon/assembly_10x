@@ -39,6 +39,8 @@ rule aggregate_gff3:
         aggregate_input_gff3
     output:
         "results/agouti/{sample}/{sample}_v4.pseudohap.gff3"
+    conda:
+        "../envs/augustus.yaml"
     shell:
         "cat {input} | join_aug_pred.pl > {output}"
 
