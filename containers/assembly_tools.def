@@ -80,16 +80,13 @@ From: ubuntu:20.04
 	install -C exec/smudgeplot.py /usr/local/bin
 	install -C exec/smudgeplot_plot.R /usr/local/bin
 
-	## Platanus-allee ##
-	# wget http://platanus.bio.titech.ac.jp/?ddownload=431 -O /tmp/platanus_allee.tgz
-	# cd /opt/
-	# tar -xvzf /tmp/platanus_allee.tgz && rm /tmp/platanus_allee.tgz
-	# ln -s /opt/Platanus_allee_*/platanus_allee -t /usr/local/bin/
-
 	## purge_dups
 	git clone https://github.com/dfguan/purge_dups.git /opt/purge_dups
 	cd /opt/purge_dups/src && make
 	ln -s /opt/purge_dups/bin/* -t /usr/bin/
+
+	## AGOUTI
+	git clone https://github.com/svm-zhang/AGOUTI.git /opt/agouti
 
 %apprun run
 	exec /bin/bash "$@"

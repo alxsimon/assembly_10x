@@ -34,18 +34,14 @@ rule all:
             sample=config['samples'], version=["v1", "v2", "v3", "v4"]),
         "results/supernova_assemblies/supernova_assemblies_stats.csv",
         "results/stats/assembly_stats.csv",
+        "results/agouti/gallo/gallo_v4.pseudohap.gff3"
         
 
 include: "rules/preprocessing.smk"
-
 include: "rules/genomescope.smk"
-
 include: "rules/supernova.smk"
-
 include: "rules/purge_dups.smk"
-
 include: "rules/busco.smk"
-
 include: "rules/kat.smk"
-
 include: "rules/stats.smk"
+include: "rules/agouti.smk"

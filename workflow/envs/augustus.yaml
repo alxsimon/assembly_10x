@@ -1,0 +1,6 @@
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - augustus=3.3.3
+  - seqkit=0.13.2
