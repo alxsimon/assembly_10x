@@ -2,7 +2,7 @@ checkpoint split_fa_augustus:
     input:
         "results/fasta/{sample}_v4.pseudohap.fasta.gz"
     output:
-        "results/fasta/{sample}/{sample}_v4.pseudohap.fa",
+        "results/agouti/{sample}/{sample}_v4.pseudohap.fa",
         directory("results/agouti/{sample}/split")
     params:
         split_size = 50000000
