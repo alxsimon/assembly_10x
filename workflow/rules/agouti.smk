@@ -72,7 +72,7 @@ rule rna_rcorrector:
         rcorrector -p {input} \
         -k 23 -t {threads} -maxcorK 4 -wk 0.95 \
         -od {params.outdir} \
-        2>&1 {log}
+        > {log} 2>&1
         """
 
 rule rna_trimgalore:
@@ -104,7 +104,7 @@ rule rna_trimgalore:
         --dont_gzip \
         --paired \
         {input} \
-        2>&1 {log}
+        > {log} 2>&1
         """
 
 #===============================
@@ -136,9 +136,11 @@ rule map_RNAseq:
     threads:
         config['agouti']['threads']
     shell:
-        "bwa-mem2 mem -t {threads} {input[2]} {input[0]} {input[1]} "
-        "| samtools view -b -@ {threads} -o {output} "
-        "2>&1 {log}"
+        """
+        bwa-mem2 mem -t {threads} {input[2]} {input[0]} {input[1]} \
+        | samtools view -b -@ {threads} -o {output} \
+        > {log} 2>&1
+        """
 
 def get_sample_rna_runs(w):
     list_R1_files = glob.glob(f"resources/RNAseq_raw/{w.sample}/*_R1.fastq.gz")
