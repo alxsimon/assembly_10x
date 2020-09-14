@@ -34,7 +34,7 @@ rule all:
             sample=config['samples'], version=["v1", "v2", "v3", "v4"]),
         "results/supernova_assemblies/supernova_assemblies_stats.csv",
         "results/stats/assembly_stats.csv",
-        expand("results/agouti/{sample}/{sample}_v4.pseudohap.gff3",
+        expand("results/agouti/{sample}/RNAseq_mapped_merged.bam",
             sample=config['samples'])
         
 
