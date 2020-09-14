@@ -69,8 +69,8 @@ rule rna_rcorrector:
         "../envs/rna_seq.yaml"
     shell:
         """
-        rcorrector -p {input} \
-        -k 23 -t {threads} -maxcorK 4 -wk 0.95 \
+        run_rcorrector.pl -1 {input[0]} -2 {input[1]} \
+        -t {threads} \
         -od {params.outdir} \
         > {log} 2>&1
         """
