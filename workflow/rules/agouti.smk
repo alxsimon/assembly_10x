@@ -143,7 +143,7 @@ rule map_RNAseq:
 
 def get_sample_rna_runs(w):
     list_R1_files = glob.glob(f"resources/RNAseq_raw/{w.sample}/*_R1.fastq.gz")
-    list_runs = [re.sub('_R1\.fastq\.gz$', '', f) for f in list_R1_files]
+    list_runs = [re.sub('*/', '', re.sub('_R1\.fastq\.gz$', '', f)) for f in list_R1_files]
     return [f'results/agouti/{w.sample}/mapping/{run}.bam' for run in list_runs]
 
 rule merge_RNA_bams:
