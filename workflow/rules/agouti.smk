@@ -70,7 +70,7 @@ rule rna_rcorrector:
     shell:
         """
         rcorrector -p {input} \
-        -k 23 -t {threads} -maxcorK 4 -wk 0.95 -ek 10000000 \
+        -k 23 -t {threads} -maxcorK 4 -wk 0.95 \
         -od {params.outdir} \
         2>&1 {log}
         """
