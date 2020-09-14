@@ -1,0 +1,7 @@
+channels:
+  - default
+  - conda-forge
+  - bioconda
+dependencies:
+  - rcorrector=1.0.4
+  - trim-galore=0.6.6
