@@ -124,7 +124,7 @@ rule index_ref:
 rule map_RNAseq:
     input: 
         expand("results/agouti/{{sample}}/RNA_preproc/{{run}}_trimgal_val_{i}.fq",
-            i=['1', '2'])),
+            i=['1', '2']),
         "results/agouti/{sample}/{sample}_v4.pseudohap.fa",
         multiext("results/agouti/{sample}/{sample}_v4.pseudohap.fa",
             ".0123", ".amb", ".ann", ".bwt.2bit.64", ".bwt.8bit.32", ".pac")
