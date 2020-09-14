@@ -167,25 +167,27 @@ rule merge_RNA_bams:
 
 #===============================
 # Run agouti on all that
-#rule agouti_scaff:
-#    input: 
-#        fasta
-#        bam
-#        gff
-#    output: 
-#        ??
-#    params:
-#        outdir = lambda ...,
-#        minMQ = 20,
-#        maxFracMM = 0.05
-#    conda: 
-#        "../envs/py2.yaml"
-#    shell:
-#        """
-#        python /opt/agouti/agouti.py scaffold \
-#        -assembly {input.fa} \
-#        -bam {input.bam} \
-#        -gff {input.gff} \
-#        -outdir {params.outdir} \
-#        -minMQ {params.minMQ} -maxFracMM {params.maxFracMM}
-#        """
+rule agouti_scaffolding:
+    input: 
+        fa = "results/agouti/{sample}/{sample}_v4.pseudohap.fa",
+        bam = "results/agouti/{sample}/RNAseq_mapped_merged.bam",
+        gff = "results/agouti/{sample}/{sample}_v4.pseudohap.gff3"
+    output: 
+        "results/fasta/{sample}_v5.pseudohap.fasta.gz"
+    params:
+        outdir = lambda w: f'results/agouti/{w.sample}/agouti_out',
+        minMQ = 20,
+        maxFracMM = 0.05
+    conda: 
+        "../envs/py2.yaml"
+    shell:
+        """
+        python /opt/agouti/agouti.py scaffold \
+        -assembly {input.fa} \
+        -bam {input.bam} \
+        -gff {input.gff} \
+        -outdir {params.outdir} \
+        -minMQ {params.minMQ} -maxFracMM {params.maxFracMM}
+
+        gzip -c {params.outdir}/agouti.agouti.fasta > {output}
+        """
