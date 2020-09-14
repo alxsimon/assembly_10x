@@ -57,7 +57,7 @@ rule rna_rcorrector:
         expand("resources/RNAseq_raw/{{sample}}/{{run}}_{R}.fastq.gz",
             R=['R1', 'R2'])
     output:
-        temp(expand("results/agouti/{{sample}}/RNA_preproc/{{run}}_{R}.cor.fq",
+        temp(expand("results/agouti/{{sample}}/RNA_preproc/{{run}}_{R}.cor.fq.gz",
             R=['R1', 'R2']))
     params:
         outdir = lambda w, output: os.path.dirname(output[0])
@@ -77,7 +77,7 @@ rule rna_rcorrector:
 
 rule rna_trimgalore:
     input:
-        expand("results/agouti/{{sample}}/RNA_preproc/{{run}}_{R}.cor.fq",
+        expand("results/agouti/{{sample}}/RNA_preproc/{{run}}_{R}.cor.fq.gz",
             R=['R1', 'R2'])
     output:
         temp(expand("results/agouti/{{sample}}/RNA_preproc/{{run}}_trimgal_val_{i}.fq",
