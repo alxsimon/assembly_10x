@@ -26,7 +26,7 @@ rule all:
         expand("results/fasta/{sample}_v4.pseudohap.fasta.gz",
             sample=config['samples']),
         expand("results/fasta/{sample}_v5.pseudohap.fasta.gz",
-            sample=config['samples'])
+            sample=config['samples']),
         expand("results/busco/{sample}_{version}_{db}/run_{db}/short_summary.txt",
             sample=config['samples'], version=["v1", "v2", "v3", "v4", "v5"],
             db=["metazoa_odb10", "mollusca_odb10"]),
