@@ -1,6 +1,7 @@
 channels:
   - default
   - conda-forge
+  - bioconda
 dependencies:
   - python=2.7.15
   - samtools=1.10
