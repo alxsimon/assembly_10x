@@ -178,7 +178,7 @@ rule agouti_scaffolding:
         minMQ = 20,
         maxFracMM = 0.05
     conda: 
-        "../envs/py2.yaml"
+        "../envs/agouti.yaml"
     shell:
         """
         python /opt/agouti/agouti.py scaffold \
