@@ -177,6 +177,8 @@ rule agouti_scaffolding:
         outdir = lambda w: f'results/agouti/{w.sample}/agouti_out',
         minMQ = 20,
         maxFracMM = 0.05
+    log: 
+        "logs/agouti_{sample}.log"
     conda: 
         "../envs/agouti.yaml"
     shell:
@@ -186,7 +188,8 @@ rule agouti_scaffolding:
         -bam {input.bam} \
         -gff {input.gff} \
         -outdir {params.outdir} \
-        -minMQ {params.minMQ} -maxFracMM {params.maxFracMM}
+        -minMQ {params.minMQ} -maxFracMM {params.maxFracMM} \
+        > {log} 2>&1
 
         gzip -c {params.outdir}/agouti.agouti.fasta > {output}
         """
