@@ -137,9 +137,8 @@ rule map_RNAseq:
         config['agouti']['threads']
     shell:
         """
-        bwa-mem2 mem -t {threads} {input[2]} {input[0]} {input[1]} \
-        | samtools view -b -@ {threads} -o {output} \
-        > {log} 2>&1
+        bwa-mem2 mem -t {threads} {input[2]} {input[0]} {input[1]} 2> {log} \
+        | samtools view -b -@ {threads} -o {output}
         """
 
 def get_sample_rna_runs(w):
