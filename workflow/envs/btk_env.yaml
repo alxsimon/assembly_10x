@@ -17,3 +17,4 @@ dependencies:
   - pyvirtualdisplay
   - python-fastjsonschema
   - seqkit
+  - snakemake
