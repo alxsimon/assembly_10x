@@ -27,9 +27,9 @@ rule btk_prepare_conf:
         cp {input.conf} {output.conf}
         SC=$( grep '>' {input.fa} | wc -l )
         SP=$( grep -v '>' {input.fa} | wc -m )
-        sed -i "s/scaffold-count.*/scaffold-count: $SC/" {output.conf}
-        sed -i "s/span.*/span: $SP/" {output.conf}
-        sed -i "s/prefix.*/prefix: {wildcards.sample}_{wildcards.version}" {output.conf}
+        sed -i "s/scaffold-count.*/scaffold-count:\ $SC/" {output.conf}
+        sed -i "s/span.*/span:\ $SP/" {output.conf}
+        sed -i "s/prefix.*/prefix:\ {wildcards.sample}_{wildcards.version}/" {output.conf}
         """
 
 rule btk_insdc_pipeline:
