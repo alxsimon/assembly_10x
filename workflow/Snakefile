@@ -35,7 +35,8 @@ rule all:
         expand("results/kat/{sample}_{version}/{sample}_{version}_spectra.pdf",
             sample=config['samples'], version=["v1", "v2", "v3", "v4", "v5"]),
         "results/supernova_assemblies/supernova_assemblies_stats.csv",
-        "results/stats/assembly_stats.csv"
+        "results/stats/assembly_stats.csv",
+        "results/blobtoolkit/gallo_v5/gallo_v5/meta.json"
         
 
 include: "rules/preprocessing.smk"
@@ -46,3 +47,4 @@ include: "rules/busco.smk"
 include: "rules/kat.smk"
 include: "rules/stats.smk"
 include: "rules/agouti.smk"
+include: "rules/blobtoolkit.smk"

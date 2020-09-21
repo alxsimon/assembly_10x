@@ -45,3 +45,6 @@ busco:
 
 agouti:
   threads: 16
+
+btk:
+  threads: 16
