@@ -3,7 +3,7 @@
 rule btk_prepare_workdir:
     input:
         fa = "results/fasta/{sample}_{version}.pseudohap.fasta.gz",
-        multiext("results/preprocessing/{sample}/{sample}_dedup_proc_fastp",
+        fastqs = multiext("results/preprocessing/{sample}/{sample}_dedup_proc_fastp",
             "_R1_001.fastq.gz", "_R2_001.fastq.gz")
     output:
         fa = "results/blobtoolkit/{sample}_{version}/{sample}_{version}.fasta",
