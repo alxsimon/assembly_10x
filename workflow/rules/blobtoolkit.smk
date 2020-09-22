@@ -40,14 +40,14 @@ rule btk_insdc_pipeline:
         "results/blobtoolkit/{sample}_{version}/{sample}_{version}/meta.json"
     params:
         dir = lambda w: f'results/blobtoolkit/{w.sample}_{w.version}'   
-    container:
-        "containers/blobtoolkit_latest.sif"
+    conda:
+        "../envs/btk_env.yaml"
     threads:
         config['btk']['threads']
     shell:
         """
         snakemake -p \
-        -s /blobtoolkit/insdc-pipeline/Snakefile \
+        -s /opt/blobtoolkit/insdc-pipeline/Snakefile \
         --directory {params.dir} \
         --use-conda \
         --conda-prefix {params.dir}/.conda \
