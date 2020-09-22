@@ -2,7 +2,7 @@ rule reformat_fasta:
     input:
         "results/fasta/{sample}_v5.pseudohap.fasta.gz"
     output:
-        temp("results/anvio/{sample}/{sample}_v5.fa")
+        temp("results/anvio/{sample}/{sample}_v5.fa"),
         temp("results/anvio/{sample}/{sample}_fixed.fa")
     container: 
         "docker://meren/anvio:6.2"
