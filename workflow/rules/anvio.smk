@@ -58,6 +58,8 @@ rule filter_fasta:
     output:
         "results/fasta/{sample}_v6.pseudohap.fasta.gz",
         "results/anvio/{sample}/{sample}_trashed_scaff.fa"
+    params:
+        prefix = lambda w: config['scaff_prefix'][w.sample]
     conda: 
         "../envs/seqkit.yaml"
     shell:
