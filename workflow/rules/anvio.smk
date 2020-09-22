@@ -67,7 +67,7 @@ rule filter_fasta:
         seqkit grep -f <(tail -n +2 {input[0]} | cut -f 2) {input[1]} > {output[1]}
         seqkit grep -v -f <(tail -n +2 {input[0]} | cut -f 2) {input[1]} | \
         seqkit grep -v -s -r -p '^N+$' | \
-        seqkit sort --by-length --two-pass | \
+        seqkit sort --by-length -r --two-pass | \
         seqkit replace -p .+ -r "{params.prefix}_{{nr}}" --nr-width 6 | \
         gzip > {output[0]}
         """
