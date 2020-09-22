@@ -38,7 +38,7 @@ rule all:
             sample=config['samples'], version=["v1", "v2", "v3", "v4", "v5"]),
         "results/supernova_assemblies/supernova_assemblies_stats.csv",
         "results/stats/assembly_stats.csv",
-        "results/blobtoolkit/gallo_v6/gallo_v5/meta.json",
+#       "results/blobtoolkit/gallo_v6/gallo_v5/meta.json",
 #        expand("results/fasta/{sample}_v7.pseudohap.fasta.gz",
 #            sample=config['samples'])
         
