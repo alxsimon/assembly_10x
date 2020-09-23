@@ -51,5 +51,3 @@ similarity:
 taxon:
   taxid: 6550
   name: Mytilus edulis
-
-keep_intermediates: true
