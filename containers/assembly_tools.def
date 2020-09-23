@@ -96,7 +96,7 @@ From: ubuntu:20.04
 	git clone https://github.com/blobtoolkit/blobtools2
 	git clone https://github.com/blobtoolkit/viewer
 	git clone https://github.com/blobtoolkit/specification
-	git clone https://github.com/blobtoolkit/insdc-pipeline
+	git clone https://github.com/alxsimon/insdc-pipeline
 
 %apprun run
 	exec /bin/bash "$@"
