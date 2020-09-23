@@ -1,9 +1,9 @@
 # Prepare gff3 for genomes
 checkpoint split_fa_augustus:
     input:
-        "results/fasta/{sample}_v3.pseudohap.fasta.gz"
+        "results/fasta/{sample}_v4.pseudohap.fasta.gz"
     output:
-        "results/agouti/{sample}/{sample}_v3.pseudohap.fa",
+        "results/agouti/{sample}/{sample}_v4.pseudohap.fa",
         directory("results/agouti/{sample}/split")
     params:
         split_size = 50000000
@@ -19,7 +19,7 @@ checkpoint split_fa_augustus:
 
 rule augustus:
     input:
-        "results/agouti/{sample}/split/{sample}_v3.pseudohap.split.{i}.fa"
+        "results/agouti/{sample}/split/{sample}_v4.pseudohap.split.{i}.fa"
     output:
         "results/agouti/{sample}/split/pred_{i}.gff3"
     conda:
@@ -33,13 +33,13 @@ def aggregate_input_gff3(wildcards):
     checkpoint_output = checkpoints.split_fa_augustus.get(**wildcards).output[1]
     return expand("results/agouti/{sample}/split/pred_{i}.gff3",
            sample=wildcards.sample,
-           i=glob_wildcards(os.path.join(checkpoint_output, f"{wildcards.sample}_v3.pseudohap.split." + "{i}.fa")).i)
+           i=glob_wildcards(os.path.join(checkpoint_output, f"{wildcards.sample}_v4.pseudohap.split." + "{i}.fa")).i)
 
 rule aggregate_gff3:
     input:
         aggregate_input_gff3
     output:
-        "results/agouti/{sample}/{sample}_v3.pseudohap.gff3"
+        "results/agouti/{sample}/{sample}_v4.pseudohap.gff3"
     conda:
         "../envs/augustus.yaml"
     shell:
@@ -111,9 +111,9 @@ rule rna_trimgalore:
 # Map the RNAseq reads
 rule index_ref:
     input: 
-        "results/agouti/{sample}/{sample}_v3.pseudohap.fa"
+        "results/agouti/{sample}/{sample}_v4.pseudohap.fa"
     output:
-        multiext("results/agouti/{sample}/{sample}_v3.pseudohap.fa",
+        multiext("results/agouti/{sample}/{sample}_v4.pseudohap.fa",
             ".0123", ".amb", ".ann", ".bwt.2bit.64", ".bwt.8bit.32", ".pac")
     conda:
         "../envs/mapping.yaml"
@@ -124,8 +124,8 @@ rule map_RNAseq:
     input: 
         expand("results/agouti/{{sample}}/RNA_preproc/{{run}}_trimgal_val_{i}.fq",
             i=['1', '2']),
-        "results/agouti/{sample}/{sample}_v3.pseudohap.fa",
-        multiext("results/agouti/{sample}/{sample}_v3.pseudohap.fa",
+        "results/agouti/{sample}/{sample}_v4.pseudohap.fa",
+        multiext("results/agouti/{sample}/{sample}_v4.pseudohap.fa",
             ".0123", ".amb", ".ann", ".bwt.2bit.64", ".bwt.8bit.32", ".pac")
     output:
         "results/agouti/{sample}/mapping/{run}.bam"
@@ -168,11 +168,11 @@ rule merge_RNA_bams:
 # Run agouti on all that
 rule agouti_scaffolding:
     input: 
-        fa = "results/agouti/{sample}/{sample}_v3.pseudohap.fa",
+        fa = "results/agouti/{sample}/{sample}_v4.pseudohap.fa",
         bam = "results/agouti/{sample}/RNAseq_mapped_merged.bam",
-        gff = "results/agouti/{sample}/{sample}_v3.pseudohap.gff3"
+        gff = "results/agouti/{sample}/{sample}_v4.pseudohap.gff3"
     output: 
-        "results/fasta/{sample}_v4.pseudohap.fasta.gz"
+        "results/fasta/{sample}_v5.pseudohap.fasta.gz"
     params:
         outdir = lambda w: f'results/agouti/{w.sample}/agouti_out',
         minMQ = 20,
