@@ -48,7 +48,7 @@ rule btk_insdc_pipeline:
         -s /opt/blobtoolkit/insdc-pipeline/Snakefile \
         --directory {params.dir} \
         --use-conda \
-        --conda-prefix {params.dir}/.conda \
+        --conda-prefix .conda \
         --configfile {input.conf} \
         -j {threads} \
         --latency-wait 30 \
