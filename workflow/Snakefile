@@ -38,7 +38,8 @@ rule all:
             sample=config['samples'], version=["v1", "v2", "v3", "v4", "v5"]),
         "results/supernova_assemblies/supernova_assemblies_stats.csv",
         "results/stats/assembly_stats.csv",
-#       "results/blobtoolkit/gallo_v6/gallo_v5/meta.json",
+        expand("results/blobtoolkit/{sample}_v6/{sample}_v6/meta.json",
+            sample=config['samples']),
 #        expand("results/fasta/{sample}_v7.pseudohap.fasta.gz",
 #            sample=config['samples'])
         
@@ -52,6 +53,5 @@ include: "rules/kat.smk"
 include: "rules/stats.smk"
 include: "rules/agouti.smk"
 include: "rules/anvio.smk"
-include: "rules/clean.smk"
 include: "rules/blobtoolkit.smk"
 
