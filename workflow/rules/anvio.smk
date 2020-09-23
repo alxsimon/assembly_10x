@@ -37,7 +37,7 @@ rule run_hmms:
     input:
         "results/anvio/{sample}/{sample}.db"
     output:
-        multiext("results/anvio/{sample}/{sample}.db", ".hits", ".genes")
+        "results/anvio/{sample}/DONE_HMM"
     container: 
         "docker://meren/anvio:6.2"
     log:
@@ -47,8 +47,24 @@ rule run_hmms:
     shell: 
         """
         anvi-run-hmms -T {threads} -c {input} \
-        > {log} 2>&1
-        anvi-script-gen_stats_for_single_copy_genes.py {input}
+        > {log[0]} 2>&1
+        touch {output}
+        """
+
+rule gen_stats:
+    input:
+        "results/anvio/{sample}/{sample}.db"
+    output:
+        multiext("results/anvio/{sample}/{sample}.db", ".hits", ".genes")
+    container: 
+        "docker://meren/anvio:6.2"
+    log:
+        "logs/anvio_gen_stats.{sample}.log"
+    threads: 
+        config['anvio']['threads']
+    shell: 
+        """
+        anvi-script-gen_stats_for_single_copy_genes.py {input} > {log[1]} 2>&1
         """
 
 rule filter_fasta:
