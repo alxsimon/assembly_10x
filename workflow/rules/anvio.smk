@@ -1,8 +1,8 @@
 rule reformat_fasta:
     input:
-        "results/fasta/{sample}_v4.pseudohap.fasta.gz"
+        "results/fasta/{sample}_v5.pseudohap.fasta.gz"
     output:
-        temp("results/anvio/{sample}/{sample}_v4.fa"),
+        temp("results/anvio/{sample}/{sample}_v5.fa"),
         "results/anvio/{sample}/{sample}_fixed.fa"
     container: 
         "docker://meren/anvio:6.2"
@@ -72,7 +72,7 @@ rule filter_fasta:
         "results/anvio/{sample}/{sample}.db.hits",
         "results/anvio/{sample}/{sample}_fixed.fa"
     output:
-        "results/fasta/{sample}_v5.pseudohap.fasta.gz",
+        "results/fasta/{sample}_v6.pseudohap.fasta.gz",
         "results/anvio/{sample}/{sample}_trashed_scaff.fa"
     params:
         prefix = lambda w: config['scaff_prefix'][w.sample],
