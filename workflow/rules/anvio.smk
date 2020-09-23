@@ -47,7 +47,7 @@ rule run_hmms:
     shell: 
         """
         anvi-run-hmms -T {threads} -c {input} \
-        > {log[0]} 2>&1
+        > {log} 2>&1
         touch {output}
         """
 
@@ -64,7 +64,7 @@ rule gen_stats:
         config['anvio']['threads']
     shell: 
         """
-        anvi-script-gen_stats_for_single_copy_genes.py {input} > {log[1]} 2>&1
+        anvi-script-gen_stats_for_single_copy_genes.py {input} > {log} 2>&1
         """
 
 rule filter_fasta:
