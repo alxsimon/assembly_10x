@@ -5,6 +5,8 @@ rule btk_prepare_workdir:
             "_R1_001.fastq.gz", "_R2_001.fastq.gz")
     output:
         fa = "results/blobtoolkit/{sample}_{version}/{sample}_{version}.fasta",
+        GM1 = "results/blobtoolkit/{sample}_{version}/GM_1.fastq.gz",
+        GM2 = "results/blobtoolkit/{sample}_{version}/GM_2.fastq.gz"
     conda: 
         "../envs/btk_env.yaml"
     shell:
@@ -33,7 +35,9 @@ rule btk_prepare_conf:
 rule btk_insdc_pipeline:
     input:
         fa = "results/blobtoolkit/{sample}_{version}/{sample}_{version}.fasta",
-        conf = "results/blobtoolkit/{sample}_{version}/{sample}_{version}.yaml"
+        conf = "results/blobtoolkit/{sample}_{version}/{sample}_{version}.yaml",
+        GM1 = "results/blobtoolkit/{sample}_{version}/GM_1.fastq.gz",
+        GM2 = "results/blobtoolkit/{sample}_{version}/GM_2.fastq.gz"
     output:
         "results/blobtoolkit/{sample}_{version}/{sample}_{version}/meta.json"
     params:
