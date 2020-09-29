@@ -11,7 +11,7 @@ rule btk_prepare_workdir:
         "../envs/btk_env.yaml"
     shell:
         """
-        zcat {input.fa} > {output.fa}
+        zcat {input.fa} | seqkit grep -v -s -r -p '^N+$' > {output.fa}
         ln -s {input[1]} results/blobtoolkit/{wildcards.sample}_{wildcards.version}/GM_1.fastq.gz
         ln -s {input[2]} results/blobtoolkit/{wildcards.sample}_{wildcards.version}/GM_2.fastq.gz
         """
