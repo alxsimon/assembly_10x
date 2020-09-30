@@ -91,11 +91,8 @@ From: ubuntu:20.04
 	git clone https://github.com/svm-zhang/AGOUTI.git /opt/agouti
 
 	## Blobtoolkit ##
-	mkdir -p /opt/blobtoolkit;
-	cd /opt/blobtoolkit;
-	git clone https://github.com/blobtoolkit/blobtools2
-	git clone https://github.com/blobtoolkit/viewer
-	git clone https://github.com/blobtoolkit/specification
+	mkdir -p /opt/blobtoolkit
+	cd /opt/blobtoolkit
 	git clone https://github.com/alxsimon/insdc-pipeline
 
 %apprun run
