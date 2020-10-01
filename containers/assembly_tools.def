@@ -93,6 +93,10 @@ From: ubuntu:20.04
 	## Blobtoolkit ##
 	mkdir -p /opt/blobtoolkit
 	cd /opt/blobtoolkit
+	wget https://github.com/blobtoolkit/blobtools2/archive/2.3.3.tar.gz
+	tar -xzf 2.3.3.tar.gz
+	mv blobtools2-2.3.3 blobtools2
+	rm 2.3.3.tar.gz
 	git clone https://github.com/alxsimon/insdc-pipeline
 
 %apprun run
