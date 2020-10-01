@@ -65,7 +65,7 @@ rule btk_clean:
     output:
         "results/blobtoolkit/blobdirs/{sample}_{version}/meta.json"
     params:
-        indir = lambda w, input: os.path.dirname(input[0])
+        indir = lambda w, input: os.path.dirname(input[0]),
         outdir = lambda w, output: os.path.dirname(output[0])
     shell:
         """
