@@ -59,3 +59,15 @@ rule btk_insdc_pipeline:
         --resources btk=1
         """
 
+rule btk_clean:
+    input:
+        "results/blobtoolkit/{sample}_{version}/{sample}_{version}/meta.json"
+    output:
+        "results/blobtoolkit/blobdirs/{sample}_{version}/meta.json"
+    params:
+        indir = lambda w, input: os.path.dirname(input[0])
+        outdir = lambda w, output: os.path.dirname(output[0])
+    shell:
+        """
+        mv {params.indir} {params.outdir}
+        """
