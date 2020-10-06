@@ -73,7 +73,7 @@ rule btk_clean:
     shell:
         """
         cp {input[1]} {output[1]}
-        cp -r {params.indir} results/blobdirs/ && \
+        cp -r {params.indir} results/blobtoolkit/blobdirs/ && \
         tar -czf {output[2]} {params.tardir} && \
         rm -r {params.tardir}
         """
