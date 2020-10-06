@@ -61,13 +61,20 @@ rule btk_insdc_pipeline:
 
 rule btk_clean:
     input:
-        "results/blobtoolkit/{sample}_{version}/{sample}_{version}/meta.json"
+        "results/blobtoolkit/{sample}_{version}/{sample}_{version}/meta.json",
+        "results/blobtoolkit/{sample}_{version}/{sample}_{version}.yaml"
     output:
-        "results/blobtoolkit/blobdirs/{sample}_{version}/meta.json"
+        "results/blobtoolkit/blobdirs/{sample}_{version}/meta.json",
+        "results/blobtoolkit/{sample}_{version}.yaml",
+        "results/blobtoolkit/{sample}_{version}_insdc_pipeline.tar.gz"
     params:
         indir = lambda w, input: os.path.dirname(input[0]),
-        outdir = lambda w, output: os.path.dirname(output[0])
+        outdir = lambda w, output: os.path.dirname(output[0]),
+        tardir = lambda w: f'results/blobtoolkit/{w.sample}_{w.version}'
     shell:
         """
-        mv {params.indir} {params.outdir}
+        cp {input[0]} {input[1]}
+        mv {params.indir} {params.outdir} && \
+        tar -czf {output[2]} {params.tardir} && \
+        rm -r {params.tardir}
         """

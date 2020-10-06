@@ -38,7 +38,7 @@ rule all:
             sample=config['samples'], version=["v1", "v2", "v3", "v4", "v5"]),
         "results/supernova_assemblies/supernova_assemblies_stats.csv",
         "results/stats/assembly_stats.csv",
-        expand("results/blobtoolkit/{sample}_v5/{sample}_v5/meta.json",
+        expand("results/blobtoolkit/blobdirs/{sample}_v5/meta.json",
             sample=config['samples']),
         
 
@@ -50,6 +50,5 @@ include: "rules/busco.smk"
 include: "rules/kat.smk"
 include: "rules/stats.smk"
 include: "rules/agouti.smk"
-#include: "rules/anvio.smk"
 include: "rules/blobtoolkit.smk"
 
