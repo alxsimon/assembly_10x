@@ -73,8 +73,8 @@ rule btk_clean:
         tardir = lambda w: f'results/blobtoolkit/{w.sample}_{w.version}'
     shell:
         """
-        cp {input[0]} {input[1]}
-        mv {params.indir} {params.outdir} && \
+        cp {input[1]} {output[1]}
+        cp -r {params.indir} {params.outdir} && \
         tar -czf {output[2]} {params.tardir} && \
         rm -r {params.tardir}
         """
