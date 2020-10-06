@@ -69,12 +69,11 @@ rule btk_clean:
         "results/blobtoolkit/{sample}_{version}_insdc_pipeline.tar.gz"
     params:
         indir = lambda w, input: os.path.dirname(input[0]),
-        outdir = lambda w, output: os.path.dirname(output[0]),
         tardir = lambda w: f'results/blobtoolkit/{w.sample}_{w.version}'
     shell:
         """
         cp {input[1]} {output[1]}
-        cp -r {params.indir} {params.outdir} && \
+        cp -r {params.indir} results/blobdirs/ && \
         tar -czf {output[2]} {params.tardir} && \
         rm -r {params.tardir}
         """
