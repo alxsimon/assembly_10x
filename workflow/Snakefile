@@ -40,6 +40,8 @@ rule all:
         "results/stats/assembly_stats.csv",
         expand("results/blobtoolkit/blobdirs/{sample}_v5/meta.json",
             sample=config['samples']),
+        expand("results/fasta/{sample}_v5.cleaned.fasta.gz",
+            sample=config['samples'])
         
 
 include: "rules/preprocessing.smk"
@@ -51,4 +53,5 @@ include: "rules/kat.smk"
 include: "rules/stats.smk"
 include: "rules/agouti.smk"
 include: "rules/blobtoolkit.smk"
+include: "rules/cleaning.smk"
 
