@@ -10,6 +10,6 @@ rule clean_fasta:
     shell:
         """
         seqkit replace -is -p "^N+|N+$" -r "" {input} \
-        | seqkit grep -f <(seqkit fx2tab -n -i --gc --length -B N /dev/stdin | awk '($2 > 1000 && $4 < 90) {print $1}') \
+        | seqkit grep -f <(seqkit fx2tab -n -i --gc --length -B N /dev/stdin | awk '($2 > 1000 && $4 < 90) {{print $1}}') \
         | gzip -c > {output}
         """
