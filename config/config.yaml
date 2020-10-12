@@ -50,6 +50,9 @@ anvio:
 btk:
   threads: 16
 
+phyloligo:
+  threads: 16
+
 scaff_prefix:
   gallo: mg
   edu: me
