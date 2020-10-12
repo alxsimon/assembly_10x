@@ -9,7 +9,9 @@ rule clean_fasta:
         "../envs/seqkit.yaml"
     shell:
         """
-        seqkit replace -is -p "^N+|N+$" -r "" {input} \
-        | seqkit grep -f <(seqkit fx2tab -n -i --gc --length -B N /dev/stdin | awk '($2 > 1000 && $4 < 90) {{print $1}}') \
-        | gzip -c > {output}
+        seqkit replace -is -p "^N+|N+$" -r "" {input} > {input}_tmp
+        seqkit fx2tab -n -i --gc --length -B N {input}_tmp \
+        | awk '($2 > 1000 && $4 < 90) {{print $1}}' > {input}_filt_list
+        seqkit grep -f {input}_filt_list | gzip -c > {output}
+        rm {input}_tmp {input}_filt_list
         """
