@@ -12,6 +12,6 @@ rule clean_fasta:
         seqkit replace -is -p "^N+|N+$" -r "" {input} > {input}_tmp
         seqkit fx2tab -n -i --gc --length -B N {input}_tmp \
         | awk '($2 > 1000 && $4 < 90) {{print $1}}' > {input}_filt_list
-        seqkit grep -f {input}_filt_list | gzip -c > {output}
+        seqkit grep -f {input}_filt_list {input}_tmp | gzip -c > {output}
         rm {input}_tmp {input}_filt_list
         """
