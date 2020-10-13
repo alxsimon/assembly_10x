@@ -122,7 +122,7 @@ rule recursive_decontamination:
         "results/phyloligo/{sample}/contalocate/DONE"
     params:
         dist = "JSD",
-        wd = lambda w: f'results/phyloligo/{w.sample}/contalocate'
+        wd = lambda w: f'results/phyloligo/{w.sample}/contalocate/'
     conda: 
         "../envs/phyloligo.yaml"
     threads:
