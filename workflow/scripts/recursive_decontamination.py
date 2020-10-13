@@ -36,7 +36,7 @@ for cl in conta:
 
     # run contalocate on previous filtration round
     contalocate_cmd = f'\
-        ../scripts/contalocate.R \
+        scripts/contalocate.R \
         -i {tmp_genome} -r {host} -c {cl}'
     shell(contalocate_cmd)
 
