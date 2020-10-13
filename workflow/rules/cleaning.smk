@@ -107,16 +107,16 @@ rule blast_clust:
 #         -u {threads} -d {params.dist} -W {params.wd}
 #         """
 
-def get_clusters(w):
+def get_clusters(wildcards):
     checkpoint_output = checkpoints.clustering.get(**wildcards).output[0]
     return expand("results/phyloligo/{sample}/data_fasta_{cl}.fa",
-        sample=w.sample,
+        sample=wildcards.sample,
         cl=glob_wildcards(os.path.join(checkpoint_output, "data_fasta_{cl}.fa")).cl)
 
 rule recursive_decontamination:
     input: 
         "results/phyloligo/{sample}/{sample}_v5.cleaned.fa",
-        get_clusters()
+        get_clusters
     output:
         directory("results/phyloligo/{sample}/contalocate"),
         "results/phyloligo/{sample}/contalocate/DONE"
