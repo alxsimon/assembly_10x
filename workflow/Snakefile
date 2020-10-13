@@ -41,8 +41,7 @@ rule all:
         expand("results/blobtoolkit/blobdirs/{sample}_v5/meta.json",
             sample=config['samples']),
         expand("results/fasta/{sample}_v5.cleaned.fasta.gz",
-            sample=config['samples']), 
-        "results/fasta/edu_v6.pseudohap.fasta.gz"
+            sample=config['samples'])
 
 
 include: "rules/preprocessing.smk"
