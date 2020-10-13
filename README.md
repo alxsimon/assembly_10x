@@ -16,7 +16,7 @@ To run use:
 ```
 conda activate snake_env
 
-snakemake --use-conda --conda-prefix .conda \
+snakemake --use-conda --conda-frontend mamba --conda-prefix .conda \
 --use-singularity --singularity-args "-B /nas_sea:/nas_sea" \
 -j {threads}
 ```

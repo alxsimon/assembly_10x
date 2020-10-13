@@ -22,13 +22,14 @@ rule prepare_fasta:
     input: 
         "results/fasta/{sample}_v5.cleaned.fasta.gz"
     output: 
-        "results/phyloligo/{sample}/{sample}.20p.fa",
-        "results/phyloligo/{sample}/{sample}_v5.cleaned.fa"
+        "results/phyloligo/{sample}/{sample}_v5.cleaned.fa",
+        "results/phyloligo/{sample}/{sample}.20p.fa"
     conda: 
         "../envs/phyloligo.yaml"
     shell:
         """
-        phylopreprocess.py -i <(zcat {input}) -g 20 -r -o {output}
+        zcat {input} > {output[0]}
+        phylopreprocess.py -i {output[0]} -g 20 -r -o {output[1]}
         """
 
 rule distance_matrix:
