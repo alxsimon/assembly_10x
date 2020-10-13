@@ -1,5 +1,7 @@
 #! /usr/bin/env python
 
+from snakemake.shell import shell
+
 genome = snakemake.input[0]
 clusters = snakemake.input[1:]
 N = len(clusters)
