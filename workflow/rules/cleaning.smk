@@ -86,26 +86,26 @@ rule blast_clust:
         """
 
 
-rule Kount:
-    input: 
-        asm = "results/phyloligo/{sample}/{sample}_v5.cleaned.fa",
-        host = "...",
-        conta = "..."
-    output:
-        "{sample}_v5.cleaned.fa.mcp_hostwindows_vs_host_{sample}_host.fa_KL.dist",
-        "{sample}_v5.cleaned.fa.mcp_hostwindows_vs_conta_{sample}_{cl}.fa_KL.dist"
-    params:
-        dist = "JSD",
-        wd = lambda w: f'results/phyloligo/{w.sample}'
-    conda: 
-        "../envs/phyloligo.yaml"
-    threads:
-        config['phyloligo']['threads']
-    shell:
-        """
-        Kount.py -i {input.asm} -r {input.host} -c {input.conta} \
-        -u {threads} -d {params.dist} -W {params.wd}
-        """
+# rule Kount:
+#     input: 
+#         asm = "results/phyloligo/{sample}/{sample}_v5.cleaned.fa",
+#         host = "...",
+#         conta = "..."
+#     output:
+#         "{sample}_v5.cleaned.fa.mcp_hostwindows_vs_host_{sample}_host.fa_KL.dist",
+#         "{sample}_v5.cleaned.fa.mcp_hostwindows_vs_conta_{sample}_{cl}.fa_KL.dist"
+#     params:
+#         dist = "JSD",
+#         wd = lambda w: f'results/phyloligo/{w.sample}'
+#     conda: 
+#         "../envs/phyloligo.yaml"
+#     threads:
+#         config['phyloligo']['threads']
+#     shell:
+#         """
+#         Kount.py -i {input.asm} -r {input.host} -c {input.conta} \
+#         -u {threads} -d {params.dist} -W {params.wd}
+#         """
 
 def get_clusters(w):
     checkpoint_output = checkpoints.clustering.get(**wildcards).output[0]
