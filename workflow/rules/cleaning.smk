@@ -119,7 +119,6 @@ rule recursive_decontamination:
         "results/phyloligo/{sample}/{sample}_v5.cleaned.fa",
         get_clusters
     output:
-        directory("results/phyloligo/{sample}/contalocate"),
         "results/phyloligo/{sample}/contalocate/DONE"
     params:
         dist = "JSD",
