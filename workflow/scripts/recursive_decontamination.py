@@ -30,6 +30,7 @@ for cl in conta:
     kount_cmd = f'\
         Kount.py -u {snakemake.threads} \
         -i {tmp_genome} -r {host} -c {cl} \
+        -t 5000 -w 20000 -p 110101 \
         -d {snakemake.params.dist} \
         -W {snakemake.params.wd}'
     shell(kount_cmd)
@@ -38,6 +39,7 @@ for cl in conta:
     contalocate_cmd = f'\
         workflow/scripts/contalocate.R \
         -i {tmp_genome} -r {host} -c {cl} \
+        --win_step 5000 --win_size 20000 \
         -d {snakemake.params.dist} \
         -W {snakemake.params.wd}'
     shell(contalocate_cmd)
