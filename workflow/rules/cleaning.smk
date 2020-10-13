@@ -119,7 +119,10 @@ rule recursive_decontamination:
         "results/phyloligo/{sample}/{sample}_v5.cleaned.fa",
         get_clusters
     output:
-        "results/phyloligo/{sample}/contalocate/DONE"
+        "results/phyloligo/{sample}/contalocate/DONE",
+        "results/fasta/{sample}_v6.pseudohap.fasta.gz",
+        "results/fasta/{sample}_v6.contaminants.fasta.gz",
+        "results/fasta/{sample}_v6.contaminants.gff"
     params:
         dist = "JSD",
         wd = lambda w: f'results/phyloligo/{w.sample}/contalocate/'

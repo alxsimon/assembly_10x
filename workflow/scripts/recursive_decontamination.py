@@ -53,4 +53,8 @@ for cl in conta:
 
     tmp_genome = new_genome
 
-shell(f'touch {snakemake.output[1]}')
+shell(f'touch {snakemake.output[0]}')
+
+shell(f'gzip -c {tmp_genome} > {snakemake.output[1]}')
+shell(f'cat {snakemake.params.wd}*.gff > {snakemake.output[3]}')
+shell(f'seqkit grep -f {snakemake.output[3]} | gzip -c > {snakemake.output[2]}')
