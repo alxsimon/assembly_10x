@@ -25,7 +25,7 @@ host = sorted_clust[0]
 conta = sorted_clust[1:]
 
 tmp_genome = genome
-for cl in sorted_clust:
+for cl in conta:
     kount_cmd = f'\
         Kount.py -u {snakemake.threads} \
         -i {tmp_genome} -r {host} -c {cl} \
