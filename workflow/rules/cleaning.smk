@@ -110,9 +110,9 @@ checkpoint clustering:
 
 def get_clusters(wildcards):
     checkpoint_output = checkpoints.clustering.get(**wildcards).output[0]
-    return expand("results/phyloligo/{sample}/{sample}_clust/data_fasta_{cl}.fa",
+    return expand("results/phyloligo/{sample}/{sample}_clust/data_fasta_cl{num}.fa",
         sample=wildcards.sample,
-        cl=glob_wildcards(os.path.join(checkpoint_output, "data_fasta_{cl}.fa")).cl)
+        cl=glob_wildcards(os.path.join(checkpoint_output, "data_fasta_cl{num}.fa")).num)
 
 rule recursive_decontamination:
     input: 
@@ -121,8 +121,6 @@ rule recursive_decontamination:
     output:
         directory("results/phyloligo/{sample}/contalocate"),
         "results/phyloligo/{sample}/contalocate/DONE"
-    wildcard_constraints:
-        cl = 'cl[0-9]+'
     params:
         dist = "JSD",
         wd = lambda w: f'results/phyloligo/{w.sample}/contalocate'
