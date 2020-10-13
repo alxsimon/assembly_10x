@@ -69,7 +69,7 @@ data=list()
 #  data[["host"]]=read.delim(file=input_path, header=F)
 #}
 
-input_path=paste(working_dir, basename(genome_fasta),".mcp_hostwindows_vs_host_",dist,".dist",sep="")
+input_path=paste(working_dir, basename(genome_fasta),".mcp_hostwindows_vs_host_",basename(host_sample_fasta),"_",dist,".dist",sep="")
 data[["host"]]=read.delim(file=input_path, header=F)
 
 input_path=paste(working_dir, basename(genome_fasta),".mcp_hostwindows_vs_conta_",basename(conta_sample_fasta),"_",dist,".dist",sep="")
