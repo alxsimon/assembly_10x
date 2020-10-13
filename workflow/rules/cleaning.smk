@@ -52,7 +52,7 @@ rule distance_matrix:
 
 checkpoint clustering:
     input: 
-        fa = "results/phyloligo/{sample}/{sample}.20p.fa",
+        fa = "results/phyloligo/{sample}/{sample}.25p.fa",
         mat = "results/phyloligo/{sample}/{sample}.JSD.mat"
     output: 
         directory("results/phyloligo/{sample}/{sample}_clust")
