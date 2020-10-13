@@ -121,6 +121,8 @@ rule recursive_decontamination:
     output:
         directory("results/phyloligo/{sample}/contalocate"),
         "results/phyloligo/{sample}/contalocate/DONE"
+    wildcard_constraints:
+        cl = 'cl[0-9]+'
     params:
         dist = "JSD",
         wd = lambda w: f'results/phyloligo/{w.sample}/contalocate'
