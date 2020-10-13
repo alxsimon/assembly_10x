@@ -29,7 +29,7 @@ rule prepare_fasta:
     shell:
         """
         zcat {input} > {output[0]}
-        seqkit sample -p 0.25 --rand-seed 9999 {output[0]} > {output[1]}
+        phylopreprocess.py -i {output[0]} -g 25 -r -o {output[1]}
         """
 
 rule distance_matrix:
