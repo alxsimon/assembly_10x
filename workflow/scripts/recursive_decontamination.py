@@ -38,7 +38,8 @@ for cl in conta:
     contalocate_cmd = f'\
         workflow/scripts/contalocate.R \
         -i {tmp_genome} -r {host} -c {cl} \
-        -d {snakemake.params.dist}'
+        -d {snakemake.params.dist} \
+        -W {snakemake.params.wd}'
     shell(contalocate_cmd)
 
     conta_gff = f'{tmp_genome}_contaminant_{cl}.gff'
