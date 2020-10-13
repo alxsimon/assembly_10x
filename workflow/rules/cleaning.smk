@@ -112,7 +112,7 @@ def get_clusters(wildcards):
     checkpoint_output = checkpoints.clustering.get(**wildcards).output[0]
     return expand("results/phyloligo/{sample}/{sample}_clust/data_fasta_cl{num}.fa",
         sample=wildcards.sample,
-        cl=glob_wildcards(os.path.join(checkpoint_output, "data_fasta_cl{num}.fa")).num)
+        num=glob_wildcards(os.path.join(checkpoint_output, "data_fasta_cl{num}.fa")).num)
 
 rule recursive_decontamination:
     input: 
