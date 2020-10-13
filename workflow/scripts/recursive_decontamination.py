@@ -37,7 +37,8 @@ for cl in conta:
     # run contalocate on previous filtration round
     contalocate_cmd = f'\
         workflow/scripts/contalocate.R \
-        -i {tmp_genome} -r {host} -c {cl}'
+        -i {tmp_genome} -r {host} -c {cl} \
+        -d {snakemake.params.dist}'
     shell(contalocate_cmd)
 
     conta_gff = f'{tmp_genome}_contaminant_{cl}.gff'
