@@ -41,8 +41,9 @@ rule all:
         expand("results/blobtoolkit/blobdirs/{sample}_v5/meta.json",
             sample=config['samples']),
         expand("results/fasta/{sample}_v5.cleaned.fasta.gz",
-            sample=config['samples'])
-        
+            sample=config['samples']), 
+        "results/phyloligo/edu/contalocate/DONE"
+
 
 include: "rules/preprocessing.smk"
 include: "rules/genomescope.smk"
