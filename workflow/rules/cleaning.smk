@@ -59,32 +59,32 @@ checkpoint clustering:
         phyloselect.py -i {input.mat} -m hdbscan -f {input.fa} -t -o {output}
         """
 
-rule blast_makedb:
-    input:
-        "resources/Fraisse2016_contigs.fasta"
-    output:
-        "resources/Fraisse2016_contigs.fasta.ndb"
-    conda:
-        "../envs/blast.yaml"
-    shell:
-        """
-        makeblastdb -in {input} -dbtype nucl -title 'Fraisse2016_contigs'
-        """
+# rule blast_makedb:
+#     input:
+#         "resources/Fraisse2016_contigs.fasta"
+#     output:
+#         "resources/Fraisse2016_contigs.fasta.ndb"
+#     conda:
+#         "../envs/blast.yaml"
+#     shell:
+#         """
+#         makeblastdb -in {input} -dbtype nucl -title 'Fraisse2016_contigs'
+#         """
 
-rule blast_clust:
-    input:
-        db = "resources/Fraisse2016_contigs.fasta.ndb",
-        fa = "results/phyloligo/{sample}/{sample}_clust/data_fasta_{cl}.fa"
-    output:
-        "results/phyloligo/{sample}/{sample}_clust/data_blastn_{cl}.txt"
-    params:
-        db = lambda w, input: re.sub('\.ndb', '', input.db)
-    conda:
-        "../envs/blast.yaml"
-    shell:
-        """
-        blastn -query {input.fa} -db {params.db} -outfmt 6 > {output}
-        """
+# rule blast_clust:
+#     input:
+#         db = "resources/Fraisse2016_contigs.fasta.ndb",
+#         fa = "results/phyloligo/{sample}/{sample}_clust/data_fasta_{cl}.fa"
+#     output:
+#         "results/phyloligo/{sample}/{sample}_clust/data_blastn_{cl}.txt"
+#     params:
+#         db = lambda w, input: re.sub('\.ndb', '', input.db)
+#     conda:
+#         "../envs/blast.yaml"
+#     shell:
+#         """
+#         blastn -query {input.fa} -db {params.db} -outfmt 6 > {output}
+#         """
 
 
 # rule Kount:
@@ -110,7 +110,7 @@ rule blast_clust:
 
 def get_clusters(wildcards):
     checkpoint_output = checkpoints.clustering.get(**wildcards).output[0]
-    return expand("results/phyloligo/{sample}/data_fasta_{cl}.fa",
+    return expand("results/phyloligo/{sample}/{sample}_clust/data_fasta_{cl}.fa",
         sample=wildcards.sample,
         cl=glob_wildcards(os.path.join(checkpoint_output, "data_fasta_{cl}.fa")).cl)
 
