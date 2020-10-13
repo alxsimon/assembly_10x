@@ -4,8 +4,6 @@ from snakemake.shell import shell
 
 genome = snakemake.input[0]
 clusters = snakemake.input[1:]
-N = len(clusters)
-print(f'Analysing {N} clusters')
 
 n_seq={}
 for clust_file in clusters:
@@ -17,12 +15,15 @@ for clust_file in clusters:
     n_seq[clust_file] = n
 
 sorted_clust = sorted(n_seq, reverse=True)
-print(sorted_clust)
 
-# the number of sequences blasted on Mytilus contigs is taken
+# the number of sequences is taken
 # as proxy for the host cluster
+# and the order of the higher to lower contamination
 host = sorted_clust[0]
 conta = sorted_clust[1:]
+
+N = len(conta)
+print(f'Analysing {N} clusters of potential contaminants')
 
 tmp_genome = genome
 for cl in conta:
