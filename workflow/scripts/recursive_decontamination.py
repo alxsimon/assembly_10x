@@ -17,18 +17,35 @@ for clust_file in clusters:
 sorted_clust = sorted(n_seq, reverse=True)
 print(sorted_clust)
 
+# the number of sequences blasted on Mytilus contigs is taken
+# as proxy for the host cluster
 host = sorted_clust[0]
 conta = sorted_clust[1:]
 
+tmp_genome = genome
 for cl in sorted_clust:
     kount_cmd = f'\
         Kount.py -u {snakemake.threads} \
-        -i {genome} -r {host} -c {cl} \
+        -i {tmp_genome} -r {host} -c {cl} \
         -d {snakemake.params.dist} \
         -W {snakemake.params.wd}'
     shell(kount_cmd)
 
+    # run contalocate on previous filtration round
     contalocate_cmd = f'\
         ../scripts/contalocate.R \
-        -i {genome} -r {host} -c {cl}'
-    
+        -i {tmp_genome} -r {host} -c {cl}'
+    shell(contalocate_cmd)
+
+    conta_gff = f'{tmp_genome}_contaminant_{cl}.gff'
+
+    #filter on the output
+    new_genome = f'{tmp_genome}-{cl}'
+    seqkit_cmd = f'\
+        seqkit grep -f <(tail -n +2 {conta_gff} | cut -f 1) \
+        {tmp_genome} > {new_genome}'
+    shell(seqkit_cmd)
+
+    tmp_genome = new_genome
+
+shell(f'touch {snakemake.output[1]}')

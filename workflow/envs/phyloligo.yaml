@@ -4,3 +4,4 @@ channels:
   - itsmeludo
 dependencies:
   - phyloligo
+  - seqkit
