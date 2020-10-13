@@ -148,7 +148,7 @@ if (! is.null(opt[["manual_threshold"]])) {
 
 ### Perform the split over the double threshold
 
-data[["Select_conta"]]=which((data[["conta"]][,4]<= threshold_conta )* (data[["host"]][,4]>= threshold_host)>=1)
+data[["Select_conta"]]=which((data[["conta"]][,4] <= threshold_conta)*(data[["host"]][,4] >= threshold_host)>=1)
 data[["windows_conta"]]=data[["conta"]][data[["Select_conta"]],]
 
 ### Regroups contiguous windows into islands and write a GFF file of the positions of the targeted species

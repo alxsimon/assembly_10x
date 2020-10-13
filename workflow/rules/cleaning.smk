@@ -23,24 +23,24 @@ rule prepare_fasta:
         "results/fasta/{sample}_v5.cleaned.fasta.gz"
     output: 
         "results/phyloligo/{sample}/{sample}_v5.cleaned.fa",
-        "results/phyloligo/{sample}/{sample}.20p.fa"
+        "results/phyloligo/{sample}/{sample}.25p.fa"
     conda: 
         "../envs/phyloligo.yaml"
     shell:
         """
         zcat {input} > {output[0]}
-        phylopreprocess.py -i {output[0]} -g 20 -r -o {output[1]}
+        seqkit sample -p 0.25 --rand-seed 9999 {output[0]} > {output[1]}
         """
 
 rule distance_matrix:
     input: 
-        "results/phyloligo/{sample}/{sample}.20p.fa"
+        "results/phyloligo/{sample}/{sample}.25p.fa"
     output: 
         "results/phyloligo/{sample}/{sample}.JSD.mat"
     conda: 
         "../envs/phyloligo.yaml"
     threads: 
-        config['phyloligo']['threads']
+        workflow.cores
     shell:
         """
         phyloligo.py -i {input} -d JSD --method joblib -c {threads} -o {output}
@@ -129,6 +129,6 @@ rule recursive_decontamination:
     conda: 
         "../envs/phyloligo.yaml"
     threads:
-        config['phyloligo']['threads']
+        workflow.cores
     script:
         "../scripts/recursive_decontamination.py"
