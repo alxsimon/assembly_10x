@@ -51,7 +51,9 @@ rule extract_potential_conta:
 
 rule prepare_fasta:
     input: 
-        "results/fasta/{sample}_v5.cleaned.fasta.gz"
+        "results/fasta/{sample}_v5.cleaned.fasta.gz",
+        "results/phyloligo/{sample}/{sample}.btk_conta.fa",
+        "results/phyloligo/{sample}/{sample}.btk_mollusca.fa"
     output: 
         "results/phyloligo/{sample}/{sample}_v5.cleaned.fa",
         "results/phyloligo/{sample}/{sample}.subsample.fa"
