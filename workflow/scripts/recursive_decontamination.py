@@ -18,7 +18,7 @@ for clust_file in clusters:
                 n += 1
     n_seq[clust_file] = n
 
-sorted_clust = sorted(n_seq, reverse=True)
+sorted_clust = sorted(n_seq, key=n_seq.__getitem__, reverse=True)
 
 # the number of sequences is taken
 # as proxy for the host cluster
