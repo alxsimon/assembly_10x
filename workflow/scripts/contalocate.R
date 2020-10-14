@@ -40,9 +40,9 @@ genome_fasta = opt[["genome"]]
 
 conta_sample_fasta = opt[["conta_learn"]]
 if (is.null(opt[["host_learn"]])) {host_sample_fasta <- ""} else {host_sample_fasta <- opt[["host_learn"]]}
-if (is.null(opt[["distance"]])) {distance <- "KL"}
-if (is.null(opt[["win_step"]])) {win_step <- 500}
-if (is.null(opt[["win_size"]])) {win_size <- 5000}
+if (is.null(opt[["distance"]])) {distance <- "KL"} else {distance <- opt[["distance"]]}
+if (is.null(opt[["win_step"]])) {win_step <- 500} else {win_step <- opt[["win_step"]]}
+if (is.null(opt[["win_size"]])) {win_size <- 5000} else {win_size <- opt[["win_size"]]}
 
 ### compute profiles:
 data=list()
