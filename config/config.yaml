@@ -52,7 +52,7 @@ btk:
 
 phyloligo:
   perc_sampling: 10
-  pattern: "11111"
+  pattern: "1111"
   win_step: 500
   win_size: 5000
   dist_matrix: "JSD"
