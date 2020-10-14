@@ -18,7 +18,7 @@ rule clean_fasta:
 
 rule get_potential_conta:
     input:
-        expand("results/blobtoolkit/blobdirs/{sample}_v5/meta.json",
+        expand("results/blobtoolkit/blobdirs/{sample}_v5/bestsumorder_phylum.json",
             sample=config['samples'])
     output:
         "results/phyloligo/potential_conta_btk_phylum.json"
