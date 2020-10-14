@@ -16,6 +16,9 @@ rule clean_fasta:
         rm {input}_tmp {input}_filt_list
         """
 
+#===============================
+# Contamination removal with phyloligo
+
 rule get_potential_conta:
     input:
         expand("results/blobtoolkit/blobdirs/{sample}_v5/bestsumorder_phylum.json",
@@ -33,9 +36,19 @@ rule get_potential_conta:
         with open(output[0], 'w') as fw:
             json.dump(phylums, fw, indent=2)
 
+rule extract_potential_conta:
+    input:
+        "results/phyloligo/potential_conta_btk_phylum.json",
+        directory("results/blobtoolkit/blobdirs/{sample}_v5"),
+        "results/fasta/{sample}_v5.cleaned.fasta.gz"
+    output:
+        "results/phyloligo/{sample}/{sample}.btk_conta.fa",
+        "results/phyloligo/{sample}/{sample}.btk_mollusca.fa"
+    conda:
+        "../envs/seqkit.yaml"
+    script:
+        "../scripts/btk_extraction.py"
 
-#===============================
-# Contamination removal with phyloligo
 rule prepare_fasta:
     input: 
         "results/fasta/{sample}_v5.cleaned.fasta.gz"
