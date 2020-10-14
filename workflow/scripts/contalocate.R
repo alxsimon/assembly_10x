@@ -11,11 +11,6 @@
 
 library(getopt)
 
-### Standard parameters
-win_step=500 #bp: sliding step
-win_size=5000 #bp:window size for composition computation
-dist="KL"
-
 spec <- matrix(c(
         'genome'         , 'i', 1, "character", "Multifasta of the genome assembly (required)",
         'host_learn'     , 'r', 2, "character", "Host training set (optional)",
@@ -44,38 +39,19 @@ if (!is.null(opt[["outputdir"]]) ) {
 genome_fasta = opt[["genome"]]
 
 conta_sample_fasta = opt[["conta_learn"]]
-host_sample_fasta = ifelse(is.null(opt[["host_learn"]]), test <- "" , test <-opt[["host_learn"]])
-dist = ifelse(is.null(opt[["dist"]]), test <- dist , test <-opt[["dist"]])
-win_step = ifelse(is.null(opt[["win_step"]]), test <- win_step , test <-opt[["win_step"]])
-win_size = ifelse(is.null(opt[["win_size"]]), test <- win_size , test <-opt[["win_size"]])
+if (is.null(opt[["host_learn"]]) {host_sample_fasta <- ""}
+if (is.null(opt[["dist"]]) {dist <- "KL"}
+if (is.null(opt[["win_step"]])) {win_step <- 500}
+if (is.null(opt[["win_size"]])) {win_size <- 5000}
 
 ### compute profiles:
 data=list()
-#if ( is.null(opt[["host_learn"]])) {
-#  cmd=paste("bash -lic \"ionice -c2 -n3 ./Kount.py -u 16 -i ",genome_fasta ," -W ",working_dir," -w ",win_size," -t ",win_step," -c ",conta_sample_fasta," -d  ",dist," -n 0.5\"",sep="")
-#  print(cmd)
-#  input_path=paste(working_dir, basename(genome_fasta),".mcp_hostwindows_vs_wholegenome_",dist,".dist",sep="")
-#  if (!file.exists(input_path)){
-#    system(cmd)
-#  }
-#  data[["host"]]=read.delim(file=input_path, header=F)
-#}else{
-#  cmd=paste("bash -lic \"ionice -c2 -n3 ./Kount.py -u 16 -i ",genome_fasta ," -W ",working_dir," -w ",win_size," -t ",win_step," -c ",conta_sample_fasta," -r ",host_sample_fasta," -d ",dist," -n 0.5\"",sep="")
-#  print(cmd)
-#  input_path=paste(working_dir,basename(genome_fasta),".mcp_hostwindows_vs_host_",basename(host_sample_fasta),"_",dist,".dist",sep="")
-#  if (!file.exists(input_path)){
-#    system(cmd)
-#  }
-#  data[["host"]]=read.delim(file=input_path, header=F)
-#}
 
 input_path=paste(working_dir, basename(genome_fasta),".mcp_hostwindows_vs_host_",basename(host_sample_fasta),"_",dist,".dist",sep="")
 data[["host"]]=read.delim(file=input_path, header=F)
 
 input_path=paste(working_dir, basename(genome_fasta),".mcp_hostwindows_vs_conta_",basename(conta_sample_fasta),"_",dist,".dist",sep="")
 data[["conta"]]=read.delim(file=input_path, header=F)
-
-print("end comp")
 
 if (! is.null(opt[["manual_threshold"]])) {
   ### Ask the trusty human to set the thresholds:
@@ -96,7 +72,6 @@ if (! is.null(opt[["manual_threshold"]])) {
     }
     threshold_conta=new_threshold
   }
-
 
   threshold_host=0
   repeat{
