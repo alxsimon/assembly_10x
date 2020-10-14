@@ -32,12 +32,12 @@ ids_file_mollusca = snakemake.output[1].replace('.fa', '.ids')
 
 df[df.phylum.isin(potential_conta)].to_csv(
     ids_file_conta,
-    columns=['ids'], header=False, index=False
+    columns=['id'], header=False, index=False
 )
 
 df[df.phylum=='Mollusca'].to_csv(
     ids_file_mollusca,
-    columns=['ids'], header=False, index=False
+    columns=['id'], header=False, index=False
 )
 
 shell(f'seqkit grep -f {ids_file_conta} {snakemake.input[2]} \
