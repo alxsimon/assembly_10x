@@ -25,12 +25,12 @@ rule get_potential_conta:
     run:
         phylums = []
         import json
-        for file in snakemake.input:
+        for file in input:
             with open(file) as fr:
                 phylums += json.load(fr)['keys']
         phylums = [x for x in phylums if x not in ['Mollusca', 'no-hit']]
         phylums = list(set(phylums))
-        with open(snakemake.output, 'w') as fw:
+        with open(output[0], 'w') as fw:
             json.dump(phylums, fw, indent=2)
 
 
