@@ -2,6 +2,11 @@
 
 from snakemake.shell import shell
 
+win_step = snakemake.params.win_step
+win_size = snakemake.params.win_size
+pattern = snakemake.params.pattern
+
+
 genome = snakemake.input[0]
 clusters = snakemake.input[1:]
 
@@ -30,7 +35,7 @@ for cl in conta:
     kount_cmd = f'\
         Kount.py -u {snakemake.threads} \
         -i {tmp_genome} -r {host} -c {cl} \
-        -t 5000 -w 20000 -p 110101 \
+        -t {win_step} -w {win_size} -p {pattern} \
         -d {snakemake.params.dist} \
         -W {snakemake.params.wd}'
     shell(kount_cmd)
@@ -39,7 +44,7 @@ for cl in conta:
     contalocate_cmd = f'\
         workflow/scripts/contalocate.R \
         -i {tmp_genome} -r {host} -c {cl} \
-        --win_step 5000 --win_size 20000 \
+        -t {win_step} -w {win_size} \
         -d {snakemake.params.dist} \
         -W {snakemake.params.wd}'
     shell(contalocate_cmd)

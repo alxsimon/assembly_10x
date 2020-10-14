@@ -51,7 +51,10 @@ btk:
   threads: 16
 
 phyloligo:
-  threads: 16
+  pattern: "110101"
+  win_step: 5000
+  win_size: 20000
+  dist: "JSD"
 
 scaff_prefix:
   gallo: mg

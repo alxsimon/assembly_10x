@@ -38,14 +38,15 @@ rule distance_matrix:
     output: 
         "results/phyloligo/{sample}/{sample}.JSD.mat"
     params:
-        pattern = '110101'
+        dist = config['phyloligo']['dist']
+        pattern = config['phyloligo']['pattern']
     conda: 
         "../envs/phyloligo.yaml"
     threads: 
         workflow.cores
     shell:
         """
-        phyloligo.py -i {input} -d JSD --method joblib \
+        phyloligo.py -i {input} -d {params.dist} --method joblib \
         -c {threads} -o {output}  \
         -p {params.pattern}
         """
@@ -79,8 +80,11 @@ rule recursive_decontamination:
         "results/fasta/{sample}_v6.contaminants.fasta.gz",
         "results/fasta/{sample}_v6.contaminants.gff"
     params:
-        dist = "JSD",
-        wd = lambda w: f'results/phyloligo/{w.sample}/contalocate/'
+        dist = config['phyloligo']['dist'],
+        wd = lambda w: f'results/phyloligo/{w.sample}/contalocate/',
+        win_step = config['phyloligo']['win_step'],
+        win_size = config['phyloligo']['win_size']
+        pattern = config['phyloligo']['pattern']
     conda: 
         "../envs/phyloligo.yaml"
     threads:
