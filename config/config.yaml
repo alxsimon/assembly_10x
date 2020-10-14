@@ -51,10 +51,12 @@ btk:
   threads: 16
 
 phyloligo:
-  pattern: "110101"
-  win_step: 5000
-  win_size: 20000
-  dist: "JSD"
+  perc_sampling: 10
+  pattern: "11111"
+  win_step: 500
+  win_size: 5000
+  dist_matrix: "JSD"
+  dist_contalocate: "KL"
 
 scaff_prefix:
   gallo: mg

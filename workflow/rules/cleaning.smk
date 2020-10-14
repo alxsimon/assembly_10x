@@ -23,22 +23,24 @@ rule prepare_fasta:
         "results/fasta/{sample}_v5.cleaned.fasta.gz"
     output: 
         "results/phyloligo/{sample}/{sample}_v5.cleaned.fa",
-        "results/phyloligo/{sample}/{sample}.25p.fa"
+        "results/phyloligo/{sample}/{sample}.subsample.fa"
+    params: 
+        perc = config['phyloligo']['perc_sampling']
     conda: 
         "../envs/phyloligo.yaml"
     shell:
         """
         zcat {input} > {output[0]}
-        phylopreprocess.py -i {output[0]} -g 25 -r -o {output[1]}
+        phylopreprocess.py -i {output[0]} -g {params.perc} -r -o {output[1]}
         """
 
 rule distance_matrix:
     input: 
-        "results/phyloligo/{sample}/{sample}.25p.fa"
+        "results/phyloligo/{sample}/{sample}.subsample.fa"
     output: 
-        "results/phyloligo/{sample}/{sample}.JSD.mat"
+        "results/phyloligo/{sample}/{sample}.distmat"
     params:
-        dist = config['phyloligo']['dist'],
+        dist = config['phyloligo']['dist_matrix'],
         pattern = config['phyloligo']['pattern']
     conda: 
         "../envs/phyloligo.yaml"
@@ -53,15 +55,16 @@ rule distance_matrix:
 
 checkpoint clustering:
     input: 
-        fa = "results/phyloligo/{sample}/{sample}.25p.fa",
-        mat = "results/phyloligo/{sample}/{sample}.JSD.mat"
+        fa = "results/phyloligo/{sample}/{sample}.subsample.fa",
+        mat = "results/phyloligo/{sample}/{sample}.distmat"
     output: 
         directory("results/phyloligo/{sample}/{sample}_clust")
     conda: 
         "../envs/phyloligo.yaml"
     shell:
         """
-        phyloselect.py -i {input.mat} -m hdbscan -f {input.fa} -t -o {output}
+        phyloselect.py -i {input.mat} -m hdbscan \
+        -f {input.fa} -t -o {output}
         """
 
 def get_clusters(wildcards):
@@ -80,7 +83,7 @@ rule recursive_decontamination:
         "results/fasta/{sample}_v6.contaminants.fasta.gz",
         "results/fasta/{sample}_v6.contaminants.gff"
     params:
-        dist = config['phyloligo']['dist'],
+        dist = config['phyloligo']['dist_contalocate'],
         wd = lambda w: f'results/phyloligo/{w.sample}/contalocate/',
         win_step = config['phyloligo']['win_step'],
         win_size = config['phyloligo']['win_size'],
