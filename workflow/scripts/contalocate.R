@@ -18,7 +18,7 @@ spec <- matrix(c(
         'win_step'       , 't', 2, "integer", "Step of the sliding windows analysis to locate the contaminant (optional) default: 500bp or 100bp",
         'win_size'       , 'w', 2, "integer", "Length of the sliding window to locate the contaminant (optional) default: 5000bp ",
         'outputdir'      , 'W', 1, "character", "path to outputdir directory, should end with '/'",
-        'dist'           , 'd', 2, "character", "Divergence metric used to compare profiles: (KL), JSD or Eucl",
+        'distance'           , 'd', 2, "character", "Divergence metric used to compare profiles: (KL), JSD or Eucl",
         'manual_threshold' , 'm', 0, "logical", "You will be asked to manually set the thresholds",
         'help'           , 'h', 0, "logical",   "This help"
 ),ncol=5,byrow=T)       
@@ -40,17 +40,21 @@ genome_fasta = opt[["genome"]]
 
 conta_sample_fasta = opt[["conta_learn"]]
 if (is.null(opt[["host_learn"]])) {host_sample_fasta <- ""} else {host_sample_fasta <- opt[["host_learn"]]}
-if (is.null(opt[["dist"]])) {dist <- "KL"}
+if (is.null(opt[["distance"]])) {distance <- "KL"}
 if (is.null(opt[["win_step"]])) {win_step <- 500}
 if (is.null(opt[["win_size"]])) {win_size <- 5000}
 
 ### compute profiles:
 data=list()
 
-input_path=paste(working_dir, basename(genome_fasta),".mcp_hostwindows_vs_host_",basename(host_sample_fasta),"_",dist,".dist",sep="")
+input_path=paste(working_dir, basename(genome_fasta),
+  ".mcp_hostwindows_vs_host_",basename(host_sample_fasta),
+  "_",distance,".dist",sep="")
 data[["host"]]=read.delim(file=input_path, header=F)
 
-input_path=paste(working_dir, basename(genome_fasta),".mcp_hostwindows_vs_conta_",basename(conta_sample_fasta),"_",dist,".dist",sep="")
+input_path=paste(working_dir, basename(genome_fasta),
+  ".mcp_hostwindows_vs_conta_",basename(conta_sample_fasta),
+  "_",distance,".dist",sep="")
 data[["conta"]]=read.delim(file=input_path, header=F)
 
 if (! is.null(opt[["manual_threshold"]])) {
