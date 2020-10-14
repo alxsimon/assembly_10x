@@ -56,7 +56,8 @@ rule prepare_fasta:
         "results/phyloligo/{sample}/{sample}.btk_mollusca.fa"
     output: 
         "results/phyloligo/{sample}/{sample}_v5.cleaned.fa",
-        "results/phyloligo/{sample}/{sample}.subsample.fa"
+        "results/phyloligo/{sample}/{sample}.subsample.fa",
+        "results/phyloligo/{sample}/{sample}.for_selection.fa"
     params: 
         perc = config['phyloligo']['perc_sampling']
     conda: 
@@ -65,11 +66,12 @@ rule prepare_fasta:
         """
         zcat {input} > {output[0]}
         phylopreprocess.py -i {output[0]} -g {params.perc} -r -o {output[1]}
+        cat {output[1]} {input[1]} {input[2]} > {output[2]}
         """
 
 rule distance_matrix:
     input: 
-        "results/phyloligo/{sample}/{sample}.subsample.fa"
+        "results/phyloligo/{sample}/{sample}.for_selection.fa"
     output: 
         "results/phyloligo/{sample}/{sample}.distmat"
     params:
@@ -88,7 +90,7 @@ rule distance_matrix:
 
 checkpoint clustering:
     input: 
-        fa = "results/phyloligo/{sample}/{sample}.subsample.fa",
+        fa = "results/phyloligo/{sample}/{sample}.for_selection.fa",
         mat = "results/phyloligo/{sample}/{sample}.distmat"
     output: 
         directory("results/phyloligo/{sample}/{sample}_clust")
