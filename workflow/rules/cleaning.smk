@@ -38,7 +38,7 @@ rule distance_matrix:
     output: 
         "results/phyloligo/{sample}/{sample}.JSD.mat"
     params:
-        dist = config['phyloligo']['dist']
+        dist = config['phyloligo']['dist'],
         pattern = config['phyloligo']['pattern']
     conda: 
         "../envs/phyloligo.yaml"
@@ -83,7 +83,7 @@ rule recursive_decontamination:
         dist = config['phyloligo']['dist'],
         wd = lambda w: f'results/phyloligo/{w.sample}/contalocate/',
         win_step = config['phyloligo']['win_step'],
-        win_size = config['phyloligo']['win_size']
+        win_size = config['phyloligo']['win_size'],
         pattern = config['phyloligo']['pattern']
     conda: 
         "../envs/phyloligo.yaml"
