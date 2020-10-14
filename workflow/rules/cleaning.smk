@@ -39,7 +39,7 @@ rule get_potential_conta:
 rule extract_potential_conta:
     input:
         "results/phyloligo/potential_conta_btk_phylum.json",
-        directory("results/blobtoolkit/blobdirs/{sample}_v5"),
+        "results/blobtoolkit/blobdirs/{sample}_v5",
         "results/fasta/{sample}_v5.cleaned.fasta.gz"
     output:
         "results/phyloligo/{sample}/{sample}.btk_conta.fa",
