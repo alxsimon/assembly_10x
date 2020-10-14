@@ -64,7 +64,7 @@ rule prepare_fasta:
         "../envs/phyloligo.yaml"
     shell:
         """
-        zcat {input} > {output[0]}
+        zcat {input[0]} > {output[0]}
         phylopreprocess.py -i {output[0]} -g {params.perc} -r -o {output[1]}
         cat {output[1]} {input[1]} {input[2]} > {output[2]}
         """
