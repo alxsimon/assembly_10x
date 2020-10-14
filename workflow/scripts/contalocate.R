@@ -39,7 +39,7 @@ if (!is.null(opt[["outputdir"]]) ) {
 genome_fasta = opt[["genome"]]
 
 conta_sample_fasta = opt[["conta_learn"]]
-if (is.null(opt[["host_learn"]])) {host_sample_fasta <- ""}
+if (is.null(opt[["host_learn"]])) {host_sample_fasta <- ""} else {host_sample_fasta <- opt[["host_learn"]]}
 if (is.null(opt[["dist"]])) {dist <- "KL"}
 if (is.null(opt[["win_step"]])) {win_step <- 500}
 if (is.null(opt[["win_size"]])) {win_size <- 5000}
