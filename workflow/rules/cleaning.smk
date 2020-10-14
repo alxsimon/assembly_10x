@@ -16,6 +16,24 @@ rule clean_fasta:
         rm {input}_tmp {input}_filt_list
         """
 
+rule get_potential_conta:
+    input:
+        expand("results/blobtoolkit/blobdirs/{sample}_v5/meta.json",
+            sample=config['samples'])
+    output:
+        "results/phyloligo/potential_conta_btk_phylum.json"
+    run:
+        phylums = []
+        import json
+        for file in snakemake.input:
+            with open(file) as fr:
+                phylums += json.load(fr)['keys']
+        phylums = [x for x in phylums if x not in ['Mollusca', 'no-hit']]
+        phylums = list(set(phylums))
+        with open(snakemake.output, 'w') as fw:
+            json.dump(phylums, fw, indent=2)
+
+
 #===============================
 # Contamination removal with phyloligo
 rule prepare_fasta:
