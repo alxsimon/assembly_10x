@@ -6,7 +6,6 @@ win_step = snakemake.params.win_step
 win_size = snakemake.params.win_size
 pattern = snakemake.params.pattern
 
-
 genome = snakemake.input[0]
 clusters = snakemake.input[1:]
 
