@@ -35,8 +35,8 @@ for cl_file in conta:
     cl = os.path.basename(cl_file).replace('data_fasta_', '').replace('.fa', '')
     suffix_genome = os.path.basename(tmp_genome)
 
-    outfile = f'{snakemake.params.wd}/{suffix_genome}.\
-        mcp_hostwindows_vs_conta_data_fasta_{cl}.fa_KL.dist'
+    outfile = f'{snakemake.params.wd}{suffix_genome}.mcp_hostwindows_vs_conta_data_fasta_{cl}.fa_KL.dist'
+    print(outfile)
     if os.path.exists(outfile):
         print(f'Kount.py outputs already exist. Passing.')
     else:
