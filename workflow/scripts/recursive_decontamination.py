@@ -61,10 +61,15 @@ for cl_file in conta:
     #filter on the output
     tmp_prefix = tmp_genome.replace('.fa', '')
     new_genome = f'{tmp_prefix}-{cl}.fa'
-    seqkit_cmd = f'\
-        seqkit grep -v -f <(tail -n +2 {conta_gff} | cut -f 1) \
-        {tmp_genome} > {new_genome}'
-    shell(seqkit_cmd)
+    with open(conta_gff) as fr:
+        n_lines_gff = sum(1 for x in fr)
+    if n_lines_gff > 1:
+        seqkit_cmd = f'\
+            seqkit grep -v -f <(tail -n +2 {conta_gff} | cut -f 1) \
+            {tmp_genome} > {new_genome}'
+        shell(seqkit_cmd)
+    else:
+        shell(f'cp {tmp_genome} {new_genome}')
 
     tmp_genome = new_genome
 
