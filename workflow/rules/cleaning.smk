@@ -143,9 +143,15 @@ rule btk_filter:
         "../envs/btk_env.yaml"
     shell:
         """
-        {params.blobtools_bin} filter --list <(cut -f 1 {input[0]}) \
+        cut -f 1 {input[0]} > tmp_filt_list_{wildcards.sample}
+
+        {params.blobtools_bin} filter \
+        --list tmp_filt_list_{wildcards.sample} \
         --inverse --out {output[0]} {input[1]}
 
-        {params.blobtools_bin} filter --list <(cut -f 1 {input[0]}) \
+        {params.blobtools_bin} filter \
+        --list tmp_filt_list_{wildcards.sample} \
         --out {output[1]} {input[1]}
+
+        rm tmp_filt_list_{wildcards.sample}
         """
