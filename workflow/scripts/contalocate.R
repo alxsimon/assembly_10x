@@ -133,14 +133,16 @@ data[["windows_conta"]]=data[["conta"]][data[["Select_conta"]],]
 ### Regroups contiguous windows into islands and write a GFF file of the positions of the targeted species
 write(x="##gff-version 2", file = paste(working_dir, basename(genome_fasta),"_contaminant_",basename(conta_sample_fasta),".gff",sep=""),ncolumns=1)
 start_index=data[["Select_conta"]][1]
-for(i in seq(length(data[["Select_conta"]]))){
-  if(ifelse(is.na(data[["Select_conta"]][i+1]), test <- 0 , test <- data[["Select_conta"]][i+1]) == data[["Select_conta"]][i]+1 ){ #2 windows have a consecutive index number, so they are physically touching. data[["conta"]][i,1] describe the contig, and regions are only spanning one contig max. we assert that ssuccessive indexes are in the same contig to group them. If everything of this if fine, we will then group the windows in a region, by etending the end of it.
-    end_index=data[["Select_conta"]][i+1]
-  }else{ #well, the window index i+1 is not touching the window i, so i is the last of its island, and the island can be written. i+1 is the start of a new island.
-    end_index=data[["Select_conta"]][i]
-    line=paste(sep="\t", as.character(data[["conta"]][start_index,1]),"SignatureGohtam\tregion",data[["conta"]][start_index,2],data[["conta"]][end_index,c(3)],"\t.\t.\t.")
-    write(x=line,append=TRUE, file = paste(working_dir, basename(genome_fasta),"_contaminant_",basename(conta_sample_fasta),".gff",sep=""),ncolumns=1)
-    start_index=data[["Select_conta"]][i+1]
+if(length(data[["Select_conta"]]) > 0){ # if there are identified windows
+  for(i in seq(length(data[["Select_conta"]]))){
+    if(ifelse(is.na(data[["Select_conta"]][i+1]), test <- 0 , test <- data[["Select_conta"]][i+1]) == data[["Select_conta"]][i]+1 ){ #2 windows have a consecutive index number, so they are physically touching. data[["conta"]][i,1] describe the contig, and regions are only spanning one contig max. we assert that ssuccessive indexes are in the same contig to group them. If everything of this if fine, we will then group the windows in a region, by etending the end of it.
+      end_index=data[["Select_conta"]][i+1]
+    }else{ #well, the window index i+1 is not touching the window i, so i is the last of its island, and the island can be written. i+1 is the start of a new island.
+      end_index=data[["Select_conta"]][i]
+      line=paste(sep="\t", as.character(data[["conta"]][start_index,1]),"SignatureGohtam\tregion",data[["conta"]][start_index,2],data[["conta"]][end_index,c(3)],"\t.\t.\t.")
+      write(x=line,append=TRUE, file = paste(working_dir, basename(genome_fasta),"_contaminant_",basename(conta_sample_fasta),".gff",sep=""),ncolumns=1)
+      start_index=data[["Select_conta"]][i+1]
+    }
   }
 }
 

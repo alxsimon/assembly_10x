@@ -37,7 +37,7 @@ for cl_file in conta:
 
     outfile = f'{snakemake.params.wd}{suffix_genome}.mcp_hostwindows_vs_conta_data_fasta_{cl}.fa_KL.dist'
     if os.path.exists(outfile):
-        print(f'Kount.py outputs already exist. Passing.')
+        print(f'Kount.py outputs already exist. Moving on to contalocate.')
     else:
         kount_cmd = f'\
             Kount.py -u {snakemake.threads} \
