@@ -33,13 +33,19 @@ print(f'Analysing {N} clusters of potential contaminants')
 tmp_genome = genome
 for cl_file in conta:
     cl = os.path.basename(cl_file).replace('data_fasta_', '').replace('.fa', '')
-    kount_cmd = f'\
-        Kount.py -u {snakemake.threads} \
-        -i {tmp_genome} -r {host} -c {cl_file} \
-        -t {win_step} -w {win_size} -p {pattern} \
-        -d {snakemake.params.dist} \
-        -W {snakemake.params.wd}'
-    shell(kount_cmd)
+    suffix_genome = os.path.basename(tmp_genome)
+
+    outfile = f'{tmp_genome}.mcp_hostwindows_vs_conta_data_fasta_{cl}.fa_KL.dist'
+    if os.path.exists(outfile):
+        print(f'Kount.py outputs already exist. Passing.')
+    else:
+        kount_cmd = f'\
+            Kount.py -u {snakemake.threads} \
+            -i {tmp_genome} -r {host} -c {cl_file} \
+            -t {win_step} -w {win_size} -p {pattern} \
+            -d {snakemake.params.dist} \
+            -W {snakemake.params.wd}'
+        shell(kount_cmd)
 
     # run contalocate on previous filtration round
     contalocate_cmd = f'\
@@ -50,7 +56,7 @@ for cl_file in conta:
         -W {snakemake.params.wd}'
     shell(contalocate_cmd)
 
-    conta_gff = f'{tmp_genome}_contaminant_data_fasta_{cl}.fa.gff'
+    conta_gff = f'{snakemake.params.wd}/{suffix_genome}_contaminant_data_fasta_{cl}.fa.gff'
 
     #filter on the output
     tmp_prefix = tmp_genome.replace('.fa', '')
