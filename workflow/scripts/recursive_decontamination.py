@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 from snakemake.shell import shell
+import os
 
 win_step = snakemake.params.win_step
 win_size = snakemake.params.win_size
