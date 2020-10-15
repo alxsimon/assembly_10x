@@ -129,3 +129,23 @@ rule recursive_decontamination:
         workflow.cores
     script:
         "../scripts/recursive_decontamination.py"
+
+rule btk_filter:
+    input:
+        "results/fasta/{sample}_v6.contaminants.gff",
+        "results/blobtoolkit/blobdirs/{sample}_v5"
+    output:
+        directory("results/blobtoolkit/blobdirs/{sample}_v6"),
+        directory("results/blobtoolkit/blobdirs/{sample}_v6_contam")
+    params:
+        blobtools_bin = config['btk']['blobtools_path']
+    conda:
+        "../envs/btk_env.yaml"
+    shell:
+        """
+        {params.blobtools_bin} filter --list <(cut -f 1 {input[0]}) \
+        --inverse --out {output[0]} {input[1]}
+
+        {params.blobtools_bin} filter --list <(cut -f 1 {input[0]}) \
+        --out {output[1]} {input[1]}
+        """

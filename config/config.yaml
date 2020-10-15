@@ -49,6 +49,7 @@ anvio:
 
 btk:
   threads: 16
+  blobtools_path: /opt/blobtoolkit/blobtools2/blobtools
 
 phyloligo:
   perc_sampling: 20
