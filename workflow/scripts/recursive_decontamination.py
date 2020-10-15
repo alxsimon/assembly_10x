@@ -79,4 +79,5 @@ shell(f'gzip -c {tmp_genome} > {snakemake.output[1]}')
 shell(f'cat {snakemake.params.wd}/*.gff \
     | grep -v "##gff-version 2" > {snakemake.output[3]}')
 shell(f'seqkit grep -f <(cut -f 1 {snakemake.output[3]}) \
+    {snakemake.input[0]}
     | gzip -c > {snakemake.output[2]}')
