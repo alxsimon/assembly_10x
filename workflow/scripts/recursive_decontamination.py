@@ -63,7 +63,7 @@ for cl_file in conta:
     new_genome = f'{tmp_prefix}-{cl}.fa'
     with open(conta_gff) as fr:
         n_lines_gff = sum(1 for x in fr)
-    if n_lines_gff > 1:
+    if (n_lines_gff > 1):
         seqkit_cmd = f'\
             seqkit grep -v -f <(tail -n +2 {conta_gff} | cut -f 1) \
             {tmp_genome} > {new_genome}'
@@ -76,5 +76,7 @@ for cl_file in conta:
 shell(f'touch {snakemake.output[0]}')
 
 shell(f'gzip -c {tmp_genome} > {snakemake.output[1]}')
-shell(f'cat {snakemake.params.wd}/*.gff > {snakemake.output[3]}')
-shell(f'seqkit grep -f {snakemake.output[3]} | gzip -c > {snakemake.output[2]}')
+shell(f'cat {snakemake.params.wd}/*.gff \
+    | grep -v "##gff-version 2" > {snakemake.output[3]}')
+shell(f'seqkit grep -f <(cut -f 1 {snakemake.output[3]}) \
+    | gzip -c > {snakemake.output[2]}')
