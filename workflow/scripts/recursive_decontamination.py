@@ -30,10 +30,11 @@ N = len(conta)
 print(f'Analysing {N} clusters of potential contaminants')
 
 tmp_genome = genome
-for cl in conta:
+for cl_file in conta:
+    cl = os.path.basename(cl_file).replace('data_fasta_', '').replace('.fa', '')
     kount_cmd = f'\
         Kount.py -u {snakemake.threads} \
-        -i {tmp_genome} -r {host} -c {cl} \
+        -i {tmp_genome} -r {host} -c {cl_file} \
         -t {win_step} -w {win_size} -p {pattern} \
         -d {snakemake.params.dist} \
         -W {snakemake.params.wd}'
@@ -42,16 +43,17 @@ for cl in conta:
     # run contalocate on previous filtration round
     contalocate_cmd = f'\
         workflow/scripts/contalocate.R \
-        -i {tmp_genome} -r {host} -c {cl} \
+        -i {tmp_genome} -r {host} -c {cl_file} \
         -t {win_step} -w {win_size} \
         -d {snakemake.params.dist} \
         -W {snakemake.params.wd}'
     shell(contalocate_cmd)
 
-    conta_gff = f'{tmp_genome}_contaminant_{cl}.gff'
+    conta_gff = f'{tmp_genome}_contaminant_data_fasta_{cl}.fa.gff'
 
     #filter on the output
-    new_genome = f'{tmp_genome}-{cl}'
+    tmp_prefix = tmp_genome.replace('.fa', '')
+    new_genome = f'{tmp_prefix}-{cl}.fa'
     seqkit_cmd = f'\
         seqkit grep -f <(tail -n +2 {conta_gff} | cut -f 1) \
         {tmp_genome} > {new_genome}'
@@ -62,5 +64,5 @@ for cl in conta:
 shell(f'touch {snakemake.output[0]}')
 
 shell(f'gzip -c {tmp_genome} > {snakemake.output[1]}')
-shell(f'cat {snakemake.params.wd}*.gff > {snakemake.output[3]}')
+shell(f'cat {snakemake.params.wd}/*.gff > {snakemake.output[3]}')
 shell(f'seqkit grep -f {snakemake.output[3]} | gzip -c > {snakemake.output[2]}')
