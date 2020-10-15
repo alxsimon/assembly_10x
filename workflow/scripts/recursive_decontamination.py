@@ -36,7 +36,6 @@ for cl_file in conta:
     suffix_genome = os.path.basename(tmp_genome)
 
     outfile = f'{snakemake.params.wd}{suffix_genome}.mcp_hostwindows_vs_conta_data_fasta_{cl}.fa_KL.dist'
-    print(outfile)
     if os.path.exists(outfile):
         print(f'Kount.py outputs already exist. Passing.')
     else:
@@ -63,7 +62,7 @@ for cl_file in conta:
     tmp_prefix = tmp_genome.replace('.fa', '')
     new_genome = f'{tmp_prefix}-{cl}.fa'
     seqkit_cmd = f'\
-        seqkit grep -f <(tail -n +2 {conta_gff} | cut -f 1) \
+        seqkit grep -v -f <(tail -n +2 {conta_gff} | cut -f 1) \
         {tmp_genome} > {new_genome}'
     shell(seqkit_cmd)
 
