@@ -147,11 +147,11 @@ rule btk_filter:
 
         {params.blobtools_bin} filter \
         --list tmp_filt_list_{wildcards.sample} \
-        --inverse --out {output[0]} {input[1]}
+        --inverse --output {output[0]} {input[1]}
 
         {params.blobtools_bin} filter \
         --list tmp_filt_list_{wildcards.sample} \
-        --out {output[1]} {input[1]}
+        --output {output[1]} {input[1]}
 
         rm tmp_filt_list_{wildcards.sample}
         """
