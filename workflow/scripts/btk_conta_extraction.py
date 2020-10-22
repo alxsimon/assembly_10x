@@ -24,8 +24,8 @@ for var, file in files.items():
             data = [data['keys'][x] for x in data['values']]
         df[var] = data
 
-with open('bestsumorder_positions.json') as f:
-    pos = json.load(f)
+with open(f'{snakemake.input[0]}/bestsumorder_positions.json') as fr:
+    pos = json.load(fr)
 
 df['besthit_length'] = [(x[0][2] - x[0][1] + 1) if x!=[] else np.nan for x in pos['values']]
 df['subject'] = [x[0][4] if x!=[] else np.nan for x in pos['values']]
