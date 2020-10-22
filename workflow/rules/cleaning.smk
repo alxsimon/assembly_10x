@@ -6,6 +6,8 @@ rule split_on_btk_info:
         bact = "results/blobtoolkit/blobdirs/{sample}_v5/{sample}_bacteria.csv",
         virus = "results/blobtoolkit/blobdirs/{sample}_v5/{sample}_viruses.csv",
         euka = "results/blobtoolkit/blobdirs/{sample}_v5/{sample}_eukaryota.csv"
+    params:
+        mollusca_taxids = "resources/mollusca_taxids.txt"
     script:
         "../scripts/btk_conta_extraction.py"
 

@@ -28,16 +28,21 @@ with open(f'{snakemake.input[0]}/bestsumorder_positions.json') as fr:
     pos = json.load(fr)
 
 df['besthit_length'] = [(x[0][2] - x[0][1] + 1) if x!=[] else np.nan for x in pos['values']]
-df['subject'] = [x[0][4] if x!=[] else np.nan for x in pos['values']]
 df['taxid'] = [str(x[0][0]) if x!=[] else np.nan for x in pos['values']]
 df['besthit_perc'] = df.besthit_length/df.length
 df['N_perc'] = df.Ncount/df.length
+
+with open(snakemake.params.mollusca_taxids) as fr:
+    mollusca_taxids = set(int(x.strip()) for x in fr.readlines())
+taxids = [[y[0] for y in x] if x!=[] else [] for x in pos['values']]
+df['any_Mollusca_hit'] = [(len(set(x) & mollusca_taxids) > 0) for x in taxids]
 
 df_bacteria = df[(df.superkingdom=='Bacteria')]
 df_viruses = df[(df.superkingdom=='Viruses') & (df.besthit_perc > 0.1)]
 df_eukaryota = df[
     (df.superkingdom=='Eukaryota') & 
-    (~df.phylum.isin(['Mollusca', 'no-hit'])) & 
+    (~df.phylum.isin(['Mollusca', 'no-hit'])) &
+    (df.any_Mollusca_hit == False) &
     (df.besthit_perc > 0.1)
 ]
 
