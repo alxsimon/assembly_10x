@@ -44,7 +44,8 @@ rule all:
             sample=config['samples']),
 #        expand("results/blobtoolkit/blobdirs/{sample}_v6",
 #            sample=config['samples']),
-        "results/blobtoolkit/blobdirs/edu_v5/edu_kept.csv"
+        expand("results/blobtoolkit/blobdirs/{sample}_v5_kept",
+            sample=config['samples']),
 
 
 include: "rules/preprocessing.smk"
