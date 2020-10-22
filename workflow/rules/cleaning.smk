@@ -1,3 +1,15 @@
+rule split_on_btk_info:
+    input:
+        "results/blobtoolkit/blobdirs/{sample}_v5"
+    output:
+        kept = "results/blobtoolkit/blobdirs/{sample}_v5/{sample}_kept.csv",
+        bact = "results/blobtoolkit/blobdirs/{sample}_v5/{sample}_bacteria.csv",
+        virus = "results/blobtoolkit/blobdirs/{sample}_v5/{sample}_viruses.csv",
+        euka = "results/blobtoolkit/blobdirs/{sample}_v5/{sample}_eukaryota.csv"
+    script:
+        "../scripts/btk_conta_extraction.py"
+
+
 # Remove leading and trailing Ns, 
 # then remove sequences < 1000bp and with > 90% N.
 rule clean_fasta:
@@ -17,7 +29,7 @@ rule clean_fasta:
         """
 
 #===============================
-# Contamination removal with phyloligo
+# Most obvious contamination removal
 
 rule get_potential_conta:
     input:
