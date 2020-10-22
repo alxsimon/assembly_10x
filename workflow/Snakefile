@@ -22,13 +22,7 @@ rule all:
         expand("results/supernova_assemblies/{sample}_{version}/DONE",
             sample=config['samples'], version=["v1", "v2"]),
         expand("results/fasta/{sample}_v3.pseudohap.fasta.gz",
-            sample=config['samples']),
-        expand("results/fasta/{sample}_v4.pseudohap.fasta.gz",
-            sample=config['samples']),
-        expand("results/fasta/{sample}_v5.pseudohap.fasta.gz",
-            sample=config['samples']),
-#        expand("results/fasta/{sample}_v6.pseudohap.fasta.gz",
-#            sample=config['samples']),
+            sample=config['samples'], version=["v3", "v4", "v5", "v6"]),
         expand("results/busco/{sample}_{version}_{db}/run_{db}/short_summary.txt",
             sample=config['samples'], version=["v1", "v2", "v3", "v4", "v5"],
             db=["metazoa_odb10", "mollusca_odb10"]),
@@ -42,10 +36,10 @@ rule all:
             sample=config['samples']),
         expand("results/fasta/{sample}_v5.cleaned.fasta.gz",
             sample=config['samples']),
-#        expand("results/blobtoolkit/blobdirs/{sample}_v6",
-#            sample=config['samples']),
         expand("results/blobtoolkit/blobdirs/{sample}_v5_kept",
             sample=config['samples']),
+#        expand("results/blobtoolkit/blobdirs/{sample}_v6",
+#            sample=config['samples']),
 
 
 include: "rules/preprocessing.smk"

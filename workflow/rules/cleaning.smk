@@ -39,21 +39,32 @@ rule btk_filter_conta:
         rm {params.tmp_kept_list}
         """
 
-
+# Remove contamination scaffolds
 # Remove leading and trailing Ns, 
 # then remove sequences < 1000bp and with > 90% N.
-rule clean_fasta:
+rule v6_clean_rename:
     input:
-        "results/fasta/{sample}_v5.pseudohap.fasta.gz"
+        fa = "results/fasta/{sample}_v5.pseudohap.fasta.gz",
+        kept = "results/blobtoolkit/blobdirs/{sample}_v5/{sample}_kept.csv"
     output:
-        "results/fasta/{sample}_v5.cleaned.fasta.gz"
+        "results/fasta/{sample}_v6.pseudohap.fasta.gz"
+    params: 
+        scaff_prefix = lambda w: config['scaff_prefix'][w.sample],
+        nr_width = 5
     conda:
         "../envs/seqkit.yaml"
     shell:
         """
-        seqkit replace -is -p "^N+|N+$" -r "" {input} > {input}_tmp
-        seqkit fx2tab -n -i --gc --length -B N {input}_tmp \
-        | awk '($2 > 1000 && $4 < 90) {{print $1}}' > {input}_filt_list
-        seqkit grep -f {input}_filt_list {input}_tmp | gzip -c > {output}
-        rm {input}_tmp {input}_filt_list
+        seqkit grep -f <(tail -n +2 {input.kept} | cut -d ',' -f 1) {input[0]} \
+        | seqkit replace -is -p "^N+|N+$" -r "" > {input.fa}_tmp
+
+        seqkit fx2tab -n -i --gc --length -B N {input.fa}_tmp \
+        | awk '($2 > 1000 && $4 < 90) {{print $1}}' > {input.fa}_filt_list
+        seqkit grep -f {input.fa}_filt_list {input.fa}_tmp > {input.fa}_tmp2
+
+        seqkit sort --by-length -2 --reverse {input.fa}_tmp2 \
+        | seqkit replace -p .+ -r "{params.scaff_prefix}_{{nr}}" --nr-width {params.nr_width} \
+        | gzip -c > {output}
+
+        rm {input.fa}_tmp {input.fa}_tmp2 {input.fa}_filt_list
         """
