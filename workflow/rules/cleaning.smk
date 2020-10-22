@@ -17,7 +17,7 @@ rule btk_filter_contam:
         directory("results/blobtoolkit/blobdirs/{sample}_v5_kept"),
         directory("results/blobtoolkit/blobdirs/{sample}_v5_contam")
     params:
-        blobtools_bin = config['btk']['blobtools_path']
+        blobtools_bin = config['btk']['blobtools_path'],
         tmp_kept_list = lambda w, input: f'{input[0]}/tmp_kept_list.ids'
     conda:
         "../envs/btk_env.yaml"
