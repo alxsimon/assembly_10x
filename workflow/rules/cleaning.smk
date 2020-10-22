@@ -59,7 +59,7 @@ rule v6_clean_rename:
         | seqkit replace -is -p "^N+|N+$" -r "" > {input.fa}_tmp
 
         seqkit fx2tab -n -i --gc --length -B N {input.fa}_tmp \
-        | awk '($2 > 1000 && $4 < 90) {{print $1}}' > {input.fa}_filt_list
+        | awk '($2 >= 1000 && $4 < 90) {{print $1}}' > {input.fa}_filt_list
         seqkit grep -f {input.fa}_filt_list {input.fa}_tmp > {input.fa}_tmp2
 
         seqkit sort --by-length -2 --reverse {input.fa}_tmp2 \
