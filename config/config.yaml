@@ -49,15 +49,7 @@ anvio:
 
 btk:
   threads: 16
-  blobtools_path: /opt/blobtoolkit/blobtools2/blobtools
-
-phyloligo:
-  perc_sampling: 20
-  pattern: "1111"
-  win_step: 500
-  win_size: 5000
-  dist_matrix: "JSD"
-  dist_contalocate: "KL"
+  blobtools_path: /opt/blobtoolkit/blobtools2/blobtools # inside singularity image for v2.4.0
 
 scaff_prefix:
   gallo: mg
