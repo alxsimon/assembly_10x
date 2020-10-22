@@ -9,13 +9,13 @@ rule split_on_btk_info:
     script:
         "../scripts/btk_conta_extraction.py"
 
-rule btk_filter_contam:
+rule btk_filter_conta:
     input:
         "results/blobtoolkit/blobdirs/{sample}_v5",
         "results/blobtoolkit/blobdirs/{sample}_v5/{sample}_kept.csv"
     output:
         directory("results/blobtoolkit/blobdirs/{sample}_v5_kept"),
-        directory("results/blobtoolkit/blobdirs/{sample}_v5_contam")
+        directory("results/blobtoolkit/blobdirs/{sample}_v5_conta")
     params:
         blobtools_bin = config['btk']['blobtools_path'],
         tmp_kept_list = lambda w, input: f'{input[0]}/tmp_kept_list.ids'
