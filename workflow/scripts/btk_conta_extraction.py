@@ -2,6 +2,7 @@
 
 import json
 import pandas as pd
+import numpy as np
 
 files = {
     'id': 'identifiers.json',
@@ -22,6 +23,9 @@ for var, file in files.items():
         else:
             data = [data['keys'][x] for x in data['values']]
         df[var] = data
+
+with open('bestsumorder_positions.json') as f:
+    pos = json.load(f)
 
 df['besthit_length'] = [(x[0][2] - x[0][1] + 1) if x!=[] else np.nan for x in pos['values']]
 df['subject'] = [x[0][4] if x!=[] else np.nan for x in pos['values']]
