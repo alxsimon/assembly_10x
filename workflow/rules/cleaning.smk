@@ -66,5 +66,5 @@ rule v6_clean_rename:
         | seqkit replace -p .+ -r "{params.scaff_prefix}_{{nr}}" --nr-width {params.nr_width} \
         | gzip -c > {output}
 
-        rm {input.fa}_tmp* {input.fa}_tmp2.seqkit.fai {input.fa}_filt_list
+        rm {input.fa}_tmp* {input.fa}_filt_list
         """
