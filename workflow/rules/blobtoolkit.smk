@@ -87,9 +87,6 @@ rule btk_clean:
         "results/blobtoolkit/blobdirs/{sample}_{version}/meta.json",
         "results/blobtoolkit/{sample}_{version}.yaml",
         "results/blobtoolkit/{sample}_{version}_insdc_pipeline.tar.gz"
-    wildcard_constraints:
-        species = 'w+',
-        version = 'v*'
     params:
         indir = lambda w, input: os.path.dirname(input[0]),
         tardir = lambda w: f'results/blobtoolkit/{w.sample}_{w.version}'
