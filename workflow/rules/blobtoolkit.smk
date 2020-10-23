@@ -84,7 +84,7 @@ rule btk_clean:
         "results/blobtoolkit/{sample}_{version}/{sample}_{version}",
         "results/blobtoolkit/{sample}_{version}/{sample}_{version}.yaml"
     output:
-        directory("results/blobtoolkit/blobdirs/{sample}_{version}"),
+        "results/blobtoolkit/blobdirs/{sample}_{version}/meta.json",
         "results/blobtoolkit/{sample}_{version}.yaml",
         "results/blobtoolkit/{sample}_{version}_insdc_pipeline.tar.gz"
     wildcard_constraints:

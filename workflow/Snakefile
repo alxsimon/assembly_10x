@@ -32,7 +32,7 @@ rule all:
             sample=config['samples'], version=["v1", "v2", "v3", "v4", "v5", "v6"]),
         "results/supernova_assemblies/supernova_assemblies_stats.csv",
         "results/stats/assembly_stats.csv",
-        expand("results/blobtoolkit/blobdirs/{sample}_{version}",
+        expand("results/blobtoolkit/blobdirs/{sample}_{version}/meta.json",
             sample=config['samples'], version=['v5', 'v6']),
         expand("results/blobtoolkit/blobdirs/{sample}_v5_kept",
             sample=config['samples']),
