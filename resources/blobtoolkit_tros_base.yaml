@@ -6,8 +6,7 @@ assembly:
   span: ??
 
 busco:
-  lineages:
-    - metazoa_odb10
+  lineages: []
   lineage_dir: ../../../resources/btk_databases/busco
 
 reads:
@@ -52,4 +51,4 @@ taxon:
   taxid: 6551
   name: Mytilus trossulus
 
-keep_intermediates: true
+keep_intermediates: False

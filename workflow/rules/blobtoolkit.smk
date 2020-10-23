@@ -39,7 +39,7 @@ rule btk_insdc_pipeline:
         GM1 = "results/blobtoolkit/{sample}_{version}/GM_1.fastq.gz",
         GM2 = "results/blobtoolkit/{sample}_{version}/GM_2.fastq.gz"
     output:
-        "results/blobtoolkit/{sample}_{version}/{sample}_{version}/meta.json"
+        directory("results/blobtoolkit/{sample}_{version}/{sample}_{version}")
     params:
         dir = lambda w: f'results/blobtoolkit/{w.sample}_{w.version}'   
     conda:
@@ -59,9 +59,29 @@ rule btk_insdc_pipeline:
         --resources btk=1
         """
 
+rule btk_add_busco:
+    input:
+        "results/blobtoolkit/{sample}_{version}/{sample}_{version}",
+        expand("results/busco/{{sample}}_{{version}}_{db}/run_{db}/full_table.tsv",
+            db=["metazoa_odb10", "mollusca_odb10"])
+    output:
+        expand("results/blobtoolkit/{{sample}}_{{version}}/{{sample}}_{{version}}/{db}_busco.json",
+            db=["metazoa_odb10", "mollusca_odb10"])
+    params:
+        blobtools_bin = config['btk']['blobtools_path'],
+    conda:
+        "../envs/btk_env.yaml"
+    shell:
+        """
+        {params.blobtools_bin} add \
+        --busco {input[2]}
+        --busco {input[1]}
+        {input[0]}
+        """
+
 rule btk_clean:
     input:
-        "results/blobtoolkit/{sample}_{version}/{sample}_{version}/meta.json",
+        "results/blobtoolkit/{sample}_{version}/{sample}_{version}",
         "results/blobtoolkit/{sample}_{version}/{sample}_{version}.yaml"
     output:
         directory("results/blobtoolkit/blobdirs/{sample}_{version}"),

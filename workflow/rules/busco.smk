@@ -32,7 +32,8 @@ rule busco:
         "results/fasta/{sample}_{version}.fa",
         rules.dwld_busco_databases.output
     output:
-        "results/busco/{sample}_{version}_{db}/run_{db}/short_summary.txt"
+        "results/busco/{sample}_{version}_{db}/run_{db}/short_summary.txt",
+        "results/busco/{sample}_{version}_{db}/run_{db}/full_table.tsv"
     params:
         db = lambda w: f'resources/busco_databases/{w.db}',
         fa = lambda w, input: input[0].replace(".fasta.gz", ".fa"),
@@ -45,7 +46,7 @@ rule busco:
     threads:
         config['busco']['threads']
     conda:
-        "../envs/busco.yaml" 
+        "../envs/busco.yaml"
     shell:
         """
         busco -f -m genome -i {params.fa} -o {params.outdir} \
