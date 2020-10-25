@@ -1,6 +1,7 @@
 rule split_on_btk_info:
     input:
-        "results/blobtoolkit/blobdirs/{sample}_v5"
+        "results/blobtoolkit/blobdirs/{sample}_v5",
+        "results/blobtoolkit/DONE_{sample}_v5"
     output:
         kept = "results/blobtoolkit/blobdirs/{sample}_v5/{sample}_kept.csv",
         bact = "results/blobtoolkit/blobdirs/{sample}_v5/{sample}_bacteria.csv",
