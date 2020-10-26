@@ -83,7 +83,9 @@ rule btk_add_busco:
 rule btk_clean:
     input:
         "results/blobtoolkit/{sample}_{version}/{sample}_{version}/meta.json",
-        "results/blobtoolkit/{sample}_{version}/{sample}_{version}.yaml"
+        "results/blobtoolkit/{sample}_{version}/{sample}_{version}.yaml",
+        expand("results/blobtoolkit/{{sample}}_{{version}}/{{sample}}_{{version}}/{db}_busco.json",
+            db=["metazoa_odb10", "mollusca_odb10"])
     output:
         "results/blobtoolkit/blobdirs/{sample}_{version}/meta.json",
         "results/blobtoolkit/{sample}_{version}.yaml",
