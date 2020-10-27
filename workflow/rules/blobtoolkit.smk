@@ -45,7 +45,7 @@ rule btk_insdc_pipeline:
     conda:
         "../envs/btk_env.yaml"
     threads:
-        workflow.cores
+        config['btk']['threads']
     shell:
         """
         snakemake -p \
