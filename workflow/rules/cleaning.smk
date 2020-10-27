@@ -45,10 +45,10 @@ rule btk_filter_conta:
 # then remove sequences < 1000bp and with > 90% N.
 rule v6_clean_rename:
     input:
-        fa = "results/fasta/{sample}_v5.pseudohap.fasta.gz",
+        fa = ancient("results/fasta/{sample}_v5.pseudohap.fasta.gz"),
         kept = "results/blobtoolkit/blobdirs/{sample}_v5/{sample}_kept.csv"
     output:
-        "results/fasta/{sample}_v6.pseudohap.fasta.gz"
+        protected("results/fasta/{sample}_v6.pseudohap.fasta.gz")
     params: 
         scaff_prefix = lambda w: config['scaff_prefix'][w.sample],
         nr_width = 5

@@ -21,7 +21,7 @@ def get_busco_input(w):
 
 rule unzip_fasta:
     input:
-        get_busco_input
+        ancient(get_busco_input)
     output:
         temp("results/fasta/{sample}_{version}.fa")
     shell:

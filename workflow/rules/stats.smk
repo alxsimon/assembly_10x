@@ -6,7 +6,7 @@ def get_fasta(w):
 
 rule assembly_stats:
     input:
-        get_fasta
+        ancient(get_fasta)
     output:
         "results/stats/{sample}_{version}.stats.json"
     conda:
