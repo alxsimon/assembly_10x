@@ -66,7 +66,7 @@ rule supernova_compress_move:
         "tmp/{sample}_{version}/outs/report.txt"
     output:
         archive = "results/supernova_assemblies/{sample}_{version}/outs/assembly.tar.zst",
-        donefile = "results/supernova_assemblies/{sample}_{version}/DONE"
+        donefile = touch("results/supernova_assemblies/{sample}_{version}/DONE")
     params:
         input_dir = lambda w: f'tmp/{w.sample}_{w.version}',
         tmp_archive = lambda w: f'tmp/{w.sample}_{w.version}/outs/assembly.tar.zst',
@@ -79,8 +79,7 @@ rule supernova_compress_move:
         """
         tar -cf - -C {params.input_dir}/outs assembly | zstdmt -T{threads} > {params.tmp_archive} 2> {log} && \
         rm -r {params.input_dir}/outs/assembly && \
-        cp -r {params.input_dir} {params.output_dir} && rm -r {params.input_dir} && \
-        touch {output.donefile}
+        cp -r {params.input_dir} {params.output_dir} && rm -r {params.input_dir}
         """
 
 rule collect_stats:
