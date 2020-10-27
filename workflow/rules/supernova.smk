@@ -34,7 +34,7 @@ rule supernova_fasta:
     input:
         "tmp/{sample}_{version}/outs/report.txt"
     output:
-        "results/fasta/{sample}_{version}.{style}.fasta.gz"
+        protected("results/fasta/{sample}_{version}.{style}.fasta.gz")
     params:
         style = lambda w: w.style.strip('.1'),
         fasta_dir = lambda w, output: os.path.dirname(output[0]),

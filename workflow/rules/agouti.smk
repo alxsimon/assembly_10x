@@ -172,7 +172,7 @@ rule agouti_scaffolding:
         bam = "results/agouti/{sample}/RNAseq_mapped_merged.bam",
         gff = "results/agouti/{sample}/{sample}_v4.pseudohap.gff3"
     output: 
-        "results/fasta/{sample}_v5.pseudohap.fasta.gz"
+        protected("results/fasta/{sample}_v5.pseudohap.fasta.gz")
     params:
         outdir = lambda w: f'results/agouti/{w.sample}/agouti_out',
         minMQ = 20,

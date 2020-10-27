@@ -171,7 +171,7 @@ rule copy_output_v3:
     input:
         "results/purge_dups/{sample}_v2/{sample}_v2.pseudohap.purged.fa.gz"
     output:
-        "results/fasta/{sample}_v3.pseudohap.fasta.gz"
+        protected("results/fasta/{sample}_v3.pseudohap.fasta.gz")
     shell:
         "cp {input} {output}"
 
@@ -179,6 +179,6 @@ rule copy_output_v4:
     input:
         "results/purge_dups/{sample}_v1/{sample}_v1.pseudohap.purged.fa.gz"
     output:
-        "results/fasta/{sample}_v4.pseudohap.fasta.gz"
+        protected("results/fasta/{sample}_v4.pseudohap.fasta.gz")
     shell:
         "cp {input} {output}"
