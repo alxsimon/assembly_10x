@@ -48,7 +48,6 @@ anvio:
   threads: 16
 
 btk:
-  threads: 16
   blobtools_path: /opt/blobtoolkit/blobtools2/blobtools # inside singularity image for v2.4.0
 
 scaff_prefix:
