@@ -1,6 +1,6 @@
 rule split_on_btk_info:
     input:
-        "results/blobtoolkit/blobdirs/{sample}_v5",
+        "results/blobtoolkit/blobdirs/{sample}_v5/meta.json",
         "results/blobtoolkit/DONE_{sample}_v5"
     output:
         kept = "results/blobtoolkit/blobdirs/{sample}_v5/{sample}_kept.csv",
@@ -8,20 +8,22 @@ rule split_on_btk_info:
         virus = "results/blobtoolkit/blobdirs/{sample}_v5/{sample}_viruses.csv",
         euka = "results/blobtoolkit/blobdirs/{sample}_v5/{sample}_eukaryota.csv"
     params:
-        mollusca_taxids = "resources/mollusca_taxids.txt"
+        mollusca_taxids = "resources/mollusca_taxids.txt",
+        blobdir = lambda w, input: os.path.dirname(input[0])
     script:
         "../scripts/btk_conta_extraction.py"
 
 rule btk_filter_conta:
     input:
-        "results/blobtoolkit/blobdirs/{sample}_v5",
+        "results/blobtoolkit/blobdirs/{sample}_v5/meta.json",
         "results/blobtoolkit/blobdirs/{sample}_v5/{sample}_kept.csv"
     output:
         directory("results/blobtoolkit/blobdirs/{sample}_v5_kept"),
         directory("results/blobtoolkit/blobdirs/{sample}_v5_conta")
     params:
         blobtools_bin = config['btk']['blobtools_path'],
-        tmp_kept_list = lambda w, input: f'{input[0]}/tmp_kept_list.ids'
+        tmp_kept_list = lambda w, input: f'{input[0]}/tmp_kept_list.ids',
+        blobdir = lambda w, input: os.path.dirname(input[0])
     conda:
         "../envs/btk_env.yaml"
     shell:
@@ -30,12 +32,12 @@ rule btk_filter_conta:
 
         {params.blobtools_bin} filter \
         --list {params.tmp_kept_list} \
-        --output {output[0]} {input[0]}
+        --output {output[0]} {params.blobdir}
 
         {params.blobtools_bin} filter \
         --list {params.tmp_kept_list} \
         --invert \
-        --output {output[1]} {input[0]}
+        --output {output[1]} {params.blobdir}
 
         rm {params.tmp_kept_list}
         """

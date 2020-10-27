@@ -14,9 +14,11 @@ files = {
     'phylum': 'bestsumorder_phylum.json'
 }
 
+blobdir = snakemake.params.blobdir
+
 df = pd.DataFrame()
 for var, file in files.items():
-    with open(f'{snakemake.input[0]}/{file}') as fr:
+    with open(f'{blobdir}/{file}') as fr:
         data = json.load(fr)
         if data['keys'] == []:
             data = data['values']
@@ -24,7 +26,7 @@ for var, file in files.items():
             data = [data['keys'][x] for x in data['values']]
         df[var] = data
 
-with open(f'{snakemake.input[0]}/bestsumorder_positions.json') as fr:
+with open(f'{blobdir}/bestsumorder_positions.json') as fr:
     pos = json.load(fr)
 
 df['besthit_length'] = [(x[0][2] - x[0][1] + 1) if x!=[] else np.nan for x in pos['values']]
