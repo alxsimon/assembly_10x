@@ -1,12 +1,12 @@
 def get_fasta(w):
     if w.sample == "gallo" and w.version == "v0":
-        return "resources/GCA_001676915.1_ASM167691v1/GCA_001676915.1_ASM167691v1_genomic.fna.gz"
+        return ancient("resources/GCA_001676915.1_ASM167691v1/GCA_001676915.1_ASM167691v1_genomic.fna.gz")
     else:
-        return f"results/fasta/{w.sample}_{w.version}.pseudohap.fasta.gz"
+        return ancient(f"results/fasta/{w.sample}_{w.version}.pseudohap.fasta.gz")
 
 rule assembly_stats:
     input:
-        ancient(get_fasta)
+        get_fasta
     output:
         "results/stats/{sample}_{version}.stats.json"
     conda:

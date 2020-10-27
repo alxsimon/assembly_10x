@@ -15,13 +15,13 @@ rule dwld_busco_databases:
 
 def get_busco_input(w):
     if w.version == "v0" and w.sample == "gallo":
-        return "resources/GCA_001676915.1_ASM167691v1/GCA_001676915.1_ASM167691v1_genomic.fna.gz"
+        return ancient("resources/GCA_001676915.1_ASM167691v1/GCA_001676915.1_ASM167691v1_genomic.fna.gz")
     else:
-        return f"results/fasta/{w.sample}_{w.version}.pseudohap.fasta.gz"
+        return ancient(f"results/fasta/{w.sample}_{w.version}.pseudohap.fasta.gz")
 
 rule unzip_fasta:
     input:
-        ancient(get_busco_input)
+        get_busco_input
     output:
         temp("results/fasta/{sample}_{version}.fa")
     shell:
