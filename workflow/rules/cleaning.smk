@@ -24,7 +24,7 @@ rule btk_filter_conta:
         directory("results/blobtoolkit/blobdirs/{sample}_v5_conta")
     params:
         blobtools_bin = config['btk']['blobtools_path'],
-        tmp_kept_list = lambda w, input: f'{input[0]}/tmp_kept_list.ids',
+        tmp_kept_list = lambda w, input: f'{os.path.dirname(input[0])}/tmp_kept_list.ids',
         blobdir = lambda w, input: os.path.dirname(input[0])
     conda:
         "../envs/btk_env.yaml"
