@@ -75,8 +75,8 @@ rule btk_add_busco:
     shell:
         """
         {params.blobtools_bin} add \
-        --busco {input[2]}
-        --busco {input[1]}
+        --busco {input[2]} \
+        --busco {input[1]} \
         {params.blobdir}
         """
 
