@@ -10,6 +10,8 @@ rule split_on_btk_info:
     params:
         mollusca_taxids = "resources/mollusca_taxids.txt",
         blobdir = lambda w, input: os.path.dirname(input[0])
+    conda:
+        "../envs/python_scripts.yaml"
     script:
         "../scripts/btk_conta_extraction.py"
 
