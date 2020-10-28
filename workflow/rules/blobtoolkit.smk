@@ -5,8 +5,8 @@ rule btk_prepare_workdir:
             "_R1_001.fastq.gz", "_R2_001.fastq.gz")
     output:
         fa = temp("results/blobtoolkit/{sample}_{version}/{sample}_{version}.fasta"),
-        GM1 = "results/blobtoolkit/{sample}_{version}/GM_1.fastq.gz",
-        GM2 = "results/blobtoolkit/{sample}_{version}/GM_2.fastq.gz"
+        GM1 = temp("results/blobtoolkit/{sample}_{version}/GM_1.fastq.gz"),
+        GM2 = temp("results/blobtoolkit/{sample}_{version}/GM_2.fastq.gz")
     conda: 
         "../envs/btk_env.yaml"
     shell:
