@@ -5,7 +5,7 @@ import os.path
 import re
 from snakemake.utils import min_version
 
-min_version("5.19.2")
+min_version("5.27.4")
 
 configfile: "config/config.yaml"
 
