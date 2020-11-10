@@ -25,13 +25,12 @@ def get_order(w):
 
 rule download_ena_assemblies:
     output:
-        "resources/LNJA01.fasta.gz",
+        "resources/GCA001676915.fasta.gz",
         "resources/UYJE01.fasta.gz"
     params:
         ftp = config['ENA_assemblies']
     shell:
         """
-        cd resources
-        wget {params.ftp[0]}
-        wget {params.ftp[1]}
+        wget -O {output[0]} {params.ftp[0]}
+        wget -O {output[1]} {params.ftp[1]}
         """

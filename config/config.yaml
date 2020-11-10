@@ -15,8 +15,8 @@ samples:
   - tros
 #  - bv
 
-ENA_assemblies:
-  LNJA01: "ftp://ftp.ebi.ac.uk/pub/databases/ena/wgs/public/ln/LNJA01.fasta.gz"
+published_assemblies:
+  GCA001676915: "ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/676/915/GCA_001676915.1_ASM167691v1/GCA_001676915.1_ASM167691v1_genomic.fna.gz"
   UYJE01: "ftp://ftp.ebi.ac.uk/pub/databases/ena/wgs/public/uy/UYJE01.fasta.gz"
 
 genomescope:
