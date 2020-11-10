@@ -23,3 +23,15 @@ def get_order(w):
         # dummy file that already exist
         return 'workflow/rules/supernova.smk'
 
+rule download_ena_assemblies:
+    output:
+        "resources/LNJA01.fasta.gz",
+        "resources/UYJE01.fasta.gz"
+    params:
+        ftp = config['ENA_assemblies']
+    shell:
+        """
+        cd resources
+        wget {params.ftp[0]}
+        wget {params.ftp[1]}
+        """

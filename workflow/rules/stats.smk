@@ -1,6 +1,6 @@
 def get_fasta(w):
-    if w.sample == "gallo" and w.version == "v0":
-        return ancient("resources/GCA_001676915.1_ASM167691v1/GCA_001676915.1_ASM167691v1_genomic.fna.gz")
+    if (w.version == "LNJA01" or w.version == "UYE01") and w.sample == "gallo":
+        return ancient(f"resources/{w.version}.fasta.gz")
     else:
         return ancient(f"results/fasta/{w.sample}_{w.version}.pseudohap.fasta.gz")
 
@@ -20,7 +20,8 @@ rule assembly_stats:
 
 rule merge_stats:
     input:
-        "results/stats/gallo_v0.stats.json",
+        "results/stats/gallo_LNJA01.stats.json",
+        "results/stats/gallo_UYE01.stats.json",
         expand("results/stats/{sample}_{version}.stats.json",
             sample=config['samples'], version=["v1", "v2", "v3", "v4", "v5", "v6"])
     output:

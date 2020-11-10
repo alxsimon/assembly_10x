@@ -14,8 +14,8 @@ rule dwld_busco_databases:
         """
 
 def get_busco_input(w):
-    if w.version == "v0" and w.sample == "gallo":
-        return ancient("resources/GCA_001676915.1_ASM167691v1/GCA_001676915.1_ASM167691v1_genomic.fna.gz")
+    if (w.version == "LNJA01" or w.version == "UYE01") and w.sample == "gallo":
+        return ancient(f"resources/{w.version}.fasta.gz")
     else:
         return ancient(f"results/fasta/{w.sample}_{w.version}.pseudohap.fasta.gz")
 
@@ -39,8 +39,7 @@ rule busco:
         fa = lambda w, input: input[0].replace(".fasta.gz", ".fa"),
         outdir = lambda w: f'{w.sample}_{w.version}_{w.db}'
     wildcard_constraints:
-        db = '\w+_\w+',
-        version = 'v[0-9]+'
+        db = '\w+_\w+'
     log:
         "logs/busco.{sample}_{version}_{db}.log"
     threads:

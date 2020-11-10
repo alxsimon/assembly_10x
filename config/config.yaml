@@ -15,6 +15,10 @@ samples:
   - tros
 #  - bv
 
+ENA_assemblies:
+  LNJA01: "ftp://ftp.ebi.ac.uk/pub/databases/ena/wgs/public/ln/LNJA01.fasta.gz"
+  UYJE01: "ftp://ftp.ebi.ac.uk/pub/databases/ena/wgs/public/uy/UYJE01.fasta.gz"
+
 genomescope:
   kmc_mem: 100
   kmer_size: 21
