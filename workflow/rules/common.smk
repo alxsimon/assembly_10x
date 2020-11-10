@@ -28,7 +28,7 @@ rule download_ena_assemblies:
         "resources/GCA001676915.fasta.gz",
         "resources/UYJE01.fasta.gz"
     params:
-        ftp = config['ENA_assemblies']
+        ftp = config['published_assemblies']
     shell:
         """
         wget -O {output[0]} {params.ftp[0]}
