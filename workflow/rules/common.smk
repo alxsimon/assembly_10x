@@ -28,9 +28,10 @@ rule download_assemblies:
         "resources/GCA001676915.fasta.gz",
         "resources/UYJE01.fasta.gz"
     params:
-        ftp = config['published_assemblies']
+        ftp_0 = config['published_assemblies'][0],
+        ftp_1 = config['published_assemblies'][1]
     shell:
         """
-        wget {params.ftp['GCA001676915']} -O {output[0]}
-        wget {params.ftp['UYJE01']} -O {output[1]}
+        wget {params.ftp_0} -O {output[0]}
+        wget {params.ftp_1} -O {output[1]}
         """
