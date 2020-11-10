@@ -27,7 +27,7 @@ rule all:
             sample=config['samples'], version=["v1", "v2", "v3", "v4", "v5", "v6"],
             db=["metazoa_odb10", "mollusca_odb10"]),
         expand("results/busco/gallo_{ENA}_{db}/run_{db}/short_summary.txt",
-            ENA=['LNJA01', 'UYE01'], db=["metazoa_odb10", "mollusca_odb10"]),
+            ENA=['LNJA01', 'UYJE01'], db=["metazoa_odb10", "mollusca_odb10"]),
         expand("results/kat/{sample}_{version}/{sample}_{version}_spectra.pdf",
             sample=config['samples'], version=["v1", "v2", "v3", "v4", "v5", "v6"]),
         "results/supernova_assemblies/supernova_assemblies_stats.csv",

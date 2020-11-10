@@ -14,7 +14,7 @@ rule dwld_busco_databases:
         """
 
 def get_busco_input(w):
-    if (w.version == "LNJA01" or w.version == "UYE01") and w.sample == "gallo":
+    if (w.version == "LNJA01" or w.version == "UYJE01") and w.sample == "gallo":
         return ancient(f"resources/{w.version}.fasta.gz")
     else:
         return ancient(f"results/fasta/{w.sample}_{w.version}.pseudohap.fasta.gz")
