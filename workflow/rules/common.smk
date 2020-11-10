@@ -31,6 +31,6 @@ rule download_assemblies:
         ftp = config['published_assemblies']
     shell:
         """
-        wget -O {output[0]} {params.ftp[0]}
-        wget -O {output[1]} {params.ftp[1]}
+        wget {params.ftp['GCA001676915']} -O {output[0]}
+        wget {params.ftp['UYJE01']} -O {output[1]}
         """
