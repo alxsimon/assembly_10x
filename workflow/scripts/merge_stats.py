@@ -6,7 +6,7 @@ import re
 
 out_df = pd.DataFrame()
 for stat_file in snakemake.input:
-    m = re.search('results/stats/(.+?)_(v.?).stats.json', stat_file)
+    m = re.search('results/stats/(.+?)_(.+?).stats.json', stat_file)
     sample = m.group(1)
     version = m.group(2)
     with open(stat_file, 'r') as f:
