@@ -23,7 +23,7 @@ def get_order(w):
         # dummy file that already exist
         return 'workflow/rules/supernova.smk'
 
-rule download_ena_assemblies:
+rule download_assemblies:
     output:
         "resources/GCA001676915.fasta.gz",
         "resources/UYJE01.fasta.gz"
