@@ -16,8 +16,8 @@ rule index_refs:
 rule map_final:
     input:
         fa = "results/fasta/{sample}_v6.pseudohap.fasta.gz",
-        index = multiext("results/fasta/{sample}_v6.pseudohap.fasta.gz",
-                ".123", ".")
+        multiext("results/fasta/{sample}_v6.pseudohap.fasta.gz",
+            ".0123", ".amb", ".ann", ".bwt.2bit.64", ".pac"),
         fastqs = multiext("results/preprocessing/{sample}/{sample}_dedup_proc_fastp",
             "_R1_001.fastq.gz", "_R2_001.fastq.gz")
     output:
