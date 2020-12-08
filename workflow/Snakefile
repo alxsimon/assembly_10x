@@ -36,6 +36,10 @@ rule all:
             sample=config['samples'], version=['v5', 'v6']),
         expand("results/blobtoolkit/blobdirs/{sample}_v5_kept",
             sample=config['samples']),
+        expand("results/mapping/{sample}_v6.bam",
+            sample=config['samples']),
+        expand("results/mapping/{sample}_v6.stats",
+            sample=config['samples']),
 
 
 include: "rules/preprocessing.smk"
@@ -48,4 +52,5 @@ include: "rules/stats.smk"
 include: "rules/agouti.smk"
 include: "rules/blobtoolkit.smk"
 include: "rules/cleaning.smk"
+include: "rules/mapping.smk"
 

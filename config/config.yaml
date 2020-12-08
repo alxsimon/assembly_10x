@@ -60,3 +60,6 @@ scaff_prefix:
   edu: me
   tros: mt
   bv: bv
+
+mapping:
+  threads: 32
