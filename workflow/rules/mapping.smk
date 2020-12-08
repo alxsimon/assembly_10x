@@ -37,7 +37,7 @@ rule map_final:
         samtools index {output[0]}
         """
 
-rule mappings_stats:
+rule mapping_stats:
     input:
         "results/mapping/{sample}_v6.bam"
     output:
