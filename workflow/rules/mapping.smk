@@ -45,6 +45,8 @@ rule mapping_stats:
         "results/mapping/{sample}_v6.bedcov"
     threads:
         config['mapping']['threads']
+    conda:
+        "../envs/mapping.yaml"
     shell:
         """
         samtools stats -@ {threads} {input} > {output[0]}
