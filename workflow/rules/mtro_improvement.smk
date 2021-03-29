@@ -29,7 +29,7 @@ rule map_ont_reads:
     output:
         "results/mtro_02/lrscaf/mtro_01_ont_mapped.paf"
     log:
-        "log/mtro_improvement/map_ont_reads.log"
+        "logs/mtro_improvement/map_ont_reads.log"
     conda:
         "../envs/mtro_improvement.yaml"
     threads:
@@ -55,7 +55,7 @@ rule lrscaf:
     threads:
         workflow.cores
     log:
-        "log/mtro_improvement/lrscaf_mtro.log"
+        "logs/mtro_improvement/lrscaf_mtro.log"
     shell:
         """
         java -jar {input.lrscaf} \
@@ -86,7 +86,7 @@ rule ragtag_mtro:
     threads:
         workflow.cores
     log:
-        "log/mtro_improvement/ragtag_mtro.log"
+        "logs/mtro_improvement/ragtag_mtro.log"
     shell:
         """
         ragtag.py scaffold -t {threads} \
@@ -107,7 +107,7 @@ rule pilon_map_ont:
     output:
         "results/mtro_02/pilon/mtro_01.ragtag.ont_mapped_pilon.bam"
     log:
-        "log/mtro_improvement/map_ont_reads_pilon.log"
+        "logs/mtro_improvement/map_ont_reads_pilon.log"
     conda:
         "../envs/mtro_improvement.yaml"
     threads:
@@ -142,7 +142,7 @@ rule pilon_map_pe:
     output:
         "results/mtro_02/pilon/mtro_01.ragtag.pe_mapped_pilon.bam"
     log:
-        "log/mtro_improvement/map_pe_reads_pilon.log"
+        "logs/mtro_improvement/map_pe_reads_pilon.log"
     conda:
         "../envs/mtro_improvement.yaml"
     threads:
