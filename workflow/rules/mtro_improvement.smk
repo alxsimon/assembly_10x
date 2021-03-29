@@ -116,8 +116,8 @@ rule pilon_map_ont:
         """
         minimap2 -t {threads} -ax map-ont \
         {input.ref} {input.ont_reads} 2> {log} | \
-        samtools sort - - | \
-        samtools view -b -@ 10 -o {output} \
+        samtools sort -@ {threads} | \
+        samtools view -b -@ {threads} -o {output}
         samtools index {output}
         """
 
@@ -151,8 +151,8 @@ rule pilon_map_pe:
         """
         [ ! -e {input.ref}.0123 ] && bwa-mem2 index {input.ref}
         bwa-mem2 mem -t {threads} {input.ref} {input.R1} {input.R2} 2> {log} | \
-        samtools sort - - | \
-        samtools view -b -@ 10 -o {output} \
+        samtools sort -@ {threads} | \
+        samtools view -b -@ {threads} -o {output}
         samtools index {output}
         """
 
