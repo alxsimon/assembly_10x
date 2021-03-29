@@ -16,8 +16,8 @@ samples:
 #  - bv
 
 published_assemblies:
-  GCA001676915: "ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/001/676/915/GCA_001676915.1_ASM167691v1/GCA_001676915.1_ASM167691v1_genomic.fna.gz"
-  UYJE01: "ftp://ftp.ebi.ac.uk/pub/databases/ena/wgs/public/uy/UYJE01.fasta.gz"
+  GCA017311375: "ftp://ftp.ncbi.nih.gov/genomes/genbank/invertebrate/Mytilus_coruscus/all_assembly_versions/GCA_017311375.1_Mcoruscus_HiC/GCA_017311375.1_Mcoruscus_HiC_genomic.fna.gz"
+  GCA900618805: "ftp://ftp.ncbi.nih.gov/genomes/genbank/invertebrate/Mytilus_galloprovincialis/all_assembly_versions/GCA_900618805.1_MGAL_10/GCA_900618805.1_MGAL_10_genomic.fna.gz"
 
 genomescope:
   kmc_mem: 100
@@ -63,3 +63,8 @@ scaff_prefix:
 
 mapping:
   threads: 32
+
+mtro_improvement:
+  mtro_ont: resources/ont_reads/mtro_ont_reads.fastq.gz
+  java_mem: 250
+  max_concurrent_pilon: 2

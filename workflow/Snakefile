@@ -3,6 +3,7 @@
 import glob
 import os.path
 import re
+import math
 from snakemake.utils import min_version
 
 min_version("5.27.4")
@@ -12,8 +13,20 @@ configfile: "config/config.yaml"
 container: config['sif_tools']
 
 include: "rules/common.smk"
+include: "rules/preprocessing.smk"
+include: "rules/genomescope.smk"
+include: "rules/supernova.smk"
+include: "rules/purge_dups.smk"
+include: "rules/busco.smk"
+include: "rules/kat.smk"
+include: "rules/stats.smk"
+include: "rules/agouti.smk"
+include: "rules/blobtoolkit.smk"
+include: "rules/cleaning.smk"
+include: "rules/mapping.smk"
+include: "rules/mtro_improvement.smk"
 
-rule all:
+rule all_v6:
     input: 
         expand("results/preprocessing/{sample}/{sample}_S1_L001_R1_001.fastq.gz",
             sample=config['samples']),
@@ -23,11 +36,12 @@ rule all:
             sample=config['samples'], version=["v1", "v2"]),
         expand("results/fasta/{sample}_v3.pseudohap.fasta.gz",
             sample=config['samples'], version=["v3", "v4", "v5", "v6"]),
-        expand("results/busco/{sample}_{version}_{db}/run_{db}/short_summary.txt",
-            sample=config['samples'], version=["v1", "v2", "v3", "v4", "v5", "v6"],
+        # expand("results/busco/{sample}_{version}_{db}/run_{db}/short_summary.txt",
+        #     sample=config['samples'], version=["v1", "v2", "v3", "v4", "v5", "v6"],
+        #     db=["metazoa_odb10", "mollusca_odb10"]),
+        expand("results/busco/{pub}_{db}/run_{db}/short_summary.txt",
+            pub=['coruscus_GCA017311375', 'gallo_GCA900618805'], 
             db=["metazoa_odb10", "mollusca_odb10"]),
-        expand("results/busco/gallo_{pub}_{db}/run_{db}/short_summary.txt",
-            pub=['GCA001676915', 'UYJE01'], db=["metazoa_odb10", "mollusca_odb10"]),
         expand("results/kat/{sample}_{version}/{sample}_{version}_spectra.pdf",
             sample=config['samples'], version=["v1", "v2", "v3", "v4", "v5", "v6"]),
         "results/supernova_assemblies/supernova_assemblies_stats.csv",
@@ -41,16 +55,8 @@ rule all:
         expand("results/mapping/{sample}_v6.stats",
             sample=config['samples']),
 
-
-include: "rules/preprocessing.smk"
-include: "rules/genomescope.smk"
-include: "rules/supernova.smk"
-include: "rules/purge_dups.smk"
-include: "rules/busco.smk"
-include: "rules/kat.smk"
-include: "rules/stats.smk"
-include: "rules/agouti.smk"
-include: "rules/blobtoolkit.smk"
-include: "rules/cleaning.smk"
-include: "rules/mapping.smk"
-
+rule mtro_improvement:
+    input:
+        "results/fasta/tros_v7.pseudohap.fasta.gz",
+        # "results/blobtoolkit/DONE_tros_v7",
+        # "results/kat/tros_v7/tros_v7_spectra.pdf",

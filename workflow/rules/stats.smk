@@ -1,5 +1,5 @@
 def get_fasta(w):
-    if (w.version == "GCA001676915" or w.version == "UYJE01") and w.sample == "gallo":
+    if (w.version in ["GCA900618805", "GCA017311375"]):
         return ancient(f"resources/{w.version}.fasta.gz")
     else:
         return ancient(f"results/fasta/{w.sample}_{w.version}.pseudohap.fasta.gz")
@@ -20,10 +20,11 @@ rule assembly_stats:
 
 rule merge_stats:
     input:
-        "results/stats/gallo_GCA001676915.stats.json",
-        "results/stats/gallo_UYJE01.stats.json",
+        "results/stats/coruscus_GCA017311375.stats.json",
+        "results/stats/gallo_GCA900618805.stats.json",
         expand("results/stats/{sample}_{version}.stats.json",
-            sample=config['samples'], version=["v1", "v2", "v3", "v4", "v5", "v6"])
+            sample=config['samples'], version=["v1", "v2", "v3", "v4", "v5", "v6"]),
+        "results/stats/tros_v7.stats.json"
     output:
         "results/stats/assembly_stats.csv"
     conda:

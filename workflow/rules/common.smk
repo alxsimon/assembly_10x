@@ -25,11 +25,11 @@ def get_order(w):
 
 rule download_assemblies:
     output:
-        "resources/GCA001676915.fasta.gz",
-        "resources/UYJE01.fasta.gz"
+        "resources/GCA017311375.fasta.gz",
+        "resources/GCA900618805.fasta.gz"
     params:
-        ftp_0 = config['published_assemblies']['GCA001676915'],
-        ftp_1 = config['published_assemblies']['UYJE01']
+        ftp_0 = config['published_assemblies']['GCA017311375'],
+        ftp_1 = config['published_assemblies']['GCA900618805']
     shell:
         """
         wget {params.ftp_0} -O {output[0]}
