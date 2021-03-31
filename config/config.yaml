@@ -48,9 +48,6 @@ busco:
 agouti:
   threads: 16
 
-anvio:
-  threads: 16
-
 btk:
   threads: 32
   blobtools_path: /opt/blobtoolkit/blobtools2/blobtools # inside singularity image for v2.4.0

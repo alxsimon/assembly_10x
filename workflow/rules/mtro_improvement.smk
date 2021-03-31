@@ -2,17 +2,17 @@
 # Then scaffold according to Mytilus coruscus genome
 # Finally perform correction and gap filling with Pilon
 
-rule cp_mtro_fasta:
-    input:
-        "results/fasta/tros_v6.pseudohap.fasta.gz"
-    output:
-        "results/mtro_02/mtro_01.fa",
-    conda:
-        "../envs/mtro_improvement.yaml"
-    shell:
-        """
-        zcat {input} > {output}
-        """
+# rule cp_mtro_fasta:
+#     input:
+#         ancient("results/fasta/tros_v6.pseudohap.fasta.gz")
+#     output:
+#         "results/mtro_02/mtro_01.fa",
+#     conda:
+#         "../envs/mtro_improvement.yaml"
+#     shell:
+#         """
+#         zcat {input} > {output}
+#         """
 
 rule download_lrscaf:
     output:
@@ -102,7 +102,7 @@ rule ragtag_mtro:
 # Pilon
 rule pilon_map_ont:
     input:
-        ref = "results/mtro_02/mtro_01.fa",
+        ref = "results/mtro_02/ragtag/mtro_01.ragtag.fa",
         ont_reads = config['mtro_improvement']['mtro_ont'],
     output:
         "results/mtro_02/pilon/mtro_01.ragtag.ont_mapped_pilon.bam"
@@ -178,7 +178,7 @@ rule split_in_targets:
     shell:
         """
         for i in {{1..14}}; do
-            grep '>' {input.ref} | sed 's/>//'' | awk -v record=$i 'NR==record {{print $0}}' \
+            grep '>' {input.ref} | sed 's/>//' | awk -v record=$i 'NR==record {{print $0}}' \
             > {params.out_dir}/target_$(printf '%02d' $i).txt
         done
         grep '>' {input.ref} | tail -n +15 > {output[14]}
@@ -207,9 +207,10 @@ rule pilon_mtro_02:
     shell:
         """
         java -Xmx{params.java_mem}G -jar {input.pilon} \
-        --genome mtro_03.fa \
+        --genome {input.ref} \
         --frags {input.pe_bam} \
         --nanopore {input.ont_bam} \
+        --targets {input.target} \
         --output {params.prefix} \
         --outdir {params.out_dir} \
         --changes --vcf --tracks --diploid --fix all \
