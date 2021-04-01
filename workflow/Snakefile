@@ -57,6 +57,13 @@ rule all_v6:
 
 rule mtro_improvement:
     input:
-        "results/fasta/tros_v7.pseudohap.fasta.gz",
+        expand("results/mtro_02/pilon/res_mtro_02_{num}/mtro_02_{num}.fasta",
+            num=[f'{i+1:02}' for i in range(6, 15)]),
+        #"results/fasta/tros_v7.pseudohap.fasta.gz",
         # "results/blobtoolkit/DONE_tros_v7",
         # "results/kat/tros_v7/tros_v7_spectra.pdf",
+
+rule repeats:
+    input:
+        expand("results/repeats/{asm}_db/{asm}_db-families.fa",
+            asm=config['repeats']['asm_db']),
