@@ -8,7 +8,7 @@
 #     output:
 #         "results/mtro_02/mtro_01.fa",
 #     conda:
-#         "../envs/mtro_improvement.yaml"
+#         "../envs/asm_improvement.yaml"
 #     shell:
 #         """
 #         zcat {input} > {output}
@@ -25,13 +25,13 @@ rule download_lrscaf:
 rule map_ont_reads:
     input:
         ref = "results/mtro_02/mtro_01.fa",
-        ont_reads = config['mtro_improvement']['mtro_ont'],
+        ont_reads = config['asm_improvement']['mtro_ont'],
     output:
         "results/mtro_02/lrscaf/mtro_01_ont_mapped.paf"
     log:
         "logs/mtro_improvement/map_ont_reads.log"
     conda:
-        "../envs/mtro_improvement.yaml"
+        "../envs/asm_improvement.yaml"
     threads:
         workflow.cores
     shell:
@@ -51,7 +51,7 @@ rule lrscaf:
     params:
         res = lambda w, output: os.path.dirname(output[0])
     conda:
-        "../envs/mtro_improvement.yaml"
+        "../envs/asm_improvement.yaml"
     threads:
         workflow.cores
     log:
@@ -82,7 +82,7 @@ rule ragtag_mtro:
     params:
         out_dir = lambda w, output: f"{os.path.dirname(output[0])}/res"
     conda:
-        "../envs/mtro_improvement.yaml"
+        "../envs/asm_improvement.yaml"
     threads:
         workflow.cores
     log:
@@ -103,13 +103,13 @@ rule ragtag_mtro:
 rule pilon_map_ont:
     input:
         ref = "results/mtro_02/ragtag/mtro_01.ragtag.fa",
-        ont_reads = config['mtro_improvement']['mtro_ont'],
+        ont_reads = config['asm_improvement']['mtro_ont'],
     output:
         "results/mtro_02/pilon/mtro_01.ragtag.ont_mapped_pilon.bam"
     log:
         "logs/mtro_improvement/map_ont_reads_pilon.log"
     conda:
-        "../envs/mtro_improvement.yaml"
+        "../envs/asm_improvement.yaml"
     threads:
         workflow.cores
     shell:
@@ -127,7 +127,7 @@ rule prepare_bwa_index:
     output:
         "results/mtro_02/ragtag/mtro_01.ragtag.fa.0123"
     conda:
-        "../envs/mtro_improvement.yaml"
+        "../envs/asm_improvement.yaml"
     shell:
         """
         bwa-mem2 index {input}
@@ -144,7 +144,7 @@ rule pilon_map_pe:
     log:
         "logs/mtro_improvement/map_pe_reads_pilon.log"
     conda:
-        "../envs/mtro_improvement.yaml"
+        "../envs/asm_improvement.yaml"
     threads:
         workflow.cores
     shell:
@@ -174,14 +174,14 @@ rule split_in_targets:
     params:
         out_dir = lambda w, output: os.path.dirname(output[0])
     conda:
-        "../envs/mtro_improvement.yaml"
+        "../envs/asm_improvement.yaml"
     shell:
         """
         for i in {{1..14}}; do
             grep '>' {input.ref} | sed 's/>//' | awk -v record=$i 'NR==record {{print $0}}' \
             > {params.out_dir}/target_$(printf '%02d' $i).txt
         done
-        grep '>' {input.ref} | tail -n +15 > {output[14]}
+        grep '>' {input.ref} | tail -n +15 | sed 's/>//' > {output[14]}
         """
 
 rule pilon_mtro_02:
@@ -196,13 +196,13 @@ rule pilon_mtro_02:
     params:
         out_dir = lambda w, output: os.path.dirname(output[0]),
         prefix = lambda w, output: os.path.basename(output[0]).replace('.fasta', ''),
-        java_mem = config['mtro_improvement']['java_mem'],
+        java_mem = config['asm_improvement']['java_mem'],
     log:
         "logs/mtro_improvement/pilon_run_target_{num}.log"
     conda:
-        "../envs/mtro_improvement.yaml"
+        "../envs/asm_improvement.yaml"
     threads: 
-        math.floor(workflow.cores/config['mtro_improvement']['max_concurrent_pilon'])
+        math.floor(workflow.cores/config['asm_improvement']['max_concurrent_pilon'])
         # limit number of concurrent processes due to available RAM
     shell:
         """

@@ -25,6 +25,7 @@ include: "rules/blobtoolkit.smk"
 include: "rules/cleaning.smk"
 include: "rules/mapping.smk"
 include: "rules/mtro_improvement.smk"
+# include: "rules/mgal_medu_improvement.smk"
 
 rule all_v6:
     input: 

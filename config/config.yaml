@@ -62,10 +62,10 @@ scaff_prefix:
 mapping:
   threads: 32
 
-mtro_improvement:
+asm_improvement:
   mtro_ont: resources/ont_reads/mtro_ont_reads.fastq.gz
   java_mem: 250
-  max_concurrent_pilon: 2
+  max_concurrent_pilon: 3
 
 repeats:
   threads: 16
