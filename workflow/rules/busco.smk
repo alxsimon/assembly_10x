@@ -53,3 +53,24 @@ rule busco:
         -l {wildcards.db} > {log} 2>&1
         cp -r {params.outdir} results/busco/ && rm -r {params.outdir}
         """
+
+
+rule summarize_busco:
+    input:
+        expand("results/busco/{sample}_{version}_{db}/short_summary.specific.{db}.{sample}_{version}_{db}.txt",
+            sample=config['samples'], 
+            version=["v1", "v2", "v3", "v4", "v5", "v6"], # "v7"
+            db=["metazoa_odb10", "mollusca_odb10"]),
+        expand("results/busco/{pub}_{db}/short_summary.specific.{db}.{pub}_{db}.txt",
+            pub=['coruscus_GCA017311375', 'gallo_GCA900618805'], 
+            db=["metazoa_odb10", "mollusca_odb10"])
+    output:
+        "results/stats/busco_summary.tsv"
+    conda:
+        "../envs/busco.yaml"
+    shell:
+        """
+        python workflow/scripts/summarize_buscos.py \
+        -o {output} \
+        --files {input}
+        """

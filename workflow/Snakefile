@@ -37,16 +37,8 @@ rule all_v6:
             sample=config['samples'], version=["v1", "v2"]),
         expand("results/fasta/{sample}_v3.pseudohap.fasta.gz",
             sample=config['samples'], version=["v3", "v4", "v5", "v6"]),
-        expand("results/busco/{sample}_{version}_{db}/run_{db}/short_summary.txt",
-            sample=config['samples'], version=["v1", "v2", "v3", "v4", "v5", "v6"],
-            db=["metazoa_odb10", "mollusca_odb10"]),
-        expand("results/busco/{pub}_{db}/run_{db}/short_summary.txt",
-            pub=['coruscus_GCA017311375', 'gallo_GCA900618805'], 
-            db=["metazoa_odb10", "mollusca_odb10"]),
         expand("results/kat/{sample}_{version}/{sample}_{version}_spectra.pdf",
             sample=config['samples'], version=["v1", "v2", "v3", "v4", "v5", "v6"]),
-        "results/supernova_assemblies/supernova_assemblies_stats.csv",
-        "results/stats/assembly_stats.csv",
         expand("results/blobtoolkit/DONE_{sample}_{version}",
             sample=config['samples'], version=['v5', 'v6']),
         expand("results/blobtoolkit/blobdirs/{sample}_v5_kept",
@@ -66,6 +58,19 @@ rule asm_improvement:
         #"results/fasta/tros_v7.pseudohap.fasta.gz",
         # "results/blobtoolkit/DONE_tros_v7",
         # "results/kat/tros_v7/tros_v7_spectra.pdf",
+
+rule stats:
+    input:
+        # expand("results/busco/{sample}_{version}_{db}/run_{db}/short_summary.txt",
+        #     sample=config['samples'], 
+        #     version=["v1", "v2", "v3", "v4", "v5", "v6", "v7"],
+        #     db=["metazoa_odb10", "mollusca_odb10"]),
+        # expand("results/busco/{pub}_{db}/run_{db}/short_summary.txt",
+        #     pub=['coruscus_GCA017311375', 'gallo_GCA900618805'], 
+        #     db=["metazoa_odb10", "mollusca_odb10"]),
+        "results/stats/busco_summary.tsv",
+        "results/supernova_assemblies/supernova_assemblies_stats.csv",
+        "results/stats/assembly_stats.csv",
 
 rule repeats:
     input:
