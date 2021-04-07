@@ -262,7 +262,7 @@ rule split_in_targets_asm:
             grep '>' {input.ref} | sed 's/>//' | awk -v record=$i 'NR==record {{print $0}}' \
             > {params.out_dir}/target_$(printf '%02d' $i).txt
         done
-        grep '>' {input.ref} | tail -n +15 > {output[14]}
+        grep '>' {input.ref} | tail -n +15 | sed 's/>//' > {output[14]}
         """
 
 rule pilon_asm_02:
