@@ -27,6 +27,7 @@ rule build_db:
         "logs/repeats/build_db_{asm}.log"
     shell:
         """
+        export LC_ALL=C
         BuildDatabase -name {params.db_name} {input} \
         > {log} 2>&1
         """
@@ -37,7 +38,7 @@ rule repeat_modeler:
     output:
         "results/repeats/{asm}_db/{asm}_db-families.fa"
     params:
-        pa = config['repeats']['threads']/4,
+        pa = int(math.floor(config['repeats']['threads']/4)),
         db_name = lambda w, input: input[0].replace(".nhr", ""),
     threads:
         config['repeats']['threads']
@@ -47,6 +48,7 @@ rule repeat_modeler:
         "logs/repeats/repeat_modeler_{asm}.log"
     shell:
         """
+        export LC_ALL=C
         RepeatModeler -database {params.db_name} -LTRStruct -pa {params.pa} \
         > {log} 2>&1
         """
@@ -86,7 +88,7 @@ rule repeat_masker:
     output:
         "results/repeats/{asm}.fa.masked"
     params:
-        pa = config['repeats']['threads']/4,
+        pa = int(math.floor(config['repeats']['threads']/4)),
         out_dir = lambda w, output: os.path.dirname(output[0])
     threads:
         config['repeats']['threads']
@@ -96,6 +98,7 @@ rule repeat_masker:
         "logs/repeats/repeat_masker_{asm}.log"
     shell:
         """
+        export LC_ALL=C
         RepeatMasker -dir {params.out_dir} \
         -lib {input.families} \
         -xsmall -gff -pa {params.pa} \

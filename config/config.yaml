@@ -68,5 +68,5 @@ asm_improvement:
   max_concurrent_pilon: 2
 
 repeats:
-  threads: 16
+  threads: 16 # must be multiple of 4
   asm_db: ["gallo_v7", "tros_v7", "edu_v7", "GCA017311375", "GCA900618805"]
