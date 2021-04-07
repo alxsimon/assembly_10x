@@ -1,4 +1,4 @@
-def get_asm(w)
+def get_asm(w):
     if w.asm in ["gallo_v7", "tros_v7", "edu_v7"]:
         return f"results/fasta/{w.asm}.pseudohap.fasta.gz"
     elif w.asm in ["GCA017311375", "GCA900618805"]:
