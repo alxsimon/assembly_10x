@@ -31,7 +31,7 @@ rule build_db:
 
 rule repeat_modeler:
     input:
-        "results/repeats/{{asm}_db/{asm}_db.nhr"
+        "results/repeats/{asm}_db/{asm}_db.nhr"
     output:
         "results/repeats/{asm}_db/{asm}_db-families.fa"
     params:
