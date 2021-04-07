@@ -39,6 +39,8 @@ rule repeat_modeler:
     params:
         pa = config['repeats']['threads']/4,
         db_name = lambda w, input: input[0].replace(".nhr", ""),
+    threads:
+        config['repeats']['threads']
     container:
         config['dfam_container']
     log:
@@ -86,6 +88,8 @@ rule repeat_masker:
     params:
         pa = config['repeats']['threads']/4,
         out_dir = lambda w, output: os.path.dirname(output[0])
+    threads:
+        config['repeats']['threads']
     container:
         config['dfam_container']
     log:
