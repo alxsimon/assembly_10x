@@ -4,23 +4,23 @@
 
 def get_fasta_to_improve(w):
     if w.asm=="mgal":
-        return ancient("results/fasta/gallo_v6.pseudohap.fasta.gz")
+        return "results/fasta/gallo_v6.pseudohap.fasta.gz"
     elif w.asm=="medu":
-        return ancient("results/fasta/edu_v6.pseudohap.fasta.gz")
+        return "results/fasta/edu_v6.pseudohap.fasta.gz"
     elif w.asm=="mtro":
-        return ancient("results/fasta/tros_v6.pseudohap.fasta.gz")
+        return "results/fasta/tros_v6.pseudohap.fasta.gz"
 
-# rule cp_asm_fasta:
-#     input:
-#         ancient(get_fasta_to_improve)
-#     output:
-#         "results/{asm}_02/{asm}_01.fa",
-#     conda:
-#         "../envs/asm_improvement.yaml"
-#     shell:
-#         """
-#         zcat {input} > {output}
-#         """
+rule cp_asm_fasta:
+    input:
+        ancient(get_fasta_to_improve)
+    output:
+        "results/{asm}_02/{asm}_01.fa",
+    conda:
+        "../envs/asm_improvement.yaml"
+    shell:
+        """
+        zcat {input} > {output}
+        """
 
 #===========================
 # mtro specific steps
@@ -313,6 +313,6 @@ rule merge_pilon_res:
     input:
         decide_asm
     output:
-        "results/fasta/{sample}_v7.pseudohap.fasta.gz"
+        protected("results/fasta/{sample}_v7.pseudohap.fasta.gz")
     shell:
         "cat {input} | bgzip -c > {output}"

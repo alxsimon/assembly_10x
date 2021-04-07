@@ -54,20 +54,14 @@ rule asm_improvement:
         #     num=[f'{i+1:02}' for i in range(6, 15)]),
         # expand("results/mgal_02/pilon/res_mgal_02_{num}/mgal_02_{num}.fasta",
         #     num=[f'{i+1:02}' for i in range(6, 15)]),
+        "results/fasta/tros_v7.pseudohap.fasta.gz",
         "results/fasta/gallo_v7.pseudohap.fasta.gz",
-        #"results/fasta/tros_v7.pseudohap.fasta.gz",
+        "results/fasta/edu_v7.pseudohap.fasta.gz",
         # "results/blobtoolkit/DONE_tros_v7",
         # "results/kat/tros_v7/tros_v7_spectra.pdf",
 
 rule stats:
     input:
-        # expand("results/busco/{sample}_{version}_{db}/run_{db}/short_summary.txt",
-        #     sample=config['samples'], 
-        #     version=["v1", "v2", "v3", "v4", "v5", "v6", "v7"],
-        #     db=["metazoa_odb10", "mollusca_odb10"]),
-        # expand("results/busco/{pub}_{db}/run_{db}/short_summary.txt",
-        #     pub=['coruscus_GCA017311375', 'gallo_GCA900618805'], 
-        #     db=["metazoa_odb10", "mollusca_odb10"]),
         "results/stats/busco_summary.tsv",
         "results/supernova_assemblies/supernova_assemblies_stats.csv",
         "results/stats/assembly_stats.csv",
