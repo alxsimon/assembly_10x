@@ -9,6 +9,8 @@ rule unzip_fasta_repeats:
         get_asm
     output:
         temp("results/repeats/{asm}.fa")
+    wildcard_constraints:
+        asm = '\w+_v7|\w+'
     shell:
         "zcat {input} > {output}"
 
@@ -52,7 +54,7 @@ rule cdhit_families_merging:
         expand("results/repeats/{asm}_db/{asm}_db-families.fa",
             asm=config['repeats']['asm_db'])
     output:
-        "results/repeats/Mytilus_sp_repeats-families.fa"
+        "results/repeats/Mytilus_sp_repeats-families.fasta"
     params:
         tmp_merge = "results/repeats/combined_db_families.fa",
         out_prefix = lambda w, output: output[0].replace(".fa", ""),
@@ -68,14 +70,16 @@ rule cdhit_families_merging:
 
         cd-hit-est -aS 0.8 -c 0.8 -g 1 -G 0 -A 80 -M 10000 \
         -T {threads} \
-        -i {tmp_merge} \
+        -i {params.tmp_merge} \
         -o {params.out_prefix} \
         > {log} 2>&1
+
+        rm {params.tmp_merge}
         """
 
 rule repeat_masker:
     input:
-        families = "results/repeats/Mytilus_sp_repeats-families.fa",
+        families = "results/repeats/Mytilus_sp_repeats-families.fasta",
         fa = "results/repeats/{asm}.fa"
     output:
         "results/repeats/{asm}.fa.masked"

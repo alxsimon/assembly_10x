@@ -68,5 +68,5 @@ rule stats:
 
 rule repeats:
     input:
-        expand("results/repeats/{asm}_db/{asm}_db-families.fa",
+        expand("results/repeats/{asm}.fa.masked",
             asm=config['repeats']['asm_db']),
