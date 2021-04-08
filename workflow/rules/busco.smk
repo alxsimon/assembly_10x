@@ -61,6 +61,8 @@ rule summarize_busco:
             sample=config['samples'], 
             version=["v1", "v2", "v3", "v4", "v5", "v6"], # "v7"
             db=["metazoa_odb10", "mollusca_odb10"]),
+        expand("results/busco/tros_v7_{db}/short_summary.specific.{db}.tros_v7_{db}.txt",
+            db=["metazoa_odb10", "mollusca_odb10"]),
         expand("results/busco/{pub}_{db}/short_summary.specific.{db}.{pub}_{db}.txt",
             pub=['coruscus_GCA017311375', 'gallo_GCA900618805'], 
             db=["metazoa_odb10", "mollusca_odb10"])

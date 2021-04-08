@@ -314,5 +314,7 @@ rule merge_pilon_res:
         decide_asm
     output:
         protected("results/fasta/{sample}_v7.pseudohap.fasta.gz")
+    conda:
+        "../envs/asm_improvement.yaml"
     shell:
         "cat {input} | bgzip -c > {output}"
