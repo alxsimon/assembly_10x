@@ -2,7 +2,7 @@
 
 sif_tools: containers/assembly_tools.sif
 sif_supernova: containers/supernova.sif
-dfam_container: docker://dfam/tetools:1.3
+dfam_container: docker://dfam/tetools:1.3.1
 
 raw_names:
   gallo: "Gallo_Med"
@@ -42,8 +42,8 @@ purge_dups:
   E: 15000
 
 busco:
-  metazoa: https://busco-data.ezlab.org/v4/data/lineages/metazoa_odb10.2019-11-20.tar.gz
-  mollusca: https://busco-data.ezlab.org/v4/data/lineages/mollusca_odb10.2019-11-20.tar.gz
+  metazoa: https://busco-data.ezlab.org/v5/data/lineages/metazoa_odb10.2021-02-24.tar.gz
+  mollusca: https://busco-data.ezlab.org/v5/data/lineages/mollusca_odb10.2020-08-05.tar.gz
   threads: 16
 
 agouti:
