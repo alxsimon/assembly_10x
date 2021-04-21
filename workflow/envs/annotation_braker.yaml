@@ -1,0 +1,6 @@
+channels:
+  - default
+  - conda-forge
+  - bioconda
+dependencies:
+  - braker2=2.1.6

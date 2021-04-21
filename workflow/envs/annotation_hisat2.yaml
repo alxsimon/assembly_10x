@@ -1,0 +1,7 @@
+channels:
+  - default
+  - conda-forge
+  - bioconda
+dependencies:
+  - hisat2=2.2.1
+  - samtools=1.12
