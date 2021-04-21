@@ -26,6 +26,7 @@ include: "rules/cleaning.smk"
 include: "rules/mapping.smk"
 include: "rules/asm_improvement.smk"
 include: "rules/repeats.smk"
+include: "rules/annotation.smk"
 
 rule all_v6:
     input: 
@@ -50,10 +51,6 @@ rule all_v6:
 
 rule asm_improvement:
     input:
-        # expand("results/mtro_02/pilon/res_mtro_02_{num}/mtro_02_{num}.fasta",
-        #     num=[f'{i+1:02}' for i in range(6, 15)]),
-        # expand("results/mgal_02/pilon/res_mgal_02_{num}/mgal_02_{num}.fasta",
-        #     num=[f'{i+1:02}' for i in range(6, 15)]),
         "results/fasta/tros_v7.pseudohap.fasta.gz",
         "results/fasta/gallo_v7.pseudohap.fasta.gz",
         "results/fasta/edu_v7.pseudohap.fasta.gz",
@@ -70,3 +67,8 @@ rule repeats:
     input:
         expand("results/repeats/{asm}.fa.masked",
             asm=config['repeats']['asm_db']),
+
+rule annotation:
+    input:
+        "resources/annotation/orthodb_mollusca_proteins.fa",
+        "results/annotation/RNAseq/hisat2_index_tros_v7/tros_v7_masked.1.ht2",

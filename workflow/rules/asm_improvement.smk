@@ -149,6 +149,7 @@ rule pilon_mtro_02:
     threads: 
         math.floor(workflow.cores/config['asm_improvement']['max_concurrent_pilon'])
         # limit number of concurrent processes due to available RAM
+        # does not work on SLURM cluster due to workflow.cores being NoneType
     shell:
         """
         java -Xmx{params.java_mem}G -jar {input.pilon} \
@@ -284,6 +285,7 @@ rule pilon_asm_02:
     threads: 
         math.floor(workflow.cores/config['asm_improvement']['max_concurrent_pilon'])
         # limit number of concurrent processes due to available RAM
+        # does not work on SLURM cluster due to workflow.cores being NoneType
     wildcard_constraints:
         asm = 'medu|mgal'
     shell:

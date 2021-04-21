@@ -47,7 +47,7 @@ busco:
   threads: 16
 
 agouti:
-  threads: 16
+  threads: 20
 
 btk:
   threads: 32
@@ -64,9 +64,14 @@ mapping:
 
 asm_improvement:
   mtro_ont: resources/ont_reads/mtro_ont_reads.fastq.gz
-  java_mem: 250
+  java_mem: 400
   max_concurrent_pilon: 2
 
 repeats:
   threads: 16 # must be multiple of 4
   asm_db: ["gallo_v7", "tros_v7", "edu_v7", "GCA017311375", "GCA900618805"]
+
+annotation:
+  hisat2_threads: 10
+  braker_threads: 16
+  asm: ["gallo_v7", "tros_v7", "edu_v7", "GCA017311375"] # assemblies to annotate

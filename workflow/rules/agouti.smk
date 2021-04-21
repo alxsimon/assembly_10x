@@ -57,7 +57,7 @@ rule rna_rcorrector:
         expand("resources/RNAseq_raw/{{sample}}/{{run}}_{R}.fastq.gz",
             R=['R1', 'R2'])
     output:
-        temp(expand("results/agouti/{{sample}}/RNA_preproc/{{run}}_{R}.cor.fq.gz",
+        temp(expand("results/RNA_preproc/{{sample}}/{{run}}_{R}.cor.fq.gz",
             R=['R1', 'R2']))
     params:
         outdir = lambda w, output: os.path.dirname(output[0])
@@ -77,11 +77,11 @@ rule rna_rcorrector:
 
 rule rna_trimgalore:
     input:
-        expand("results/agouti/{{sample}}/RNA_preproc/{{run}}_{R}.cor.fq.gz",
+        expand("results/RNA_preproc/{{sample}}/{{run}}_{R}.cor.fq.gz",
             R=['R1', 'R2'])
     output:
-        temp(expand("results/agouti/{{sample}}/RNA_preproc/{{run}}_trimgal_val_{i}.fq",
-            i=['1', '2']))
+        expand("results/RNA_preproc/{{sample}}/{{run}}_trimgal_val_{i}.fq",
+            i=['1', '2'])
     params:
         outdir = lambda w, output: os.path.dirname(output[0]),
         basename = lambda w: f'{w.run}_trimgal'
@@ -122,7 +122,7 @@ rule index_ref:
 
 rule map_RNAseq:
     input: 
-        expand("results/agouti/{{sample}}/RNA_preproc/{{run}}_trimgal_val_{i}.fq",
+        expand("results/RNA_preproc/{{sample}}/{{run}}_trimgal_val_{i}.fq",
             i=['1', '2']),
         "results/agouti/{sample}/{sample}_v4.pseudohap.fa",
         multiext("results/agouti/{sample}/{sample}_v4.pseudohap.fa",
@@ -141,14 +141,14 @@ rule map_RNAseq:
         | samtools view -b -@ {threads} -o {output}
         """
 
-def get_sample_rna_runs(w):
+def get_sample_rna_runs_agouti(w):
     list_R1_files = glob.glob(f"resources/RNAseq_raw/{w.sample}/*_R1.fastq.gz")
     list_runs = [re.sub('_R1\.fastq\.gz$', '', os.path.basename(f)) for f in list_R1_files]
     return [f'results/agouti/{w.sample}/mapping/{run}.bam' for run in list_runs]
 
 rule merge_RNA_bams:
     input:
-        get_sample_rna_runs
+        get_sample_rna_runs_agouti
     output:
         "results/agouti/{sample}/RNAseq_mapped_merged.bam"
     params:
