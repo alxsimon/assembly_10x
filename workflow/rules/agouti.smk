@@ -128,7 +128,7 @@ rule map_RNAseq:
         multiext("results/agouti/{sample}/{sample}_v4.pseudohap.fa",
             ".0123", ".amb", ".ann", ".bwt.2bit.64", ".bwt.8bit.32", ".pac")
     output:
-        "results/agouti/{sample}/mapping/{run}.bam"
+        temp("results/agouti/{sample}/mapping/{run}.bam")
     log:
         "logs/bwa_rna_{sample}_{run}.log"
     conda:
@@ -150,7 +150,7 @@ rule merge_RNA_bams:
     input:
         get_sample_rna_runs_agouti
     output:
-        "results/agouti/{sample}/RNAseq_mapped_merged.bam"
+        temp("results/agouti/{sample}/RNAseq_mapped_merged.bam")
     params:
         tmp_merge = lambda w: f'results/agouti/{w.sample}/tmp_merge.bam'
     conda:
@@ -170,7 +170,7 @@ rule agouti_scaffolding:
     input: 
         fa = "results/agouti/{sample}/{sample}_v4.pseudohap.fa",
         bam = "results/agouti/{sample}/RNAseq_mapped_merged.bam",
-        gff = "results/agouti/{sample}/{sample}_v4.pseudohap.gff3"
+        gff = ancient("results/agouti/{sample}/{sample}_v4.pseudohap.gff3"),
     output: 
         protected("results/fasta/{sample}_v5.pseudohap.fasta.gz")
     params:

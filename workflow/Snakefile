@@ -36,8 +36,8 @@ rule all_v6:
             sample=config['samples']),
         expand("results/supernova_assemblies/{sample}_{version}/DONE",
             sample=config['samples'], version=["v1", "v2"]),
-        expand("results/fasta/{sample}_v3.pseudohap.fasta.gz",
-            sample=config['samples'], version=["v3", "v4", "v5", "v6"]),
+        expand("results/fasta/{sample}_{version}.pseudohap.fasta.gz",
+            sample=config['samples'], version=["v3", "v6"]),
         expand("results/kat/{sample}_{version}/{sample}_{version}_spectra.pdf",
             sample=config['samples'], version=["v1", "v2", "v3", "v4", "v5", "v6"]),
         expand("results/blobtoolkit/DONE_{sample}_{version}",
@@ -51,11 +51,12 @@ rule all_v6:
 
 rule asm_improvement:
     input:
-        "results/fasta/tros_v7.pseudohap.fasta.gz",
-        "results/fasta/gallo_v7.pseudohap.fasta.gz",
-        "results/fasta/edu_v7.pseudohap.fasta.gz",
-        # "results/blobtoolkit/DONE_tros_v7",
-        # "results/kat/tros_v7/tros_v7_spectra.pdf",
+        expand("results/fasta/{sample}_v7.pseudohap.fasta.gz",
+            sample=config['samples']),
+        expand("results/blobtoolkit/DONE_{sample}_v7",
+            sample=config['samples']),
+        expand("results/kat/{sample}_v7/{sample}_v7_spectra.pdf",
+            sample=config['samples']),
 
 rule stats:
     input:

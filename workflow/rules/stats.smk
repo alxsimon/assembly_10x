@@ -23,9 +23,8 @@ rule merge_stats:
         "results/stats/coruscus_GCA017311375.stats.json",
         "results/stats/gallo_GCA900618805.stats.json",
         expand("results/stats/{sample}_{version}.stats.json",
-            sample=config['samples'], version=["v1", "v2", "v3", "v4", "v5", "v6"]),
-        "results/stats/tros_v7.stats.json",
-        "results/stats/gallo_v7.stats.json",
+            sample=config['samples'], 
+            version=["v1", "v2", "v3", "v4", "v5", "v6", "v7"]),
     output:
         "results/stats/assembly_stats.csv"
     conda:

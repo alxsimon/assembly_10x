@@ -113,7 +113,8 @@ rule pilon_map_ont:
         ref = "results/mtro_02/ragtag/mtro_01.ragtag.fa",
         ont_reads = config['asm_improvement']['mtro_ont'],
     output:
-        "results/mtro_02/pilon/mtro_01.ragtag.ont_mapped_pilon.bam"
+        temp("results/mtro_02/pilon/mtro_01.ragtag.ont_mapped_pilon.bam"),
+        temp("results/mtro_02/pilon/mtro_01.ragtag.ont_mapped_pilon.bam.bai"),
     log:
         "logs/mtro_improvement/map_ont_reads_pilon.log"
     conda:
@@ -231,7 +232,8 @@ rule pilon_map_pe:
         ref = "results/{asm}_02/ragtag/{asm}_01.ragtag.fa",
         index = "results/{asm}_02/ragtag/{asm}_01.ragtag.fa.0123",
     output:
-        "results/{asm}_02/pilon/{asm}_01.ragtag.pe_mapped_pilon.bam"
+        temp("results/{asm}_02/pilon/{asm}_01.ragtag.pe_mapped_pilon.bam"),
+        temp("results/{asm}_02/pilon/{asm}_01.ragtag.pe_mapped_pilon.bam.bai"),
     log:
         "logs/{asm}_improvement/map_pe_reads_pilon.log"
     conda:
