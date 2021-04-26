@@ -33,7 +33,8 @@ rule busco:
         rules.dwld_busco_databases.output
     output:
         "results/busco/{sample}_{version}_{db}/run_{db}/short_summary.txt",
-        "results/busco/{sample}_{version}_{db}/run_{db}/full_table.tsv"
+        "results/busco/{sample}_{version}_{db}/short_summary.specific.{db}.{sample}_{version}_{db}.txt",
+        "results/busco/{sample}_{version}_{db}/run_{db}/full_table.tsv",
     params:
         db = lambda w: f'resources/busco_databases/{w.db}',
         fa = lambda w, input: input[0].replace(".fasta.gz", ".fa"),

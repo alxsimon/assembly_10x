@@ -57,6 +57,10 @@ rule asm_improvement:
             sample=config['samples']),
         expand("results/kat/{sample}_v7/{sample}_v7_spectra.pdf",
             sample=config['samples']),
+        expand("results/mapping/{sample}_v7.bam",
+            sample=config['samples']),
+        expand("results/mapping/{sample}_v7.stats",
+            sample=config['samples']),
 
 rule stats:
     input:
@@ -72,4 +76,4 @@ rule repeats:
 rule annotation:
     input:
         "resources/annotation/orthodb_mollusca_proteins.fa",
-        "results/annotation/RNAseq/hisat2_index_tros_v7/tros_v7_masked.1.ht2",
+        "results/annotation/RNAseq/hisat2_index_tros_v7/tros_v7.1.ht2",

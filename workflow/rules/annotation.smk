@@ -29,22 +29,22 @@ rule download_orthodb_mollusca:
 
 rule hisat2_index_ref:
     input:
-        "results/repeats/{asm}.fa.masked"
+        "results/fasta/{asm}.pseudohap.fasta.gz"
     output:
-        expand("results/annotation/RNAseq/hisat2_index_{{asm}}/{{asm}}_masked.{n}.ht2",
+        expand("results/annotation/RNAseq/hisat2_index_{{asm}}/{{asm}}.{n}.ht2",
             n=range(1,9))
     params:
-        index_prefix = lambda w, output: output[0].replace('.ht2', '') 
+        index_prefix = lambda w, output: output[0].replace('.1.ht2', '') 
     conda:
         "../envs/annotation_hisat2.yaml"
     log:
         "logs/annotation/hisat2_index_{asm}.log"
-    threads:
-        config['annotation']['hisat2_threads']
     shell:
         """
-        hisat2 -p {threads} {input} {params.index_prefix} \
+        zcat {input} > tmp_ref.{wildcards.asm}.fa
+        hisat2-build tmp_ref.{wildcards.asm}.fa {params.index_prefix} \
         > {log} 2>&1
+        rm tmp_ref.{wildcards.asm}.fa
         """
 
 def get_fastq_rna(w):
@@ -56,11 +56,12 @@ def get_fastq_rna(w):
 rule hisat2_map:
     input: 
         reads = get_fastq_rna,
-        index = "results/annotation/RNAseq/hisat2_index_{asm}/{asm}_masked.ht2",
+        index = "results/annotation/RNAseq/hisat2_index_{asm}/{asm}.1.ht2",
     output:
-        temp("results/annotation/RNAseq/{asm}/{run}.bam")
+        "results/annotation/RNAseq/{asm}/{run}.bam",
+        "results/annotation/RNAseq/{asm}/{run}.bam.bai",
     params:
-        index_prefix = lambda w, input: input['index'].replace('.ht2', '') 
+        index_prefix = lambda w, input: input['index'].replace('.1.ht2', '') 
     log:
         "logs/annotation/hisat2_map_rna_{asm}_{run}.log"
     conda:
@@ -84,28 +85,10 @@ def get_sample_rna_runs_annotation(w):
     list_runs = [re.sub('_R1\.fastq\.gz$', '', os.path.basename(f)) for f in list_R1_files]
     return [f'results/annotation/{w.asm}/{run}.bam' for run in list_runs]
 
-# rule merge_RNA_bams_star:
-#     input:
-#         get_sample_rna_runs_annotation
-#     output:
-#         "results/annotation/RNAseq/{asm}/RNAseq_{asm}_mapped_merged.bam"
-#     params:
-#         tmp_merge = lambda w: f'results/annotation/RNAseq/{w.asm}/tmp_merge.bam'
-#     conda:
-#         "../envs/annotation_star.yaml"
-#     threads:
-#         config['annotation']['hisat2_threads']
-#     shell:
-#         """
-#         samtools merge -@ {threads} {params.tmp_merge} {input}              
-#         samtools sort -@ {threads} -n -o {output} {params.tmp_merge}
-#         rm {params.tmp_merge}
-#         """
-
 rule braker:
     input:
         genome = "results/repeats/{asm}.fa.masked",
-        rna_bam = "dummy", # get all RNAseq bams
+        rna_bam = get_sample_rna_runs_annotation,
         prot_db = "resources/annotation/orthodb_mollusca_proteins.fa",
     output:
         "dummy"

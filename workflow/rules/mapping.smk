@@ -1,11 +1,11 @@
 rule index_refs:
     input:
-        "results/fasta/{sample}_v6.pseudohap.fasta.gz"
+        "results/fasta/{sample}_{version}.pseudohap.fasta.gz"
     output:
-        multiext("results/fasta/{sample}_v6.pseudohap.fasta.gz",
+        multiext("results/fasta/{sample}_{version}.pseudohap.fasta.gz",
             ".0123", ".amb", ".ann", ".bwt.2bit.64", ".pac")
     log:
-        "logs/bwa-mem2_index_{sample}_v6.log"
+        "logs/bwa-mem2_index_{sample}_{version}.log"
     conda:
         "../envs/mapping.yaml"
     shell:
@@ -15,16 +15,16 @@ rule index_refs:
 
 rule map_final:
     input:
-        fa = "results/fasta/{sample}_v6.pseudohap.fasta.gz",
-        index = multiext("results/fasta/{sample}_v6.pseudohap.fasta.gz",
+        fa = "results/fasta/{sample}_{version}.pseudohap.fasta.gz",
+        index = multiext("results/fasta/{sample}_{version}.pseudohap.fasta.gz",
             ".0123", ".amb", ".ann", ".bwt.2bit.64", ".pac"),
         fastqs = multiext("results/preprocessing/{sample}/{sample}_dedup_proc_fastp",
             "_R1_001.fastq.gz", "_R2_001.fastq.gz")
     output:
-        "results/mapping/{sample}_v6.bam",
-        "results/mapping/{sample}_v6.bam.bai"
+        "results/mapping/{sample}_{version}.bam",
+        "results/mapping/{sample}_{version}.bam.bai"
     log:
-        "logs/bwa-mem2_{sample}_v6.log"
+        "logs/bwa-mem2_{sample}_{version}.log"
     conda:
         "../envs/mapping.yaml"
     threads:
@@ -39,10 +39,10 @@ rule map_final:
 
 rule mapping_stats:
     input:
-        "results/mapping/{sample}_v6.bam"
+        "results/mapping/{sample}_{version}.bam"
     output:
-        "results/mapping/{sample}_v6.stats",
-        "results/mapping/{sample}_v6.bedcov"
+        "results/mapping/{sample}_{version}.stats",
+        "results/mapping/{sample}_{version}.bedcov"
     threads:
         config['mapping']['threads']
     conda:
