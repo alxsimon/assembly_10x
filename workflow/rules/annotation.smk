@@ -74,8 +74,7 @@ rule hisat2_map:
         -x {params.index_prefix} \
         -1 {input.reads[0]} -2 {input.reads[1]} \
         2> {log} | \
-        samtools view -b -@ {threads} | \
-        samtools sort -@ {threads} - > {output}
+        samtools sort -@ {threads} -O BAM -o {output[0]}
         samtools index {output}
         """
 
@@ -83,7 +82,7 @@ def get_sample_rna_runs_annotation(w):
     sample = w.asm.replace("_v7", "")
     list_R1_files = glob.glob(f"resources/RNAseq_raw/{sample}/*_R1.fastq.gz")
     list_runs = [re.sub('_R1\.fastq\.gz$', '', os.path.basename(f)) for f in list_R1_files]
-    return [f'results/annotation/{w.asm}/{run}.bam' for run in list_runs]
+    return [f'results/annotation/RNAseq/{w.asm}/{run}.bam' for run in list_runs]
 
 rule braker:
     input:
