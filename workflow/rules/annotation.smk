@@ -104,6 +104,7 @@ rule braker:
         species = lambda w: species_dict[w.asm],
         list_bams = lambda w, input: ','.join(input['rna_bams']),
         genemark_path = config['annotation']['genemark_path'],
+        to_rm = 'GeneMark*',
     conda:
         "../envs/annotation_braker.yaml"
     threads:
@@ -112,12 +113,15 @@ rule braker:
         "logs/annotation/braker2_{asm}.log"
     shell:
         """
+        find {params.out_dir} -name '{params.to_rm}' -type d -delete
+        cp /opt/gm_key_64 ~/.gm_key
         braker.pl \
         --genome {input.genome} \
         --prot_seq {input.prot_db} \
         --bam {params.list_bams} \
         --workingdir {params.out_dir} \
         --species {params.species} \
+        --useexisting \
         --etpmode --softmasking --cores {threads} \
         --gff3 \
         --GENEMARK_PATH {params.genemark_path} \
