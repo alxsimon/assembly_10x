@@ -10,6 +10,11 @@ From: ubuntu:20.04
     export LC_ALL=C.UTF-8
 	export LANG=C.UTF-8
 
+%files
+# GeneMark need to be downloaded in folder
+# as it requires a licence agreement.
+./gmes_linux_64.tar.gz /opt/
+
 %post -c bash
 	apt-get update && apt-get upgrade -y
 	export DEBIAN_FRONTEND=noninteractive
@@ -99,6 +104,11 @@ From: ubuntu:20.04
 	cd /opt/blobtoolkit
 	git clone -b 'release/v2.4.0' https://github.com/blobtoolkit/blobtools2.git
 	git clone https://github.com/alxsimon/insdc-pipeline
+
+	## Install GeneMark ##
+	cd /opt/
+	tar -zxf gmes_linux_64.tar.gz
+	rm gmes_linux_64.tar.gz
 
 %apprun run
 	exec /bin/bash "$@"

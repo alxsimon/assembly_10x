@@ -90,17 +90,20 @@ species_dict = {
     'tros_v7': 'Mtrossulus',
 }
 
+# To run this step, you need to have a GeneMark key available in your home folder.
+# Refer to Braker2 installation steps.
 rule braker:
     input:
         genome = "results/repeats/{asm}.fa.masked",
-        rna_bam = get_sample_rna_runs_annotation,
+        rna_bams = get_sample_rna_runs_annotation,
         prot_db = "resources/annotation/orthodb_mollusca_proteins.fa",
     output:
         "results/annotation/braker/{asm}/braker.gtf",
     params:
         out_dir = lambda w: f"results/annotation/braker/{w.asm}",
         species = lambda w: species_dict[w.asm],
-        list_bams = lambda w, input: ','.join([f'../../../../{bam}' for bam in input['rna_bam']]),
+        list_bams = lambda w, input: ','.join(input['rna_bams']),
+        genemark_path = config['annotation']['genemark_path'],
     conda:
         "../envs/annotation_braker.yaml"
     threads:
@@ -109,14 +112,15 @@ rule braker:
         "logs/annotation/braker2_{asm}.log"
     shell:
         """
-        [ ! -d workdir ] && mkdir {params.out_dir}
         braker.pl \
-        --genome ../../../../{input.genome} \
-        --prot_seq ../../../../{input.prot_db} \
+        --genome {input.genome} \
+        --prot_seq {input.prot_db} \
         --bam {params.list_bams} \
         --workingdir {params.out_dir} \
         --species {params.species} \
         --etpmode --softmasking --cores {threads} \
         --gff3 \
-        > ../../../../{log} 2>&1
+        --GENEMARK_PATH {params.genemark_path} \
+        --PROTHINT_PATH {params.genemark_path}/ProtHint/bin \
+        > {log} 2>&1
         """

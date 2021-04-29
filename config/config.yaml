@@ -74,4 +74,4 @@ repeats:
 annotation:
   hisat2_threads: 10
   braker_threads: 16
-  asm: ["gallo_v7", "tros_v7", "edu_v7", "GCA017311375"] # assemblies to annotate
+  genemark_path: "/opt/gmes_linux_64" # inside singularity container
