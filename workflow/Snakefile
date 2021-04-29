@@ -75,5 +75,5 @@ rule repeats:
 
 rule annotation:
     input:
-        "resources/annotation/orthodb_mollusca_proteins.fa",
-        "results/annotation/RNAseq/hisat2_index_tros_v7/tros_v7.1.ht2",
+        expand("results/annotation/braker/{asm}/braker.gtf",
+            asm=['gallo_v7', 'tros_v7', 'edu_v7'])

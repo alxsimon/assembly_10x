@@ -84,23 +84,39 @@ def get_sample_rna_runs_annotation(w):
     list_runs = [re.sub('_R1\.fastq\.gz$', '', os.path.basename(f)) for f in list_R1_files]
     return [f'results/annotation/RNAseq/{w.asm}/{run}.bam' for run in list_runs]
 
+species_dict = {
+    'edu_v7': 'Medulis',
+    'gallo_v7': 'Mgalloprovincialis',
+    'tros_v7': 'Mtrossulus',
+}
+
 rule braker:
     input:
         genome = "results/repeats/{asm}.fa.masked",
         rna_bam = get_sample_rna_runs_annotation,
         prot_db = "resources/annotation/orthodb_mollusca_proteins.fa",
     output:
-        "dummy"
+        "results/annotation/braker/{asm}/braker.gtf",
+    params:
+        out_dir = lambda w: f"results/annotation/braker/{w.asm}",
+        species = lambda w: species_dict[w.asm],
+        list_bams = lambda w, input: ','.join([f'../../../../{bam}' for bam in input['rna_bam']]),
     conda:
         "../envs/annotation_braker.yaml"
     threads:
         config['annotation']['braker_threads']
+    log:
+        "logs/annotation/braker2_{asm}.log"
     shell:
         """
-        braker.pl --genome {input.genome} \
-        --prot_seq {input.prot_db} \
-        --bam {input.rna_bam} \
+        [ ! -d workdir ] && mkdir {params.out_dir}
+        braker.pl \
+        --genome ../../../../{input.genome} \
+        --prot_seq ../../../../{input.prot_db} \
+        --bam {params.list_bams} \
+        --workingdir {params.out_dir} \
+        --species {params.species} \
         --etpmode --softmasking --cores {threads} \
-        > {log} 2>&1
+        --gff3 \
+        > ../../../../{log} 2>&1
         """
-        # --bam option all bams separated by commas
