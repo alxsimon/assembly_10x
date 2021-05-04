@@ -4,9 +4,9 @@
 .vscode
 .conda
 results/
-resources/
 logs/
 .cache
 .wget-hsts
 .parallel/
 busco_*
+containers/gm_key_64.gz
