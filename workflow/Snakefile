@@ -71,7 +71,7 @@ rule stats:
 rule repeats:
     input:
         expand("results/repeats/{asm}.fa.masked",
-            asm=config['repeats']['asm_db']),
+            asm=['gallo_v7', 'edu_v7', 'tros_v7']),
 
 rule annotation:
     input:
