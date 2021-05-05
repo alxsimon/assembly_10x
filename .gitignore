@@ -4,6 +4,7 @@
 .vscode
 .conda
 results/
+resources/
 logs/
 .cache
 .wget-hsts
