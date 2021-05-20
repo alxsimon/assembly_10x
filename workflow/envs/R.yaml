@@ -1,0 +1,11 @@
+channels:
+  - default
+  - conda-forge
+  - bioconda
+dependencies:
+  - r-base=4.0.3
+  - r-data.table
+  - r-r.utils
+  - r-ggplot2
+  - r-ggforce
+  - r-glue

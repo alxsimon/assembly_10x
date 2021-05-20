@@ -74,4 +74,6 @@ repeats:
 annotation:
   hisat2_threads: 10
   braker_threads: 16
-  genemark_path: "/opt/gmes_linux_64" # inside singularity container
+  genemark_path: "/opt/gmes_linux_64" # inside assembly_tools.sif
+  interproscan_path: "/opt/interproscan-5.51-85.0" # inside assembly_tools.sif
+  interproscan_threads: 10

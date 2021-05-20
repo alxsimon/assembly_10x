@@ -42,7 +42,6 @@ rule mapping_stats:
         "results/mapping/{sample}_{version}.bam"
     output:
         "results/mapping/{sample}_{version}.stats",
-        "results/mapping/{sample}_{version}.bedcov"
     threads:
         config['mapping']['threads']
     conda:
@@ -50,5 +49,28 @@ rule mapping_stats:
     shell:
         """
         samtools stats -@ {threads} {input} > {output[0]}
-        bedtools genomecov -ibam {input} -bga > {output[1]}
+        """
+
+rule mosdepth:
+    input:
+        "results/mapping/{sample}_{version}.bam"
+    output:
+        "results/mapping/{sample}_{version}.mosdepth.global.dist.txt",
+        "results/mapping/{sample}_{version}.per-base.d4",
+    log:
+        "logs/mosdepth/mosdepth_{exp}_{sample}.log"
+    params:
+        prefix = lambda w, output: output[1].replace('.per-base.d4', ''),
+        min_mapq = 10,
+    threads:
+        config['mapping']['threads']
+    shell:
+        """
+        mosdepth \
+        -t {threads} \
+        --d4 \
+        --mapq {params.min_mapq} \
+        {params.prefix} \
+        {input} \
+        > {log} 2>&1
         """

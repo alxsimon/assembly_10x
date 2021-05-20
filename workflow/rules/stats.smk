@@ -32,3 +32,26 @@ rule merge_stats:
     script:
         "../scripts/merge_stats.py"
 
+#========================================
+# Coverage histograms
+
+rule d4_hist:
+    input:
+        "results/mapping/{sample}_{version}.per-base.d4"
+    output:
+        "results/stats/{sample}_{version}.cov.hist"
+    shell:
+        """
+        d4tools stat -s hist {input} > {output}
+        """
+        # for now d4tools have a maxbin at 1000X
+
+rule plot_coverage_hist:
+    input:
+        hist = "results/stats/{sample}_{version}.cov.hist"
+    output:
+        pdf = "results/stats/{sample}_{version}.cov.hist.pdf"
+    conda:
+        "../envs/R.yaml"
+    script:
+        "../scripts/plot_coverage_hist.R"

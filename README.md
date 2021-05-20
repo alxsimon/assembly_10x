@@ -36,3 +36,12 @@ snakemake --use-conda --conda-frontend mamba --conda-prefix .conda \
 --use-singularity --singularity-args "-B /nas_sea:/nas_sea" \
 -j {threads} mtro_improvement
 ```
+
+## Annotation tools to build beforehand
+
+```
+sudo singularity build -F resources/cactus_v1.3.0-gpu.sif \
+docker://quay.io/comparative-genomics-toolkit/cactus:v1.3.0-gpu
+
+sudo singularity build resources/cat.sif docker://quay.io/ucsc_cgl/cat
+```

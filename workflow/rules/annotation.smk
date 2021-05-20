@@ -78,11 +78,14 @@ rule hisat2_map:
         samtools index {output}
         """
 
-def get_sample_rna_runs_annotation(w):
-    sample = w.asm.replace("_v7", "")
+def get_sample_rna_runs_annotation(w, asm=None):
+    if asm is None:
+        sample = w.asm.replace("_v7", "")
+    else:
+        sample = asm
     list_R1_files = glob.glob(f"resources/RNAseq_raw/{sample}/*_R1.fastq.gz")
     list_runs = [re.sub('_R1\.fastq\.gz$', '', os.path.basename(f)) for f in list_R1_files]
-    return [f'results/annotation/RNAseq/{w.asm}/{run}.bam' for run in list_runs]
+    return [f'results/annotation/RNAseq/{sample}_v7/{run}.bam' for run in list_runs]
 
 species_dict = {
     'edu_v7': 'Medulis',
@@ -126,5 +129,117 @@ rule braker:
         --gff3 \
         --GENEMARK_PATH {params.genemark_path} \
         --PROTHINT_PATH {params.genemark_path}/ProtHint/bin \
+        > {log} 2>&1
+        """
+
+#===========================================
+# InterProScan
+
+rule clean_prot_seq:
+    input:
+        "results/annotation/braker/{asm}/augustus.hints.aa"
+    output:
+        "results/annotation/interproscan/{asm}/{asm}_augustus.hints.aa"
+    conda: 
+        "../envs/seqkit.yaml"
+    shell:
+        "seqkit replace -s -p '\*' -r '' {input} > {output}"
+
+rule run_interproscan:
+    input:
+        "results/annotation/interproscan/{asm}/{asm}_augustus.hints.aa"
+    output:
+        multiext("results/annotation/interproscan/{asm}/interpro_{asm}",
+            ".gff3", ".xml", ".json", ".tsv")
+    params:
+        ips_path = config['annotation']['interproscan_path'],
+        prefix = lambda w, output: output[0].replace(".gff3", ""),
+    log:
+        "logs/annotation/interproscan_{asm}.log"
+    threads:
+        config['annotation']['interproscan_threads']
+    shell:
+        """
+        {params.ips_path}/interproscan.sh \
+        -b {params.prefix} \
+        -f TSV,XML,JSON,GFF3 \
+        -i {input} \
+        --seqtype p \
+        -goterms \
+        -iprlookup \
+        --pathways \
+        --cpu {threads} \
+        > {log} 2>&1
+        """
+
+
+#===========================================
+# Comparative Annotation Toolkit
+
+rule convert_Mcor_gff:
+    input:
+        'resources/Mco_ProteinCodingGenes.gff',
+        'resources/GCA_017311375.1_Mcoruscus_HiC_assembly_report.txt'
+    output:
+        'resources/GCA017311375.gff'
+    script:
+        "../scripts/convert_mcor_gff.py"
+
+rule prepare_cat_config:
+    input:
+        mcor_gff = 'resources/GCA017311375.gff',
+        mgal_gff = 'resources/GCA900618805.gff',
+        bams_mgal = lambda w: get_sample_rna_runs_annotation(w, asm='gallo'),
+        bams_mtro = lambda w: get_sample_rna_runs_annotation(w, asm='tros'),
+        bams_medu = lambda w: get_sample_rna_runs_annotation(w, asm='edu'),
+        prot_db = "resources/annotation/orthodb_mollusca_proteins.fa",
+    output:
+        "results/annotation/CAT/cat.config"
+    run:
+        bams_genomes = {
+            'mgal_02': input['bams_mgal'],
+            'mtro_02': input['bams_mtro'],
+            'medu_02': input['bams_medu'],
+        }
+        with open(output[0], 'w') as fw:
+            fw.write('[ANNOTATION]\n')
+            fw.write(f"GCA017311375 = {input['mcor_gff']}\n")
+            fw.write(f"GCA900618805 = {input['mgal_gff']}\n\n")
+            fw.write("[BAM]\n")
+            for genome in ['mgal_02', 'mtro_02', 'medu_02']:
+                fw.write(f"{genome} = {','.join(bams_genomes[genome])}\n")
+            fw.write('\n')
+            fw.write("[PROTEIN_FASTA]\n")
+            for genome in ['mgal_02', 'mtro_02', 'medu_02']:
+                fw.write(f"{genome} = {input['prot_db']}\n")
+
+
+rule comparative_annotation:
+    input:
+        config = "results/annotation/CAT/cat.config",
+        hal = "results/cactus/myt_cactus.hal",
+    output:
+        dir = directory("results/annotation/CAT/cat_annot")
+    log:
+        "logs/cat_pipeline.log"
+    threads:
+        10
+    container:
+        "containers/cat.sif"
+    shell:
+        """
+        luigi --module cat RunCat \
+        --binary-mode=local \
+        --hal={input.hal} \
+        --ref-genome='GCA017311375' \
+        --maxCores=1 \
+        --workers={threads} \
+        --config={input.config} \
+        --work-dir {output.dir} \
+        --out-dir {output.dir} \
+        --local-scheduler \
+        --augustus --augustus-species 'Caenorhabditis_elegans' \
+        --augustus-cgp \
+        --assembly-hub \
         > {log} 2>&1
         """

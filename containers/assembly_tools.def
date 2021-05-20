@@ -107,14 +107,35 @@ From: ubuntu:20.04
 	git clone -b 'release/v2.4.0' https://github.com/blobtoolkit/blobtools2.git
 	git clone https://github.com/alxsimon/insdc-pipeline
 
+	## d4: d4tools and python API
+    export CARGO_HOME="/opt/cargo"
+    mamba install -y rust
+    cargo install d4utils --version 0.1.16
+    pip install pyd4
+
+    ## get mosdepth with d4 support (not on bioconda yet) v0.3.1
+    wget -P /usr/bin/ \
+    https://github.com/brentp/mosdepth/releases/download/v0.3.1/mosdepth
+    chmod +x /usr/bin/mosdepth
+
 	## Install GeneMark ##
 	cpanm YAML Hash::Merge Parallel::ForkManager MCE::Mutex \
 		Thread::Queue threads Math::Utils
 	cd /opt/
-	tar -zxf gmes_linux_64.tar.gz
+	tar -xzf gmes_linux_64.tar.gz
 	rm gmes_linux_64.tar.gz
 	gzip -d gm_key_64.gz
 	rm gm_key_64.gz
+
+	## InterProScan ##
+	mamba install -c conda-forge openjdk=11.0.9.1
+	cd /opt/
+	VERSION='5.51-85.0'
+	wget ftp://ftp.ebi.ac.uk/pub/software/unix/iprscan/5/${VERSION}/interproscan-${VERSION}-64-bit.tar.gz
+	tar -pxzf interproscan-${VERSION}-64-bit.tar.gz
+	rm ${VERSION}-64-bit.tar.gz
+	cd interproscan-${VERSION}
+	python3 initial_setup.py
 
 %apprun run
 	exec /bin/bash "$@"
