@@ -24,6 +24,7 @@ include: "rules/agouti.smk"
 include: "rules/blobtoolkit.smk"
 include: "rules/cleaning.smk"
 include: "rules/mapping.smk"
+include: "rules/calling.smk"
 include: "rules/asm_improvement.smk"
 include: "rules/repeats.smk"
 include: "rules/annotation.smk"
@@ -68,8 +69,10 @@ rule stats:
         "results/stats/busco_summary.tsv",
         "results/supernova_assemblies/supernova_assemblies_stats.csv",
         "results/stats/assembly_stats.csv",
-        expand("results/stats/{sample}_{version}.cov.hist.pdf",
-            sample=['gallo', 'edu', 'tros'], version=['v6', 'v7']),
+        expand("results/stats/{sample}_v7.cov.hist.pdf",
+            sample=['gallo', 'edu', 'tros']),
+        # expand("results/calling/{sample}_v7.bcf",
+        #     sample=['gallo', 'edu', 'tros']),
 
 rule repeats:
     input:
@@ -82,4 +85,4 @@ rule annotation:
             asm=['gallo_v7', 'tros_v7', 'edu_v7']),
         expand("results/annotation/interproscan/{asm}/interpro_{asm}.gff3",
             asm=['gallo_v7', 'tros_v7', 'edu_v7']),
-        "results/annotation/CAT/cat_annot"
+        # "results/annotation/CAT/cat_annot"

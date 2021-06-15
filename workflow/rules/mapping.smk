@@ -58,7 +58,7 @@ rule mosdepth:
         "results/mapping/{sample}_{version}.mosdepth.global.dist.txt",
         "results/mapping/{sample}_{version}.per-base.d4",
     log:
-        "logs/mosdepth/mosdepth_{exp}_{sample}.log"
+        "logs/mosdepth_{sample}_{version}.log"
     params:
         prefix = lambda w, output: output[1].replace('.per-base.d4', ''),
         min_mapq = 10,

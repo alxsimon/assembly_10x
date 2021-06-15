@@ -185,10 +185,15 @@ rule convert_Mcor_gff:
     script:
         "../scripts/convert_mcor_gff.py"
 
+# with python gff3tool 
+# gff3_QC -g GCA....gff -f ....fa.corrected -o ....gff3_qc.txt -s ....gff3_qc.stat
+# gff3_fix -qc_r GCA017311375.gff3_qc.txt -g GCA017311375.gff -og GCA017311375.corrected.gff
+
+
 rule prepare_cat_config:
     input:
-        mcor_gff = 'resources/GCA017311375.gff',
-        mgal_gff = 'resources/GCA900618805.gff',
+        mcor_gff = 'resources/GCA017311375.modif.gff',
+        #mgal_gff = 'resources/GCA900618805.gff',
         bams_mgal = lambda w: get_sample_rna_runs_annotation(w, asm='gallo'),
         bams_mtro = lambda w: get_sample_rna_runs_annotation(w, asm='tros'),
         bams_medu = lambda w: get_sample_rna_runs_annotation(w, asm='edu'),
@@ -204,7 +209,7 @@ rule prepare_cat_config:
         with open(output[0], 'w') as fw:
             fw.write('[ANNOTATION]\n')
             fw.write(f"GCA017311375 = {input['mcor_gff']}\n")
-            fw.write(f"GCA900618805 = {input['mgal_gff']}\n\n")
+            #fw.write(f"GCA900618805 = {input['mgal_gff']}\n\n")
             fw.write("[BAM]\n")
             for genome in ['mgal_02', 'mtro_02', 'medu_02']:
                 fw.write(f"{genome} = {','.join(bams_genomes[genome])}\n")
