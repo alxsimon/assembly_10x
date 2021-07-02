@@ -37,6 +37,15 @@ snakemake --use-conda --conda-frontend mamba --conda-prefix .conda \
 -j {threads} mtro_improvement
 ```
 
+## Calling for pop check
+
+This part uses another dataset of reference individuals called with angsd.
+For comparison we also call with angsd (especially ANGSD puts major allele as REF in bcf and is therefore incompatible with bcftools call).
+```
+ln -s /data2/myt_popgen/angsd_calling/results/post_analysis/subset.sites resources/angsd_subset.sites
+ln -s /data2/myt_popgen/angsd_calling/results/post_analysis/subset.beagle.gz resources/angsd_ref_subset.beagle.gz
+```
+
 ## Annotation tools to build beforehand
 
 ```

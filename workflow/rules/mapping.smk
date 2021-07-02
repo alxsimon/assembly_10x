@@ -13,10 +13,10 @@ rule index_refs:
         bwa-mem2 index {input} > {log} 2>&1
         """
 
-rule map_final:
+rule map_final_mgal:
     input:
-        fa = "results/fasta/{sample}_{version}.pseudohap.fasta.gz",
-        index = multiext("results/fasta/{sample}_{version}.pseudohap.fasta.gz",
+        fa = "results/fasta/gallo_v7.pseudohap.fasta.gz",
+        index = multiext("results/fasta/gallo_v7.pseudohap.fasta.gz",
             ".0123", ".amb", ".ann", ".bwt.2bit.64", ".pac"),
         fastqs = multiext("results/preprocessing/{sample}/{sample}_dedup_proc_fastp",
             "_R1_001.fastq.gz", "_R2_001.fastq.gz")
