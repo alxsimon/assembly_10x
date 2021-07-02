@@ -132,6 +132,74 @@ rule braker:
         > {log} 2>&1
         """
 
+
+#===========================================
+# Mantis annotation
+
+rule download_mantis:
+    output:
+        directory("results/annotation/mantis/mantis")
+    shell:
+        """
+        git clone https://github.com/PedroMTQ/mantis.git {output}
+        cd {output}
+        git checkout c6cb597
+        """
+
+org_detail = {
+    'MgalMED': 'Mytilus galloprovincialis',
+    'MeduEUS': 'Mytilus edulis',
+    'MeduEUN': 'Mytilus edulis',
+}
+
+rule get_prot_seq:
+    input:
+        gff = "results/final/{asm}.gff3.gz",
+        fa = "results/final/{asm}.fa.gz",
+    output:
+        "results/annotation/mantis/{asm}_pep.fa"
+    params:
+        prefix = lambda w, output: output[0].replace('_pep.fa', '')
+    log:
+        "logs/annotation/get_prot_seq.{asm}.log"
+    conda:
+        "../envs/gff3tool.yaml"
+    shell:
+        """
+        gff3_to_fasta -g {input.gff} -f {input.fa} \
+        -st pep -d simple -o {params.prefix} \
+        > log 2>&1
+        """
+
+rule run_mantis:
+    input:
+        config = "config/mantis.config",
+        mantis_dir = "results/annotation/mantis/mantis",
+        pep = "results/annotation/mantis/{asm}_pep.fa",
+    output:
+        "results/annotation/mantis/{asm}/consensus_annotation.tsv"
+    params:
+        outdir = lambda w, output: output[0].replace('/consensus_annotation.tsv', ''),
+        org_detail = lambda w: org_detail[w.asm],
+    log:
+        "logs/annotation/mantis.{asm}.log"
+    conda:
+        "../envs/mantis_env.yaml"
+    threads:
+        32
+    shell:
+        """
+        python {input.mantis_dir} run_mantis \
+        -t {input.pep} \
+        -o {params.outdir} \
+        -mc {input.config} \
+        -od '{params.org_detail}' \
+        -km \
+        -c {threads} \
+        > {log} 2>&1
+        """
+
+
 #===========================================
 # InterProScan
 

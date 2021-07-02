@@ -29,6 +29,7 @@ include: "rules/asm_improvement.smk"
 include: "rules/repeats.smk"
 include: "rules/annotation.smk"
 include: "rules/cactus.smk"
+include: "rules/finalize.smk"
 
 rule all_v6:
     input: 
@@ -59,10 +60,6 @@ rule asm_improvement:
             sample=config['samples']),
         expand("results/kat/{sample}_v7/{sample}_v7_spectra.pdf",
             sample=config['samples']),
-        expand("results/mapping/{sample}_v7.bam",
-            sample=config['samples']),
-        expand("results/mapping/{sample}_v7.stats",
-            sample=config['samples']),
 
 rule stats:
     input:
@@ -71,18 +68,31 @@ rule stats:
         "results/stats/assembly_stats.csv",
         expand("results/stats/{sample}_v7.cov.hist.pdf",
             sample=['gallo', 'edu', 'tros']),
-        # expand("results/calling/{sample}_v7.bcf",
-        #     sample=['gallo', 'edu', 'tros']),
+        expand("results/mapping/{sample}_v7.bam",
+            sample=config['samples']),
+        expand("results/mapping/{sample}_v7.stats",
+            sample=config['samples']),
+        "results/calling/pcangsd.cov",
+        "results/calling/genomes_calling_contigs.bcf",
 
 rule repeats:
     input:
         expand("results/repeats/{asm}.fa.masked",
             asm=['gallo_v7', 'edu_v7', 'tros_v7']),
 
+
+final_asm = ['MgalMED', 'MeduEUS', 'MeduEUN']
+
 rule annotation:
     input:
         expand("results/annotation/braker/{asm}/braker.gtf",
             asm=['gallo_v7', 'tros_v7', 'edu_v7']),
+        expand("results/annotation/mantis/{asm}/consensus_annotation.tsv",
+            asm=final_asm),
         expand("results/annotation/interproscan/{asm}/interpro_{asm}.gff3",
             asm=['gallo_v7', 'tros_v7', 'edu_v7']),
-        # "results/annotation/CAT/cat_annot"
+
+rule finalize:
+    input:
+        expand("results/final/{asm}.fa.gz", asm=final_asm),
+        expand("results/final/{asm}.gff3.gz", asm=final_asm),
