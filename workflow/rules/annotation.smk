@@ -189,6 +189,7 @@ rule run_mantis:
         32
     shell:
         """
+        rm -r {params.outdir}
         python {input.mantis_dir} run_mantis \
         -t {input.pep} \
         -o {params.outdir} \
@@ -198,6 +199,7 @@ rule run_mantis:
         -c {threads} \
         > {log} 2>&1
         """
+        # remove folder created by Snakemake first, overwise Mantis creates another folder with date-time
 
 
 #===========================================
@@ -237,82 +239,5 @@ rule run_interproscan:
         -iprlookup \
         --pathways \
         --cpu {threads} \
-        > {log} 2>&1
-        """
-
-
-#===========================================
-# Comparative Annotation Toolkit
-
-rule convert_Mcor_gff:
-    input:
-        'resources/Mco_ProteinCodingGenes.gff',
-        'resources/GCA_017311375.1_Mcoruscus_HiC_assembly_report.txt'
-    output:
-        'resources/GCA017311375.gff'
-    script:
-        "../scripts/convert_mcor_gff.py"
-
-# with python gff3tool 
-# gff3_QC -g GCA....gff -f ....fa.corrected -o ....gff3_qc.txt -s ....gff3_qc.stat
-# gff3_fix -qc_r GCA017311375.gff3_qc.txt -g GCA017311375.gff -og GCA017311375.corrected.gff
-
-
-rule prepare_cat_config:
-    input:
-        mcor_gff = 'resources/GCA017311375.modif.gff',
-        #mgal_gff = 'resources/GCA900618805.gff',
-        bams_mgal = lambda w: get_sample_rna_runs_annotation(w, asm='gallo'),
-        bams_mtro = lambda w: get_sample_rna_runs_annotation(w, asm='tros'),
-        bams_medu = lambda w: get_sample_rna_runs_annotation(w, asm='edu'),
-        prot_db = "resources/annotation/orthodb_mollusca_proteins.fa",
-    output:
-        "results/annotation/CAT/cat.config"
-    run:
-        bams_genomes = {
-            'mgal_02': input['bams_mgal'],
-            'mtro_02': input['bams_mtro'],
-            'medu_02': input['bams_medu'],
-        }
-        with open(output[0], 'w') as fw:
-            fw.write('[ANNOTATION]\n')
-            fw.write(f"GCA017311375 = {input['mcor_gff']}\n")
-            #fw.write(f"GCA900618805 = {input['mgal_gff']}\n\n")
-            fw.write("[BAM]\n")
-            for genome in ['mgal_02', 'mtro_02', 'medu_02']:
-                fw.write(f"{genome} = {','.join(bams_genomes[genome])}\n")
-            fw.write('\n')
-            fw.write("[PROTEIN_FASTA]\n")
-            for genome in ['mgal_02', 'mtro_02', 'medu_02']:
-                fw.write(f"{genome} = {input['prot_db']}\n")
-
-
-rule comparative_annotation:
-    input:
-        config = "results/annotation/CAT/cat.config",
-        hal = "results/cactus/myt_cactus.hal",
-    output:
-        dir = directory("results/annotation/CAT/cat_annot")
-    log:
-        "logs/cat_pipeline.log"
-    threads:
-        10
-    container:
-        "containers/cat.sif"
-    shell:
-        """
-        luigi --module cat RunCat \
-        --binary-mode=local \
-        --hal={input.hal} \
-        --ref-genome='GCA017311375' \
-        --maxCores=1 \
-        --workers={threads} \
-        --config={input.config} \
-        --work-dir {output.dir} \
-        --out-dir {output.dir} \
-        --local-scheduler \
-        --augustus --augustus-species 'Caenorhabditis_elegans' \
-        --augustus-cgp \
-        --assembly-hub \
         > {log} 2>&1
         """

@@ -133,7 +133,8 @@ rule get_sites_calling:
         "../envs/calling.yaml"
     shell:
         """
-        bcftools query -f '%CHROM\\t%POS\\n' {input} > {output}
+        bcftools query -f '%CHROM\\t%POS\\n' {input} | \
+        grep -v "gi_162945289_ref_DQ198231.2_mtross_F" > {output}
         """
 
 rule bcftools_call:

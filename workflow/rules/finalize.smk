@@ -77,3 +77,19 @@ rule sort_bgzip_gff:
         bgzip {params.tmp}
         tabix -p gff {output}
         """
+
+rule cp_pep_seq:
+    input:
+        "results/annotation/mantis/{asm}_pep.fa"
+    output:
+        "results/final/{asm}_pep.fa.gz"
+    shell:
+        "cat {input} | gzip -c > {output}"
+
+rule cp_consensus_annotation:
+    input:
+        "results/annotation/mantis/{asm}/consensus_annotation.tsv"
+    output:
+        "results/final/{asm}_consensus_annotation.tsv"
+    shell:
+        "cp {input} {output}"

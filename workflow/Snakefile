@@ -96,3 +96,6 @@ rule finalize:
     input:
         expand("results/final/{asm}.fa.gz", asm=final_asm),
         expand("results/final/{asm}.gff3.gz", asm=final_asm),
+        expand("results/final/{asm}_pep.fa.gz", asm=final_asm),
+        expand("results/final/{asm}_consensus_annotation.tsv", asm=final_asm),
+        
