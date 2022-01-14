@@ -30,6 +30,7 @@ include: "rules/repeats.smk"
 include: "rules/annotation.smk"
 include: "rules/cactus.smk"
 include: "rules/finalize.smk"
+include: "rules/ncbi_submission_changes.smk"
 
 rule all_v6:
     input: 
@@ -74,6 +75,7 @@ rule stats:
             sample=config['samples']),
         "results/calling/pcangsd.cov",
         "results/calling/genomes_calling_contigs.bcf",
+        "results/calling/merged_calling_contigs.bcf",
 
 rule repeats:
     input:
@@ -94,8 +96,15 @@ rule annotation:
 
 rule finalize:
     input:
-        expand("results/final/{asm}.fa.gz", asm=final_asm),
-        expand("results/final/{asm}.gff3.gz", asm=final_asm),
-        expand("results/final/{asm}_pep.fa.gz", asm=final_asm),
-        expand("results/final/{asm}_consensus_annotation.tsv", asm=final_asm),
+        expand("results/final/{asm}/{asm}.fa.gz", asm=final_asm),
+        expand("results/final/{asm}/{asm}.gff3.gz", asm=final_asm),
+        expand("results/final/{asm}/{asm}_pep.fa.gz", asm=final_asm),
+        expand("results/final/{asm}/{asm}_consensus_annotation.tsv", asm=final_asm),
         
+
+rule ncbi_submission:
+    input:
+        expand("results/ncbi_sub/{asm}/{asm}.fa.gz", asm=final_asm),
+        expand("results/ncbi_sub/{asm}/{asm}.gff3.gz", asm=final_asm),
+        expand("results/ncbi_sub/{asm}/{asm}_pep.fa.gz", asm=final_asm),
+        expand("results/ncbi_sub/{asm}/{asm}_consensus_annotation.tsv", asm=final_asm),

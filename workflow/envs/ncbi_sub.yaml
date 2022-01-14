@@ -1,0 +1,5 @@
+channels:
+  - bioconda
+dependencies:
+  - seqkit=0.13.2
+  - bedtools=2.29.2
