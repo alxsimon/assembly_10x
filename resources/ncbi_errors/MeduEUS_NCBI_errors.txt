@@ -1,0 +1,69 @@
+SUBID     	BioProject	BioSample	Organism
+--------------------------------------------------------
+SUB10446239	PRJNA785550	SAMN23565527	Mytilus edulis
+
+[] We ran your sequences through our Contamination Screen. The screen found 
+contigs that need to be trimmed and/or excluded. The results are in the 
+Contamination.txt file posted in your submission on the WGS submission portal 
+https://submit.ncbi.nlm.nih.gov/subs/genome/.  
+
+GenBank staff will automatically remove contaminants that are found to be 
+the entire sequence or at the end of a sequence, and will post the reports 
+and edited fasta file to the submission portal. Note that internal contamination 
+will not be automatically removed since the sequence may be misassembled and 
+therefore should be split at the contamination and resubmitted as separate sequences.
+In addition, we do not automatically remove mitochondrial sequences in 
+eukaryotic submissions. 
+
+If you selected the submission portal option "Do not automatically trim or 
+remove sequences identified as contamination" then you will need 
+to adjust the sequences appropriately and then resubmit your sequences. 
+After you remove the contamination, trim any Ns at the ends of the sequence 
+and remove any sequences that are shorter than 200 nt and not part of a 
+multi-component scaffold.
+
+Note that mismatches between the name of the adaptor/primer identified in the screen 
+and the sequencing technology used to generate the sequencing data should not be used 
+to discount the validity of the screen results as the adaptors/primers of many 
+different sequencing platforms share sequence similarity.
+
+
+Adaptor:
+[] Some of the sequences hit primers or adaptors used in Illumina or 
+454 or other sequencing strategies or platforms.  Adaptor at the 
+end of a sequence should be removed. However, if adaptors are 
+present within sequences then you should strongly consider 
+splitting the sequences at the adaptors because the adaptor sequence 
+could have been the region of overlap, causing a misassembly.
+
+
+Duplicate sequences:
+[] The contamination screen found some duplicated sequences.
+If these are artifact of the assembler, please remove the duplicates.  
+Alternatively, if this assembly includes more than one copy of each
+sequence, please reply to let us know that these sequences belong 
+in the assembly.
+
+
+Screened 168,554 sequences, 2,026,486,829 bp.
+Note: 15,474 sequences with runs of Ns 10 bp or longer (or those longer that 20 MB) were split before screening.
+6 sequences with locations to mask/trim
+(6 split spans with locations to mask/trim)
+Potentially duplicated: 2 sequences (with 1 distinct checksums).
+
+Trim:
+Sequence name, length, span(s), apparent source
+CM029598.1_RagTag_pilon	67269556	44112382..44112405	adaptor:NGB01088.1
+CM029605.1_RagTag_pilon	60006227	46672744..46672763	adaptor:NGB01088.1
+JAASAO010002380.1_RagTag_pilon	133094	71276..71340	adaptor:NGB01096.1
+me_01030_RagTag_pilon	182575	158344..158366	adaptor:NGB01088.1
+me_11703_RagTag_pilon	49971	23060..23099	adaptor:NGB01088.1
+me_15749_RagTag_pilon	37377	33436..33472	adaptor:NGB01080.1
+
+
+Duplicated:
+Sequence names, length
+lcl|me_86355_RagTag_pilon lcl|me_86356_RagTag_pilon (1609 bp)
+
+
+

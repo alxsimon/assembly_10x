@@ -126,7 +126,7 @@ rule map_genomes_contigs:
 
 rule get_sites_calling:
     input:
-        "resources/Fraisse2016/SNP_GQ20_0%missing.vcf"
+        "resources/Fraisse2016/SNP_GQ20_0%missing.vcf.gz"
     output:
         "results/calling/targets_SNP_contigs.pos.txt"
     conda:
@@ -134,8 +134,9 @@ rule get_sites_calling:
     shell:
         """
         bcftools query -f '%CHROM\\t%POS\\n' {input} | \
-        grep -v "gi_162945289_ref_DQ198231.2_mtross_F" > {output}
+        grep -v "ref" > {output}
         """
+        # "ref" removes mitochondrial contigs not present in reference fasta
 
 rule bcftools_call:
     input:
@@ -161,29 +162,23 @@ rule bcftools_call:
         >> {log} 2>&1
         """
 
-# rule merge_bcfs:
-#     input:
-#         bcf1 = "results/calling/angsd_subset_fixref.bcf",
-#         bcf2 = "results/calling/genomes_calling.bcf",
-#         targets = "results/calling/targets_pruned.pos.txt",
-#         ref = "results/fasta/gallo_v7.pseudohap.fasta.gz",
-#     output:
-#         "results/calling/merged_subset.bcf"
-#     conda:
-#         "../envs/calling.yaml"
-#     log:
-#         "logs/calling/merging.log"
-#     threads:
-#         4
-#     shell:
-#         """
-#         bcftools index {input.bcf1}
-#         bcftools index {input.bcf2}
-#         bcftools merge -m snps -Ob -o {output} \
-#         --threads {threads} {input.bcf1} {input.bcf2} > {log} 2>&1
-#         """
-
-
-
-# then merge with angsd_ref
-# Then quick ADMIXTURE analysis? or PCA?
+rule merge_bcfs:
+    input:
+        bcf1 = "resources/Fraisse2016/SNP_GQ20_0%missing.vcf.gz",
+        bcf2 = "results/calling/genomes_calling_contigs.bcf",
+        targets = "results/calling/targets_SNP_contigs.pos.txt",
+    output:
+        "results/calling/merged_calling_contigs.bcf"
+    conda:
+        "../envs/calling.yaml"
+    log:
+        "logs/calling/merging.log"
+    threads:
+        4
+    shell:
+        """
+        bcftools index -f {input.bcf1}
+        bcftools index -f {input.bcf2}
+        bcftools merge -m snps -Ob -o {output} -R {input.targets} \
+        --threads {threads} {input.bcf1} {input.bcf2} > {log} 2>&1
+        """

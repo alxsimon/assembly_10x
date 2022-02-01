@@ -26,12 +26,18 @@ def get_order(w):
 rule download_assemblies:
     output:
         "resources/GCA017311375.fasta.gz",
-        "resources/GCA900618805.fasta.gz"
+        "resources/GCA900618805.fasta.gz",
+        "resources/GCA905397895.fasta.gz",
+        "resources/GCA019925415.fasta.gz",
     params:
         ftp_0 = config['published_assemblies']['GCA017311375'],
-        ftp_1 = config['published_assemblies']['GCA900618805']
+        ftp_1 = config['published_assemblies']['GCA900618805'],
+        ftp_2 = config['published_assemblies']['GCA905397895'],
+        ftp_3 = config['published_assemblies']['GCA019925415'],
     shell:
         """
         wget {params.ftp_0} -O {output[0]}
         wget {params.ftp_1} -O {output[1]}
+        wget {params.ftp_2} -O {output[2]}
+        wget {params.ftp_3} -O {output[3]}
         """

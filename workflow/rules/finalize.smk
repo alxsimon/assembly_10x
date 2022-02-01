@@ -21,7 +21,7 @@ rule cp_final_fasta:
     input:
         get_final_fasta
     output:
-        "results/final/{asm}.fa.gz"
+        "results/final/{asm}/{asm}.fa.gz"
     shell:
         """
         cp {input} {output}
@@ -31,7 +31,7 @@ rule clean_gff_id:
     input:
         get_gff
     output:
-        temp("results/final/{asm}_newid.gff3")
+        temp("results/final/{asm}/{asm}_newid.gff3")
     params:
         prefix = lambda w: w.asm
     conda:
@@ -47,9 +47,9 @@ rule clean_gff_id:
 
 rule clean_gff_format:
     input:
-        "results/final/{asm}_newid.gff3"
+        "results/final/{asm}/{asm}_newid.gff3"
     output:
-        temp("results/final/{asm}_fix.gff3")
+        temp("results/final/{asm}/{asm}_fix.gff3")
     conda:
         "../envs/agat.yaml"
     log:
@@ -62,9 +62,9 @@ rule clean_gff_format:
 
 rule sort_bgzip_gff:
     input:
-        "results/final/{asm}_fix.gff3"
+        "results/final/{asm}/{asm}_fix.gff3"
     output:
-        "results/final/{asm}.gff3.gz"
+        "results/final/{asm}/{asm}.gff3.gz"
     params:
         tmp = lambda w, output: output[0].replace(".gz", "")
     conda:
@@ -82,7 +82,7 @@ rule cp_pep_seq:
     input:
         "results/annotation/mantis/{asm}_pep.fa"
     output:
-        "results/final/{asm}_pep.fa.gz"
+        "results/final/{asm}/{asm}_pep.fa.gz"
     shell:
         "cat {input} | gzip -c > {output}"
 
@@ -90,6 +90,6 @@ rule cp_consensus_annotation:
     input:
         "results/annotation/mantis/{asm}/consensus_annotation.tsv"
     output:
-        "results/final/{asm}_consensus_annotation.tsv"
+        "results/final/{asm}/{asm}_consensus_annotation.tsv"
     shell:
         "cp {input} {output}"

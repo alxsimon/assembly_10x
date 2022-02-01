@@ -84,7 +84,7 @@ rule lrscaf:
 
 rule ragtag_mtro:
     input:
-        ref_coruscus = "resources/GCA017311375.fasta.gz",
+        ref_coruscus = ancient("resources/GCA017311375.fasta.gz"),
         draft_assembly = "results/mtro_02/lrscaf/mtro_01.lrscaf.fa"
     output:
         "results/mtro_02/ragtag/mtro_01.ragtag.fa"
@@ -169,7 +169,7 @@ rule pilon_mtro_02:
 
 rule ragtag:
     input:
-        ref_coruscus = "resources/GCA017311375.fasta.gz",
+        ref_coruscus = ancient("resources/GCA017311375.fasta.gz"),
         draft_assembly = "results/{asm}_02/{asm}_01.fa"
     output:
         "results/{asm}_02/ragtag/{asm}_01.ragtag.fa"

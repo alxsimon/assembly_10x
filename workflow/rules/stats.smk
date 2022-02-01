@@ -1,5 +1,5 @@
 def get_fasta(w):
-    if (w.version in ["GCA900618805", "GCA017311375"]):
+    if (w.version in ["GCA900618805", "GCA017311375", "GCA905397895", "GCA019925415"]):
         return ancient(f"resources/{w.version}.fasta.gz")
     else:
         return ancient(f"results/fasta/{w.sample}_{w.version}.pseudohap.fasta.gz")
@@ -22,6 +22,8 @@ rule merge_stats:
     input:
         "results/stats/coruscus_GCA017311375.stats.json",
         "results/stats/gallo_GCA900618805.stats.json",
+        "results/stats/edu_GCA905397895.stats.json",
+        "results/stats/eduam_GCA019925415.stats.json",
         expand("results/stats/{sample}_{version}.stats.json",
             sample=config['samples'], 
             version=["v1", "v2", "v3", "v4", "v5", "v6", "v7"]),

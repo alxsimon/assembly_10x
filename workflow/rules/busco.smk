@@ -14,7 +14,7 @@ rule dwld_busco_databases:
         """
 
 def get_busco_input(w):
-    if (w.version in ["GCA900618805", "GCA017311375"]):
+    if (w.version in ["GCA900618805", "GCA017311375", "GCA905397895", "GCA019925415"]):
         return ancient(f"resources/{w.version}.fasta.gz")
     else:
         return ancient(f"results/fasta/{w.sample}_{w.version}.pseudohap.fasta.gz")
@@ -63,7 +63,7 @@ rule summarize_busco:
             version=["v1", "v2", "v3", "v4", "v5", "v6", "v7"],
             db=["metazoa_odb10", "mollusca_odb10"]),
         expand("results/busco/{pub}_{db}/short_summary.specific.{db}.{pub}_{db}.txt",
-            pub=['coruscus_GCA017311375', 'gallo_GCA900618805'], 
+            pub=['coruscus_GCA017311375', 'gallo_GCA900618805', 'edu_GCA905397895', 'eduam_GCA019925415'], 
             db=["metazoa_odb10", "mollusca_odb10"])
     output:
         "results/stats/busco_summary.tsv"

@@ -1,0 +1,96 @@
+SUBID     	BioProject	BioSample	Organism
+--------------------------------------------------------
+SUB10446239	PRJNA785550	SAMN23565526	Mytilus edulis
+
+[] We ran your sequences through our Contamination Screen. The screen found 
+contigs that need to be trimmed and/or excluded. The results are in the 
+Contamination.txt file posted in your submission on the WGS submission portal 
+https://submit.ncbi.nlm.nih.gov/subs/genome/.  
+
+GenBank staff will automatically remove contaminants that are found to be 
+the entire sequence or at the end of a sequence, and will post the reports 
+and edited fasta file to the submission portal. Note that internal contamination 
+will not be automatically removed since the sequence may be misassembled and 
+therefore should be split at the contamination and resubmitted as separate sequences.
+In addition, we do not automatically remove mitochondrial sequences in 
+eukaryotic submissions. 
+
+If you selected the submission portal option "Do not automatically trim or 
+remove sequences identified as contamination" then you will need 
+to adjust the sequences appropriately and then resubmit your sequences. 
+After you remove the contamination, trim any Ns at the ends of the sequence 
+and remove any sequences that are shorter than 200 nt and not part of a 
+multi-component scaffold.
+
+Note that mismatches between the name of the adaptor/primer identified in the screen 
+and the sequencing technology used to generate the sequencing data should not be used 
+to discount the validity of the screen results as the adaptors/primers of many 
+different sequencing platforms share sequence similarity.
+
+
+Adaptor:
+[] Some of the sequences hit primers or adaptors used in Illumina or 
+454 or other sequencing strategies or platforms.  Adaptor at the 
+end of a sequence should be removed. However, if adaptors are 
+present within sequences then you should strongly consider 
+splitting the sequences at the adaptors because the adaptor sequence 
+could have been the region of overlap, causing a misassembly.
+
+
+Duplicate sequences:
+[] The contamination screen found some duplicated sequences.
+If these are artifact of the assembler, please remove the duplicates.  
+Alternatively, if this assembly includes more than one copy of each
+sequence, please reply to let us know that these sequences belong 
+in the assembly.
+
+
+Screened 105,491 sequences, 1,626,204,329 bp.
+Note: 7,740 sequences with runs of Ns 10 bp or longer (or those longer that 20 MB) were split before screening.
+6 sequences with locations to mask/trim
+(6 split spans with locations to mask/trim)
+Potentially duplicated: 56 sequences (with 28 distinct checksums).
+
+Trim:
+Sequence name, length, span(s), apparent source
+CM029597.1_RagTag_pilon	90347732	79127665..79127691	adaptor:NGB01088.1
+CM029606.1_RagTag_pilon	77102752	55156457..55156484	adaptor:NGB01088.1
+CM029607.1_RagTag_pilon	66875358	56196094..56196118	adaptor:NGB01088.1
+Scaffolds_22116_RagTag_pilon	1325281	1180565..1180592	adaptor:NGB01088.1
+Scaffolds_25439_RagTag_pilon	276122	151398..151433	adaptor:NGB01088.1
+Scaffolds_3334_RagTag_pilon	124673	22123..22157	adaptor:NGB01088.1
+
+
+Duplicated:
+Sequence names, length
+lcl|Scaffolds_1155_RagTag_pilon lcl|Scaffolds_18457_RagTag_pilon (1063 bp)
+lcl|Scaffolds_16122_RagTag_pilon lcl|Scaffolds_9722_RagTag_pilon (1477 bp)
+lcl|Scaffolds_41903_RagTag_pilon lcl|Scaffolds_5439_RagTag_pilon (1366 bp)
+lcl|Scaffolds_10083_RagTag_pilon lcl|Scaffolds_44487_RagTag_pilon (1338 bp)
+lcl|Scaffolds_14727_RagTag_pilon lcl|Scaffolds_8190_RagTag_pilon (1021 bp)
+lcl|Scaffolds_17272_RagTag_pilon lcl|Scaffolds_7654_RagTag_pilon (8031 bp)
+lcl|Scaffolds_3227_RagTag_pilon lcl|Scaffolds_32784_RagTag_pilon (1202 bp)
+lcl|Scaffolds_31795_RagTag_pilon lcl|Scaffolds_6094_RagTag_pilon (6521 bp)
+lcl|Scaffolds_23854_RagTag_pilon lcl|Scaffolds_5549_RagTag_pilon (1103 bp)
+lcl|Scaffolds_13825_RagTag_pilon lcl|Scaffolds_9817_RagTag_pilon (5498 bp)
+lcl|Scaffolds_1896_RagTag_pilon lcl|Scaffolds_2686_RagTag_pilon (6757 bp)
+lcl|Scaffolds_1894_RagTag_pilon lcl|Scaffolds_2684_RagTag_pilon (5160 bp)
+lcl|Scaffolds_1288_RagTag_pilon lcl|Scaffolds_24537_RagTag_pilon (1117 bp)
+lcl|Scaffolds_34575_RagTag_pilon lcl|Scaffolds_5747_RagTag_pilon (1244 bp)
+lcl|Scaffolds_10614_RagTag_pilon lcl|Scaffolds_5593_RagTag_pilon (5861 bp)
+lcl|Scaffolds_19781_RagTag_pilon lcl|Scaffolds_5979_RagTag_pilon (1440 bp)
+lcl|Scaffolds_28583_RagTag_pilon lcl|Scaffolds_2968_RagTag_pilon (1536 bp)
+lcl|Scaffolds_23057_RagTag_pilon lcl|Scaffolds_4815_RagTag_pilon (1088 bp)
+lcl|Scaffolds_26675_RagTag_pilon lcl|Scaffolds_670_RagTag_pilon (1160 bp)
+lcl|Scaffolds_34209_RagTag_pilon lcl|Scaffolds_53_RagTag_pilon (1256 bp)
+lcl|Scaffolds_10517_RagTag_pilon lcl|Scaffolds_24905_RagTag_pilon (1112 bp)
+lcl|Scaffolds_35029_RagTag_pilon lcl|Scaffolds_5982_RagTag_pilon (1262 bp)
+lcl|Scaffolds_2827_RagTag_pilon lcl|Scaffolds_6750_RagTag_pilon (12249 bp)
+lcl|Scaffolds_23342_RagTag_pilon lcl|Scaffolds_5419_RagTag_pilon (1084 bp)
+lcl|Scaffolds_16008_RagTag_pilon lcl|Scaffolds_4241_RagTag_pilon (1480 bp)
+lcl|Scaffolds_10569_RagTag_pilon lcl|Scaffolds_26858_RagTag_pilon (1157 bp)
+lcl|Scaffolds_31980_RagTag_pilon lcl|Scaffolds_31981_RagTag_pilon (1193 bp)
+lcl|Scaffolds_23214_RagTag_pilon lcl|Scaffolds_4610_RagTag_pilon (3232 bp)
+
+
+

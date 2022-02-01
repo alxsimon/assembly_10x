@@ -19,6 +19,8 @@ samples:
 published_assemblies:
   GCA017311375: "ftp://ftp.ncbi.nih.gov/genomes/genbank/invertebrate/Mytilus_coruscus/all_assembly_versions/GCA_017311375.1_Mcoruscus_HiC/GCA_017311375.1_Mcoruscus_HiC_genomic.fna.gz"
   GCA900618805: "ftp://ftp.ncbi.nih.gov/genomes/genbank/invertebrate/Mytilus_galloprovincialis/all_assembly_versions/GCA_900618805.1_MGAL_10/GCA_900618805.1_MGAL_10_genomic.fna.gz"
+  GCA905397895: "ftp://ftp.ncbi.nih.gov/genomes/genbank/invertebrate/Mytilus_edulis/all_assembly_versions/GCA_905397895.1_MEDL1/GCA_905397895.1_MEDL1_genomic.fna.gz"
+  GCA019925415: "ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/019/925/275/GCA_019925275.1_PEIMed/GCA_019925275.1_PEIMed_genomic.fna.gz"
 
 genomescope:
   kmc_mem: 100
