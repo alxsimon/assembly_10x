@@ -90,9 +90,7 @@ rule annotation:
         expand("results/annotation/braker/{asm}/braker.gtf",
             asm=['gallo_v7', 'tros_v7', 'edu_v7']),
         expand("results/annotation/mantis/{asm}/consensus_annotation.tsv",
-            asm=final_asm),
-        expand("results/annotation/interproscan/{asm}/interpro_{asm}.gff3",
-            asm=['gallo_v7', 'tros_v7', 'edu_v7']),
+            asm=final_asm)
 
 rule finalize:
     input:
