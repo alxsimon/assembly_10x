@@ -143,7 +143,7 @@ rule download_mantis:
         """
         git clone https://github.com/PedroMTQ/mantis.git {output}
         cd {output}
-        git checkout c6cb597
+        git checkout a59937d
         """
 
 org_detail = {
@@ -154,8 +154,8 @@ org_detail = {
 
 rule get_prot_seq:
     input:
-        gff = "results/final/{asm}.gff3.gz",
-        fa = "results/final/{asm}.fa.gz",
+        gff = "results/final/{asm}/{asm}.gff3.gz",
+        fa = "results/final/{asm}/{asm}.fa.gz",
     output:
         "results/annotation/mantis/{asm}_pep.fa"
     params:
@@ -196,6 +196,7 @@ rule run_mantis:
         -mc {input.config} \
         -od '{params.org_detail}' \
         -km \
+        -gff \
         -c {threads} \
         > {log} 2>&1
         """
