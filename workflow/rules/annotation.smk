@@ -136,16 +136,6 @@ rule braker:
 #===========================================
 # Mantis annotation
 
-rule download_mantis:
-    output:
-        directory("results/annotation/mantis/mantis")
-    shell:
-        """
-        git clone https://github.com/PedroMTQ/mantis.git {output}
-        cd {output}
-        git checkout a59937d
-        """
-
 org_detail = {
     'MgalMED': 'Mytilus galloprovincialis',
     'MeduEUS': 'Mytilus edulis',
@@ -171,10 +161,25 @@ rule get_prot_seq:
         > log 2>&1
         """
 
+# Need enough disk space for this
+rule mantis_setup:
+    output:
+        "results/annotation/mantis/done_setup"
+    log: 
+        "logs/annotation/mantis_setup.log"
+    conda:
+        "../envs/mantis.yaml"
+    threads:
+        16
+    shell:
+        """
+        mantis setup -c {threads} > {log} 2>&1
+        touch {output}
+        """
+
 rule run_mantis:
     input:
-        config = "config/mantis.config",
-        mantis_dir = "results/annotation/mantis/mantis",
+        mantis_setup = "results/annotation/mantis/done_setup",
         pep = "results/annotation/mantis/{asm}_pep.fa",
     output:
         "results/annotation/mantis/{asm}/consensus_annotation.tsv"
@@ -184,16 +189,15 @@ rule run_mantis:
     log:
         "logs/annotation/mantis.{asm}.log"
     conda:
-        "../envs/mantis_env.yaml"
+        "../envs/mantis.yaml"
     threads:
         32
     shell:
         """
         rm -r {params.outdir}
-        python {input.mantis_dir} run_mantis \
-        -t {input.pep} \
+        mantis run \
+        -i {input.pep} \
         -o {params.outdir} \
-        -mc {input.config} \
         -od '{params.org_detail}' \
         -km \
         -gff \
