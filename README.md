@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/258168051.svg)](https://zenodo.org/badge/latestdoi/258168051)
+
 # Assembly pipeline for Mytilus genomes
 
 Assembly pipeline from 10x chromium reads from the preprint
