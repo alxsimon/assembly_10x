@@ -98,11 +98,11 @@ rule ragtag_mtro:
         "logs/mtro_improvement/ragtag_mtro.log"
     shell:
         """
-        ragtag.py scaffold -t {threads} \
+        ragtag.py scaffold \
         {input.ref_coruscus} \
         {input.draft_assembly} \
         -o {params.out_dir} \
-        --mm2-params '-x asm10' -u \
+        --mm2-params '-x asm10 -t {threads}' -u \
         > {log} 2>&1
 
         cp {params.out_dir}/ragtag.scaffolds.fasta {output}
@@ -183,11 +183,11 @@ rule ragtag:
         "logs/{asm}_improvement/ragtag_{asm}.log"
     shell:
         """
-        ragtag.py scaffold -t {threads} \
+        ragtag.py scaffold \
         {input.ref_coruscus} \
         {input.draft_assembly} \
         -o {params.out_dir} \
-        --mm2-params '-x asm10' -u \
+        --mm2-params '-x asm10 -t {threads}' -u \
         > {log} 2>&1
 
         cp {params.out_dir}/ragtag.scaffolds.fasta {output}
